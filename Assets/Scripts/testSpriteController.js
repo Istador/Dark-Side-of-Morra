@@ -5,20 +5,20 @@ var rowFrameStart : int = 0;
 var totalFrames : int = 10;
 var framesPerSecond : int = 12;
 
-var move : Move;
+var move : testMove;
 var velo : float;
 var lookRight : boolean;
 
 function Start()
 {
-	move = GetComponent(Move);	
+	move = GetComponent(testMove);	
 }
 
 function Update()
 {
 	velocity = move.velocity;
 	lookRight = move.lookRight;
-	
+
 	if (velocity == 0)
 	{
 		if(lookRight)
