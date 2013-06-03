@@ -5,13 +5,13 @@ var rowFrameStart : int = 0;
 var totalFrames : int = 10;
 var framesPerSecond : int = 12;
 
-var move : testMove;
+var move : Move;
 var velo : float;
 var lookRight : boolean;
 
 function Start()
 {
-	move = GetComponent(testMove);	
+	move = GetComponent(Move);	
 }
 
 function Update()
