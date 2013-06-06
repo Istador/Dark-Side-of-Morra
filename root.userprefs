@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/DamageScripts/shootv2.js">
+    <Files>
+      <File FileName="Assets/Scripts/testSpriteController.js" Line="19" Column="27" />
+      <File FileName="Assets/Scripts/Move.js" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/DamageScripts/bulletDamage.js" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/DamageScripts/leben.js" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/DamageScripts/shoot.js" Line="16" Column="37" />
+      <File FileName="Assets/Scripts/DamageScripts/shootv2.js" Line="2" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
