@@ -46,8 +46,6 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\DamageScripts\bulletDamage.js" />
      <Compile Include="Assets\Scripts\DamageScripts\leben.js" />
-     <Compile Include="Assets\Scripts\DamageScripts\shoot.js" />
-     <Compile Include="Assets\Scripts\DamageScripts\shootv2.js" />
      <Compile Include="Assets\Scripts\Move.js" />
      <Compile Include="Assets\Scripts\backgroundParallax.js" />
      <Compile Include="Assets\Scripts\spriteController.js" />
