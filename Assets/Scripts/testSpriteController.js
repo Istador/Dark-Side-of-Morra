@@ -1,13 +1,13 @@
-var columnSize : int = 10;
-var rowSize : int = 15;
-var colFrameStart : int = 0;
-var rowFrameStart : int = 0;
-var totalFrames : int = 10;
-var framesPerSecond : int = 12;
+var columnSize		: int = 10;
+var rowSize			: int = 15;
+var colFrameStart	: int =  0;
+var rowFrameStart	: int =  0;
+var totalFrames		: int = 10;
+var framesPerSecond	: int = 12;
 
-var move : Move;
-var velo : float;
-var lookRight : boolean;
+var move 			: Move;
+var velo 			: float;
+var lookRight 		: boolean;
 
 function Start()
 {
@@ -23,91 +23,60 @@ function Update()
 	{
 		if(lookRight)
 		{
-			anim("stayRight");
+			anim(AnimationTypes.stayRight);
 		}
 		else
 		{
-			anim("stayLeft");
+			anim(AnimationTypes.stayLeft);
 		}
 	}
 
 	if (velocity < 0)
 	{
-		anim("moveLeft");
+		anim(AnimationTypes.moveLeft);
 	}
 
 	if (velocity > 0)
 	{
-		anim("moveRight");
+		anim(AnimationTypes.moveRight);
 	}
 
 	if (!move.characterController.isGrounded)
 	{
 		if (lookRight)
 		{
-			anim("jumpRight");
+			anim(AnimationTypes.jumpRight);
 		}
 		else
 		{
-			anim("jumpLeft");
+			anim(AnimationTypes.jumpLeft);
 		}
 	}
+}
+
+enum AnimationTypes
+{
+	// Zahl ist für rowFrameStart, d.h. Auswahl der Reihe in welcher die Sprites liegen.
+	stayRight	=  0,
+	stayLeft	=  1,
+	moveRight	=  2,
+	moveLeft	=  3,
+	jumpRight	=  4,
+	jumpLeft	=  5,
+	attackRight	=  6,
+	attackLeft	=  7,
+	anim1Right	=  8,
+	anim1Left	=  9,
+	anim2Right	= 10,
+	anim2Left	= 11,
+	other1		= 12,
+	other2		= 13,
+	other3		= 14
 }
 
 function anim(animType)
 {
 	var spritePlay = GetComponent("spriteController");
 
-	if (animType == "stayRight")
-	{
-		rowFrameStart = 0;
-		totalFrames = 10;
-		spritePlay.spriteController(columnSize, rowSize, colFrameStart, rowFrameStart, totalFrames, framesPerSecond);
-	}
-	else if (animType == "stayLeft")
-	{
-		rowFrameStart = 1;
-		totalFrames = 10;
-		spritePlay.spriteController(columnSize, rowSize, colFrameStart, rowFrameStart, totalFrames, framesPerSecond);	
-	}
-	else if (animType == "moveRight")
-	{
-		rowFrameStart = 2;
-		totalFrames = 10;
-		spritePlay.spriteController(columnSize, rowSize, colFrameStart, rowFrameStart, totalFrames, framesPerSecond);
-	}
-	else if (animType == "moveLeft")
-	{
-		rowFrameStart = 3;
-		totalFrames = 10;
-		spritePlay.spriteController(columnSize, rowSize, colFrameStart, rowFrameStart, totalFrames, framesPerSecond);
-	}
-	else if (animType == "jumpRight")
-	{
-		rowFrameStart = 4;
-		totalFrames = 10;
-		spritePlay.spriteController(columnSize, rowSize, colFrameStart, rowFrameStart, totalFrames, framesPerSecond);
-	}
-	else if (animType == "jumpLeft")
-	{
-		rowFrameStart = 5;
-		totalFrames = 10;
-		spritePlay.spriteController(columnSize, rowSize, colFrameStart, rowFrameStart, totalFrames, framesPerSecond);
-	}
-	else if (animType == "atackRight")
-	{
-		rowFrameStart = 6;
-		totalFrames = 10;
-		spritePlay.spriteController(columnSize, rowSize, colFrameStart, rowFrameStart, totalFrames, framesPerSecond);
-	}
-	else if (animType == "attackLeft")
-	{
-		rowFrameStart = 7;
-		totalFrames = 10;
-		spritePlay.spriteController(columnSize, rowSize, colFrameStart, rowFrameStart, totalFrames, framesPerSecond);
-	}
-	else
-	{
-		Debug.Log("unbekannter animType");
-	}
+	spritePlay.spriteController(columnSize, rowSize, colFrameStart, animType, totalFrames, framesPerSecond);
 }
