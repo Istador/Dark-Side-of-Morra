@@ -30,13 +30,11 @@ function Update()
 			anim(AnimationTypes.stayLeft);
 		}
 	}
-
-	if (velocity < 0)
+	else if (velocity < 0)
 	{
 		anim(AnimationTypes.moveLeft);
 	}
-
-	if (velocity > 0)
+	else
 	{
 		anim(AnimationTypes.moveRight);
 	}
@@ -77,6 +75,6 @@ enum AnimationTypes
 function anim(animType)
 {
 	var spritePlay = GetComponent("spriteController");
-
+	// enum an spritePlay.spriteController übergeben an gegebener Stelle
 	spritePlay.spriteController(columnSize, rowSize, colFrameStart, animType, totalFrames, framesPerSecond);
 }

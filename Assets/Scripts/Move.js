@@ -1,13 +1,12 @@
 #pragma strict
 
-var gravity				: float = 0.8;
-var maxDownwardSpeed	: float = 20;
-var speed				: float = 10;
-var jumpPower 			: float = 10;
-var velocity			: float = 0;
-var InputJump			: boolean = false;
-var moveDirection 		: Vector3 = Vector3.zero;
-var lookRight 			: boolean = true;
+var gravity			: float = 0.8;
+var speed			: float = 10;
+var jumpPower 		: float = 10;
+var velocity		: float = 0;
+var InputJump		: boolean = false;
+var moveDirection 	: Vector3 = Vector3.zero;
+var lookRight 		: boolean = true;
 var characterController : CharacterController;
 
 
@@ -30,7 +29,8 @@ function InputCheck()
 	{
 		lookRight = true;
 	}
-	else if (velocity < 0)
+
+	if (velocity < 0)
 	{
 		lookRight = false;
 	}
@@ -55,8 +55,7 @@ function Move()
 	}
 	
 	moveDirection.x = velocity;
-	//if(moveDirection.y > -maxDownwardSpeed)
-		moveDirection.y -= gravity;
+	moveDirection.y -= gravity;
 	
 	characterController.Move(moveDirection * Time.deltaTime);
 }
