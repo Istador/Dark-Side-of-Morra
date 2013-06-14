@@ -44,11 +44,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Camera\camera_follow.js" />
      <Compile Include="Assets\Scripts\DamageScripts\bulletDamage.js" />
      <Compile Include="Assets\Scripts\DamageScripts\leben.js" />
      <Compile Include="Assets\Scripts\Move.js" />
      <Compile Include="Assets\Scripts\backgroundParallax.js" />
+     <Compile Include="Assets\Scripts\camera_follow.js" />
      <Compile Include="Assets\Scripts\spriteController.js" />
      <Compile Include="Assets\Scripts\testSpriteController.js" />
   </ItemGroup>
