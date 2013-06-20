@@ -3,10 +3,10 @@
 var cameraTarget			: GameObject; // object to look at / follow
 
 
-var smoothTime 				: float		 = 0.1;				// time for camera dumpen
+var smoothTime 				: float		 = 0.2;				// time for camera dumpen
 var cameraFollowX			: boolean	 = true;			// camera follows on horizontal
 var cameraFollowY			: boolean	 = true;			// camera follows on vertical
-var cameraHeight			: float		 = 1.8;				//  height of camera, adjustable in the inspector
+private var cameraHeight	: float		 = 1.8;				//  height of camera
 var velocity 				: Vector2;						// speed of camera movement
 private var thisTransform	: Transform; 					// cameras transform
 var orthoSize				: float;
