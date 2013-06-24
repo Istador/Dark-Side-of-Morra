@@ -8,6 +8,8 @@ var InputJump		: boolean = false;
 var moveDirection 	: Vector3 = Vector3.zero;
 var lookRight 		: boolean = true;
 var characterController : CharacterController;
+private var climbSpeed		= 30;
+var isClimbing				: boolean;
 
 
 function Start()
@@ -19,6 +21,7 @@ function Update()
 {
 	InputCheck();
 	Move();
+	Climb();
 }
 
 function InputCheck()
@@ -39,6 +42,7 @@ function InputCheck()
 	{
 		InputJump = true;
 	}
+
 	else
 	{
 		InputJump = false;
@@ -48,7 +52,7 @@ function InputCheck()
 
 function Move()
 {
-	if (characterController.isGrounded)
+	if (characterController.isGrounded && !isClimbing)
 	{
 		if (InputJump)
 			moveDirection.y = jumpPower;
@@ -58,4 +62,43 @@ function Move()
 	moveDirection.y -= gravity;
 	
 	characterController.Move(moveDirection * Time.deltaTime);
+}
+function Climb(){
+	if (Input.GetButtonDown("Vertical")){
+			Debug.Log("TasteGedrückt");								// check if Button is pushed
+				if(isClimbing) {
+							Debug.Log("TasteGedrückt und true");	// check if button is bushed and isClimbing is true
+							
+							
+							moveDirection = Vector3(0,0,Input.GetAxis("Vertical"));
+				
+           					moveDirection = transform.TransformDirection(moveDirection);
+            				moveDirection *= climbSpeed;
+            				
+							
+							characterController.Move(moveDirection * Time.deltaTime*climbSpeed);	// move character
+		}
+	}
+
+}
+function OnTriggerEnter(characterController : Collider){
+		
+	
+			if (characterController.gameObject.CompareTag ("Ladder")){
+			
+			isClimbing = true;
+			gravity = 0;
+				Debug.Log("isClimbing = true");					// character is on the trigger
+	}
+	
+}
+
+function OnTriggerExit(characterController : Collider){
+	  
+	if (characterController.gameObject.CompareTag ("Ladder")){
+		
+		isClimbing = false;
+		gravity = 0.8;
+		Debug.Log("Weg vom Trigger");							// character is out of the trigger
+	}
 }
