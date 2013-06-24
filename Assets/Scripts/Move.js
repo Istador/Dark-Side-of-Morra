@@ -64,20 +64,16 @@ function Move()
 	characterController.Move(moveDirection * Time.deltaTime);
 }
 function Climb(){
-	if (Input.GetButtonDown("Vertical")){
-			Debug.Log("TasteGedrückt");								// check if Button is pushed
-				if(isClimbing) {
-							Debug.Log("TasteGedrückt und true");	// check if button is bushed and isClimbing is true
-							
-							
-							moveDirection = Vector3(0,0,Input.GetAxis("Vertical"));
+	if (Input.GetButtonDown("Vertical")&& isClimbing){
+						
+			moveDirection = Vector3(0,0,Input.GetAxis("Vertical"));
 				
-           					moveDirection = transform.TransformDirection(moveDirection);
-            				moveDirection *= climbSpeed;
+           	moveDirection = transform.TransformDirection(moveDirection);
+            moveDirection *= climbSpeed;
             				
 							
-							characterController.Move(moveDirection * Time.deltaTime*climbSpeed);	// move character
-		}
+			characterController.Move(moveDirection * Time.deltaTime*climbSpeed);	// move character
+		
 	}
 
 }
@@ -88,7 +84,7 @@ function OnTriggerEnter(characterController : Collider){
 			
 			isClimbing = true;
 			gravity = 0;
-				Debug.Log("isClimbing = true");					// character is on the trigger
+							// character is on the trigger
 	}
 	
 }
@@ -99,6 +95,6 @@ function OnTriggerExit(characterController : Collider){
 		
 		isClimbing = false;
 		gravity = 0.8;
-		Debug.Log("Weg vom Trigger");							// character is out of the trigger
+									// character is out of the trigger
 	}
 }
