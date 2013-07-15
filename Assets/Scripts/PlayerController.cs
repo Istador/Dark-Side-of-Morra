@@ -5,7 +5,8 @@ public class PlayerController : MonoBehaviour
 {
 	// movement
 	public float gravity		= 0.8f;
-	public float speed			= 10;
+	public float runSpeed		= 10;
+	public float climbSpeed		= 5;
 	public float jumpPower		= 10;
 
 	private Vector2 velocity	= Vector2.zero;
@@ -38,8 +39,8 @@ public class PlayerController : MonoBehaviour
 
 	void  InputCheck ()
 	{
-		velocity.x = Input.GetAxis("Horizontal") * speed;
-		velocity.y = Input.GetAxis("Vertical") * speed;
+		velocity.x = Input.GetAxis("Horizontal") * runSpeed;
+		velocity.y = Input.GetAxis("Vertical") * climbSpeed;
 
 		if (velocity.x > 0)
 		{
