@@ -19,7 +19,7 @@ function Update()
 	velocity = move.velocity;
 	lookRight = move.lookRight;
 
-	if (velocity == 0)
+	if (velocity.x == 0)
 	{
 		if(lookRight)
 		{
@@ -30,7 +30,7 @@ function Update()
 			anim(AnimationTypes.stayLeft);
 		}
 	}
-	else if (velocity < 0)
+	else if (velocity.x < 0)
 	{
 		anim(AnimationTypes.moveLeft);
 	}

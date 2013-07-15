@@ -3,14 +3,13 @@
 var gravity			: float = 0.8;
 var speed			: float = 10;
 var jumpPower 		: float = 10;
-var velocity		: float = 0;
+var velocity		: Vector2 = Vector2.zero;
+var moveDirection	: Vector2 = Vector2.zero;
 var InputJump		: boolean = false;
-var moveDirection 	: Vector3 = Vector3.zero;
+var isOnLadder		: boolean = false;
 var lookRight 		: boolean = true;
 var characterController : CharacterController;
 private var climbSpeed		= 30;
-var isClimbing				: boolean;
-
 
 function Start()
 {
@@ -21,19 +20,20 @@ function Update()
 {
 	InputCheck();
 	Move();
-	Climb();
+	//Climb();
 }
 
 function InputCheck()
 {
-	velocity = Input.GetAxis("Horizontal") * speed;
-	
-	if (velocity > 0)
+	velocity.x = Input.GetAxis("Horizontal") * speed;
+	velocity.y = Input.GetAxis("Vertical") * speed;
+
+	if (velocity.x > 0)
 	{
 		lookRight = true;
 	}
 
-	if (velocity < 0)
+	if (velocity.x < 0)
 	{
 		lookRight = false;
 	}
@@ -42,59 +42,70 @@ function InputCheck()
 	{
 		InputJump = true;
 	}
-
 	else
 	{
 		InputJump = false;
 	}
-
 }
 
 function Move()
 {
-	if (characterController.isGrounded && !isClimbing)
+	if (characterController.isGrounded)
+		{
+			if (InputJump)
+			{
+				moveDirection.y = jumpPower;
+			}
+		}
+
+	if (isOnLadder)
 	{
-		if (InputJump)
-			moveDirection.y = jumpPower;
+		moveDirection.y = velocity.y;
 	}
-	
-	moveDirection.x = velocity;
-	moveDirection.y -= gravity;
-	
-	characterController.Move(moveDirection * Time.deltaTime);
+	else
+	{
+		if (moveDirection.y > -20)
+		{
+			moveDirection.y -= gravity;
+		}
+	}
+
+	moveDirection.x = velocity.x;
+
+	characterController.Move(moveDirection * Time.deltaTime);	
 }
-function Climb(){
-	if (Input.GetButtonDown("Vertical")&& isClimbing){
-						
-			moveDirection = Vector3(0,0,Input.GetAxis("Vertical"));
-				
-           	moveDirection = transform.TransformDirection(moveDirection);
-            moveDirection *= climbSpeed;
-            				
-							
-			characterController.Move(moveDirection * Time.deltaTime*climbSpeed);	// move character
-		
+
+/*
+function Climb()
+{
+	if (Input.GetButtonDown("Vertical")&& isOnLadder)
+	{
+		moveDirection = Vector3(0,0,Input.GetAxis("Vertical"));
+
+       	moveDirection = transform.TransformDirection(moveDirection);
+        moveDirection *= climbSpeed;
+
+		characterController.Move(moveDirection * Time.deltaTime*climbSpeed);	// move character
 	}
 
 }
-function OnTriggerEnter(characterController : Collider){
-		
+*/
+
+function OnTriggerEnter(characterController : Collider)
+{
+	if (characterController.gameObject.CompareTag ("Ladder"))
+	{
 	
-			if (characterController.gameObject.CompareTag ("Ladder")){
-			
-			isClimbing = true;
-			gravity = 0;
-							// character is on the trigger
+		isOnLadder = true;
+		// character is on the trigger
 	}
-	
 }
 
-function OnTriggerExit(characterController : Collider){
-	  
-	if (characterController.gameObject.CompareTag ("Ladder")){
-		
-		isClimbing = false;
-		gravity = 0.8;
-									// character is out of the trigger
+function OnTriggerExit(characterController : Collider)
+{
+	if (characterController.gameObject.CompareTag ("Ladder"))
+	{
+		isOnLadder = false;
+		// character is out of the trigger
 	}
 }
