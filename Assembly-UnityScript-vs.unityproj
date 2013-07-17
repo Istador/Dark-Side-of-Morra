@@ -37,20 +37,15 @@
     <Reference Include="System.XML" />
 	<Reference Include="System.Core" />
 	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Progs/Unity 3D/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Progs/Unity 3D/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\DamageScripts\bulletDamage.js" />
      <Compile Include="Assets\Scripts\DamageScripts\leben.js" />
-     <Compile Include="Assets\Scripts\Move.js" />
-     <Compile Include="Assets\Scripts\backgroundParallax.js" />
-     <Compile Include="Assets\Scripts\camera_follow.js" />
-     <Compile Include="Assets\Scripts\spriteController.js" />
-     <Compile Include="Assets\Scripts\testSpriteController.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

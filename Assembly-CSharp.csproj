@@ -5,11 +5,11 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{C5664A62-E18A-BCF8-F963-1362B996B573}</ProjectGuid>
+	<ProjectGuid>{541BD3EA-0122-1746-49E3-B5D5C66ED31E}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-UnityScript-Editor</AssemblyName>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
 	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
 	<FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,35 +44,15 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Editor\MakePrefab.js" />
- <Reference Include="Assembly-UnityScript">
- <HintPath>Library\ScriptAssemblies\Assembly-UnityScript.dll</HintPath>
- </Reference>
- <Reference Include="CommandLine">
- <HintPath>Assets\UVersionControl\Editor\CommandLine.dll</HintPath>
- </Reference>
- <Reference Include="Common">
- <HintPath>Assets\UVersionControl\Editor\Common.dll</HintPath>
- </Reference>
- <Reference Include="RendererInspectors">
- <HintPath>Assets\UVersionControl\Editor\RendererInspectors.dll</HintPath>
- </Reference>
- <Reference Include="SVNBackend">
- <HintPath>Assets\UVersionControl\Editor\SVNBackend.dll</HintPath>
- </Reference>
- <Reference Include="System.Threading">
- <HintPath>Assets\UVersionControl\Editor\System.Threading.dll</HintPath>
- </Reference>
- <Reference Include="UnityVersionControl">
- <HintPath>Assets\UVersionControl\Editor\UnityVersionControl.dll</HintPath>
- </Reference>
- <Reference Include="UnityEditor.Graphs">
- <HintPath>C:\Progs\Unity 3D\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
- </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-vs.csproj">
-      <Project>{541BD3EA-0122-1746-49E3-B5D5C66ED31E}</Project>      <Name>Assembly-CSharp-vs</Name>    </ProjectReference>
+     <Compile Include="Assets\Scripts\BackgroundParallax.cs" />
+     <Compile Include="Assets\Scripts\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Abstract\Enemy.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Abstract\ImmovableEnemy.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Abstract\MovableEnemy.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Concrete\Mine.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Player.cs" />
+     <Compile Include="Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\SpriteController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
