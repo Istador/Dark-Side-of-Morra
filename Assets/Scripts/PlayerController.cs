@@ -25,6 +25,11 @@ public class PlayerController : MonoBehaviour
 	
 	private CharacterController characterController;
 
+	// audio
+	public AudioClip shootSound;
+	public AudioClip jumpSound;
+	public AudioClip hitSound;
+
 	void  Start ()
 	{
 		characterController = GetComponent<CharacterController>();
@@ -69,6 +74,8 @@ public class PlayerController : MonoBehaviour
 			if (InputJump)
 			{
 				moveDirection.y = jumpPower;
+				audio.clip = jumpSound;
+				audio.Play();
 			}
 		}
 
