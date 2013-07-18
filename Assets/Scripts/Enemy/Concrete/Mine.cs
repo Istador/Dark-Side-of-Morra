@@ -2,6 +2,11 @@ using UnityEngine;
 using System.Collections;
 
 public class Mine : ImmovableEnemy {
+	
+	public Mine() : base(1) {
+		
+	}
+	
 	void Start () {}
 	
 	void Update () {}

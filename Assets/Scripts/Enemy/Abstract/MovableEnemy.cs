@@ -1,8 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
-public class MovableEnemy : Enemy {
-
+public abstract class MovableEnemy : Enemy {
+	
+	public MovableEnemy(int maxHealth) : base(maxHealth){
+		
+	}
+	
 	// Use this for initialization
 	void Start () {
 	
