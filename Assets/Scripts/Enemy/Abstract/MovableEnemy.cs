@@ -3,17 +3,8 @@ using System.Collections;
 
 public abstract class MovableEnemy : Enemy {
 	
-	public MovableEnemy(int maxHealth) : base(maxHealth){
+	public MovableEnemy(int txtCols, int txtRows, int txtFPS, int maxHealth) : base(txtCols, txtRows, txtFPS, maxHealth){
 		
 	}
 	
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

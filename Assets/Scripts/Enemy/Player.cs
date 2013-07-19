@@ -19,6 +19,6 @@ public class Player : MonoBehaviour {
 	}
 	
 	void ApplyDamage(int damage){
-		Debug.Log(this.tag + ": "+damage+" dmg received");
+		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage+" dmg received");
 	}
 }
