@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class Enemy : MonoBehaviour {
+public abstract class Enemy<T> : MonoBehaviour {
 	
 	
 	/*
@@ -20,6 +20,13 @@ public abstract class Enemy : MonoBehaviour {
 	private int health;
 	private int maxHealth;
 	
+	/**
+	 * Zustandsautomaten für Angriff und Bewegung
+	*/
+	private StateMachine<Enemy<T>> moveFSM;
+	private StateMachine<Enemy<T>> attackFSM;
+	public StateMachine<Enemy<T>> MoveFSM {get{return moveFSM;}}
+	public StateMachine<Enemy<T>> AttackFSM {get{return attackFSM;}}
 	
 	/*
 	 * Konstruktor
@@ -30,6 +37,10 @@ public abstract class Enemy : MonoBehaviour {
 		this.txtCols = txtCols; 
 		this.txtRows = txtRows;
 		this.txtFPS = txtFPS;
+		
+		//Zustandsmaschinen erstellen
+		moveFSM = new StateMachine<Enemy<T>>(this);
+		attackFSM = new StateMachine<Enemy<T>>(this);
 	}
 	
 	
@@ -37,23 +48,26 @@ public abstract class Enemy : MonoBehaviour {
 		health = maxHealth;
 		//SpriteController hinzufügen
 		spriteCntrl = gameObject.AddComponent<SpriteController>();
+		
 	}
 	
 	protected virtual  void Update () {
+		moveFSM.Update();
+		attackFSM.Update();
 		//Animation
 		spriteCntrl.animate(txtCols, txtRows, 0, txtState, txtCols, txtFPS);
 	}
 	
-	protected virtual  void ApplyDamage(int damage){
+	public virtual  void ApplyDamage(int damage){
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage+" dmg received");
 		health -= damage;
 		if(health <= 0) Death();
 	}
 	
-	protected virtual  void Death(){
+	public virtual  void Death(){
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): death");
 		Destroy(gameObject);
 	}
 	
-	protected void SetSprite(int row){txtState = row;}
+	public void SetSprite(int row){txtState = row;}
 }

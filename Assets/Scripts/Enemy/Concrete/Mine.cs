@@ -1,13 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
-public class Mine : ImmovableEnemy {
+public class Mine : ImmovableEnemy<Mine> {
 	
 	float explosionRadius = 5.0f;
 	int explosionDamage = 75;
 	
 	public Mine() : base(2, 3, 5, 1) {
-		
+		AttackFSM.SetCurrentState(SMineIdle.Instance);
 	}
 	
 	protected override void Update() {
@@ -20,12 +20,12 @@ public class Mine : ImmovableEnemy {
 		}
 	}
 	
-	protected override void ApplyDamage (int damage)
+	public override void ApplyDamage (int damage)
 	{
 		Explode();
 	}
 	
-	protected override void Death (){}
+	public override void Death (){}
 	
 	private void Explode(){
 		/*
