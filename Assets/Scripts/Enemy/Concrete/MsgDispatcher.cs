@@ -3,8 +3,7 @@ using System.Collections;
 
 public class MsgDispatcher : MonoBehaviour {
 
-	void LateUpdate () {
-		Debug.Log("LateUpdate");
+	void LateUpdate(){
 		MessageDispatcher.Instance.DispatchDelayedMessages();
 	}
 }
