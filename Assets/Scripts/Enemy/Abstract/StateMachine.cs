@@ -1,4 +1,4 @@
-public class StateMachine<T> {
+public class StateMachine<T> : MessageReceiver {
 	private T owner;
 	private State<T> globalState;
 	private State<T> currentState;
@@ -55,6 +55,14 @@ public class StateMachine<T> {
 	}
 	
 	/**
+	 * Methode um die Zustandsmaschine zu "starten".
+	 * Ruft die Enter-Methode des aktuellen Zustandes auf
+	*/
+	public void Start(){
+		if(currentState!=null) currentState.Enter(owner);
+	}
+	
+	/**
 	 * Update Methode die bei jedem Frame aufgerufen wird
 	 * deligiert an die Zustände
 	*/
@@ -68,5 +76,19 @@ public class StateMachine<T> {
 	*/
 	public bool isInState(State<T> state){
 		return currentState == state || (currentState!=null && currentState.Equals(state));
+	}
+	
+	/**
+	 * Nachrichten an aktuellen Zustand weitergeben
+	*/
+	public bool HandleMessage(Telegram msg){
+		//wenn der aktuelle Zustand die Nachricht verarbeiten kann
+		if(currentState!=null && currentState.OnMessage(owner, msg))
+			return true;
+		//falls aktueller zustand nicht kann, dann globaler
+		else if(globalState!=null && globalState.OnMessage(owner, msg))
+			return true;
+		//Nachricht unverarbeitet
+		return false;
 	}
 }

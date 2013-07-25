@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class Enemy<T> : MonoBehaviour {
+public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	
 	
 	/*
@@ -49,25 +49,46 @@ public abstract class Enemy<T> : MonoBehaviour {
 		//SpriteController hinzufügen
 		spriteCntrl = gameObject.AddComponent<SpriteController>();
 		
+		moveFSM.Start();
+		attackFSM.Start();
 	}
 	
-	protected virtual  void Update () {
+	protected virtual void Update () {
 		moveFSM.Update();
 		attackFSM.Update();
 		//Animation
 		spriteCntrl.animate(txtCols, txtRows, 0, txtState, txtCols, txtFPS);
 	}
 	
-	public virtual  void ApplyDamage(int damage){
+	public bool HandleMessage(Telegram msg){
+		bool tmp = moveFSM.HandleMessage(msg);
+		return attackFSM.HandleMessage(msg) || tmp;
+	}
+	
+	public virtual void ApplyDamage(int damage){
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage+" dmg received");
 		health -= damage;
 		if(health <= 0) Death();
 	}
 	
-	public virtual  void Death(){
+	public virtual void Death(){
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): death");
 		Destroy(gameObject);
 	}
 	
 	public void SetSprite(int row){txtState = row;}
+	
+	
+	public void SetVisible(){
+		renderer.enabled = true;
+	}
+	
+	public void SetInvisible(){
+		renderer.enabled = false;
+	}
+	
+	public float DistanceToPlayer(){
+		GameObject player = GameObject.FindWithTag("Player");
+		return Mathf.Abs(Vector3.Distance(transform.position, player.transform.position));
+	}
 }

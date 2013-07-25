@@ -1,25 +1,33 @@
 /**
  * ein einzelner Zustand
 */
-public interface State<T> {
+public abstract class State<T> {
 	
 	
 	/**
 	 * Code der beim Betreten des Zustandes ausgeführt werden soll.
 	*/
-	void Enter(T owner);
+	public abstract void Enter(T owner);
 	
 	
 	/**
 	 * Code der bei jedem neuem Update ausgeführt werden soll.
 	*/
-	void Execute(T owner);
+	public abstract void Execute(T owner);
 	
 	
 	/**
 	 * Code der beim Verlassen des Zustandes ausgeführt werden soll.
 	*/
-	void Exit(T owner);
+	public abstract void Exit(T owner);
+	
+	
+	/**
+	 * Code der beim Erhalt eines Telegrams ausgeführt werden soll
+	*/
+	public virtual bool OnMessage(T owner, Telegram msg){
+		return false;
+	}
 	
 	
 }
