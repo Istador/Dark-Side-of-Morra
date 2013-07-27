@@ -1,7 +1,6 @@
 using UnityEngine;
 /**
- * Zustand in der die Mine nichts tut, als zu überprüfen ob
- * der Player in Range ist
+ * Zustand in der die Mine stirbt, und explodiert
  * 
 */
 public class SMineDead : State<Enemy<Mine>> {
@@ -13,13 +12,22 @@ public class SMineDead : State<Enemy<Mine>> {
 		//Schaden an allen in Reichweite machen
 		float maxrange = ((Mine)owner).f_explosionRadius;
 		float maxdmg = ((Mine)owner).f_explosionDamage;
+		GameObject player = GameObject.FindWithTag("Player");
 		
-		Collider[] cs = Physics.OverlapSphere(owner.transform.position, maxrange);
+		//höhe an die Position des Spielers anpassen
+		Vector3 explosionsursprung = new Vector3(
+			owner.transform.position.x,
+			owner.transform.position.y - owner.renderer.bounds.size.y/2.0f+player.collider.bounds.size.y/2.0f,
+			owner.transform.position.z
+		); 
+		
+		
+		Collider[] cs = Physics.OverlapSphere(explosionsursprung, maxrange);
 		foreach(Collider c in cs){
 			if(c.gameObject.tag == "Enemy" || c.gameObject.tag == "Player" ){
 				//Entfernung des Objektes zum Explosionszentrum
-				//float range = Mathf.Abs(Vector3.Distance(owner.transform.position * Vector3(), c.gameObject.transform.position));
-				float range = Mathf.Abs(owner.transform.position.x - c.gameObject.transform.position.x);
+				float range = Mathf.Abs(Vector3.Distance(explosionsursprung, c.gameObject.transform.position));
+				//float range = Mathf.Abs(owner.transform.position.x - c.gameObject.transform.position.x);
 				if(range >= 0.0f && range <= maxrange){
 					//Schaden proportional zur Entfernung berechnen
 					int dmg = (int)( maxdmg * (1.0f - range/maxrange) );
@@ -32,7 +40,7 @@ public class SMineDead : State<Enemy<Mine>> {
 		
 		
 		//Explosionsanzeige
-		GameObject explosion = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("prefab Explosion"), owner.transform.position, owner.transform.rotation);
+		GameObject explosion = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("prefab Explosion"), explosionsursprung, owner.transform.rotation);
 		//scale explosion
 		explosion.particleEmitter.minSize = 0.5f;
 		explosion.particleEmitter.maxSize = 2.0f;

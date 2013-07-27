@@ -1,6 +1,6 @@
 /**
- * Zustand in der die Mine nichts tut, als zu überprüfen ob
- * der Player in Range ist
+ * Zustand in der die Mine sichtbar ist, aber nicht blinkt.
+ * Der Zustand überprüft ob der Player in Reichweite gerät
  * 
 */
 public class SMineVisible : State<Enemy<Mine>> {

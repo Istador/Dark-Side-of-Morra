@@ -1,6 +1,5 @@
 /**
- * Zustand in der die Mine nichts tut, als zu überprüfen ob
- * der Player in Range ist
+ * Zustand in der die Mine rot blinkt, und nach einer Sekunde explodiert.
  * 
 */
 public class SMineRed : State<Enemy<Mine>> {

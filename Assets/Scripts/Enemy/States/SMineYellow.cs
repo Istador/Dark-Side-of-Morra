@@ -1,6 +1,5 @@
 /**
- * Zustand in der die Mine nichts tut, als zu überprüfen ob
- * der Player in Range ist
+ * Zustand in der die Mine gelb blinkt.
  * 
 */
 public class SMineYellow : State<Enemy<Mine>> {

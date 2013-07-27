@@ -1,6 +1,6 @@
 /**
  * Zustand in der die Mine noch nicht sichtbar ist.
- * Der Zustand überprüft ob der Player in Reichweite gerät
+ * Der Zustand überprüft ob der Player in Reichweite gerät.
  * 
 */
 public class SMineInvisible : State<Enemy<Mine>> {
