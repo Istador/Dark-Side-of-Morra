@@ -15,7 +15,7 @@ public class Player : MonoBehaviour {
 	}
 	
 	bool IsGrounded(){
-		return Physics.Raycast(transform.position, -Vector3.up, 3.000001f);
+		return Physics.Raycast(transform.position, -Vector3.up, (renderer.bounds.size.y/2.0f+0.0001f));
 	}
 	
 	void ApplyDamage(int damage){
