@@ -1,3 +1,16 @@
+/*
+ * Zustandsautomat
+ * 
+ * Funktionalität:
+ * - globaler Zustand
+ * - aktueller Zustand
+ * - voriger Zustand
+ * - Zustandsübergänge
+ * - Nachrichtensystem
+ * 
+ * Quelle:
+ * Mat Buckland - Programming Game AI by Example
+*/
 public class StateMachine<T> : MessageReceiver {
 	private T owner;
 	private State<T> globalState;

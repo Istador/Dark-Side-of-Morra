@@ -15,10 +15,10 @@ public class SMineInvisible : State<Enemy<Mine>> {
 		//Distanz zum Spieler ermitteln
 		float distance = owner.DistanceToPlayer();
 		//rote Reichweite
-		if(distance <= ((Mine)owner).f_redRange)
+		if(distance <= Mine.f_redRange)
 			owner.AttackFSM.ChangeState(SMineRed.Instance);
 		//gelbe Reichweite
-		else if(distance <= ((Mine)owner).f_yellowRange)
+		else if(distance <= Mine.f_yellowRange)
 			owner.AttackFSM.ChangeState(SMineYellow.Instance);
 	}
 	

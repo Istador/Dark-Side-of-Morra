@@ -1,6 +1,12 @@
 using UnityEngine;
-using System.Collections;
 
+/**
+ * Nachrichtensystem
+ * zur Übertragung zeitverzögerter Nachrichten
+ * 
+ * Quelle:
+ * Mat Buckland - Programming Game AI by Example
+*/
 public class MessageDispatcher {
 	
 	private PriorityQueue<Telegram> pq = new PriorityQueue<Telegram>();

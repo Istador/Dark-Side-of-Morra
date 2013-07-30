@@ -10,8 +10,8 @@ public class SMineDead : State<Enemy<Mine>> {
 		owner.SetInvisible(); //Mine ausblenden
 		
 		//Schaden an allen in Reichweite machen
-		float maxrange = ((Mine)owner).f_explosionRadius;
-		float maxdmg = ((Mine)owner).f_explosionDamage;
+		float maxrange = Mine.f_explosionRadius;
+		float maxdmg = Mine.f_explosionDamage;
 		GameObject player = GameObject.FindWithTag("Player");
 		
 		//höhe an die Position des Spielers anpassen

@@ -1,13 +1,12 @@
 /**
- * Zustand in der die Mine sichtbar ist, aber nicht blinkt.
- * Der Zustand überprüft ob der Player in Reichweite gerät
+ * Zustand in der die Mine gelb blinkt.
  * 
 */
-public class SMineVisible : State<Enemy<Mine>> {
+public class SMineYellow : State<Enemy<Mine>> {
 	
 	
 	public override void Enter(Enemy<Mine> owner){
-		owner.SetSprite(0);
+		owner.SetSprite(1);
 	}
 	
 	
@@ -15,11 +14,11 @@ public class SMineVisible : State<Enemy<Mine>> {
 		//Distanz zum Spieler ermitteln
 		float distance = owner.DistanceToPlayer();
 		//rote Reichweite
-		if(distance <= ((Mine)owner).f_redRange)
+		if(distance <= Mine.f_redRange)
 			owner.AttackFSM.ChangeState(SMineRed.Instance);
-		//gelbe Reichweite
-		else if(distance <= ((Mine)owner).f_yellowRange)
-			owner.AttackFSM.ChangeState(SMineYellow.Instance);
+		//außerhalb gelber Reichweite
+		else if(distance > Mine.f_yellowRange)
+			owner.AttackFSM.ChangeState(SMineVisible.Instance);
 	}
 	
 	
@@ -40,10 +39,10 @@ public class SMineVisible : State<Enemy<Mine>> {
 	/**
 	 * Singleton
 	*/
-	private static SMineVisible instance;
-	private SMineVisible(){}
-	public static SMineVisible Instance{get{
-			if(instance==null) instance = new SMineVisible();
+	private static SMineYellow instance;
+	private SMineYellow(){}
+	public static SMineYellow Instance{get{
+			if(instance==null) instance = new SMineYellow();
 			return instance;
 		}}
 }

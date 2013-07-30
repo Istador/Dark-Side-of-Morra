@@ -3,15 +3,17 @@ using System.Collections;
 
 public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	
+	private GameObject _player;
+	public GameObject player {get{return _player;}}
 	
 	/*
 	 * Textur / Sprite Controller
 	*/
 	private SpriteController spriteCntrl;
 	private int txtState = 0; //Zeile der Animation
-	private int txtCols; //Anzahl Spalten (Frames)
-	private int txtRows; //Anzahl Zeilen (Zustände)
-	private int txtFPS;  //Frames per Second
+	protected abstract int txtCols  { get; } //Anzahl Spalten (Frames)
+	protected abstract int txtRows { get; } //Anzahl Zeilen (Zustände)
+	protected abstract int txtFPS { get; }  //Frames per Second
 	
 	
 	/*
@@ -32,11 +34,8 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	 * Konstruktor
 	*/
 	private Enemy(){}
-	public Enemy(int txtCols, int txtRows, int txtFPS, int maxHealth){
+	public Enemy(int maxHealth){
 		this.maxHealth = maxHealth;
-		this.txtCols = txtCols; 
-		this.txtRows = txtRows;
-		this.txtFPS = txtFPS;
 		
 		//Zustandsmaschinen erstellen
 		moveFSM = new StateMachine<Enemy<T>>(this);
@@ -45,6 +44,8 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	
 	
 	protected virtual void Start () {
+		_player = GameObject.FindWithTag("Player");
+		
 		health = maxHealth;
 		//SpriteController hinzufügen
 		spriteCntrl = gameObject.AddComponent<SpriteController>();
@@ -88,7 +89,6 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	}
 	
 	public float DistanceToPlayer(){
-		GameObject player = GameObject.FindWithTag("Player");
 		return Mathf.Abs(Vector3.Distance(transform.position, player.transform.position));
 	}
 }

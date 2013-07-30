@@ -3,17 +3,17 @@ using System.Collections;
 
 public class Mine : ImmovableEnemy<Mine> {
 	
-	public readonly float f_yellowRange = 6.0f;
-	public readonly float f_redRange = 3.0f;
-	public readonly float f_explosionRadius = 4.0f;
-	public readonly float f_explosionDamage = 75.0f;
+	public static readonly float f_yellowRange = 6.0f;
+	public static readonly float f_redRange = 3.0f;
+	public static readonly float f_explosionRadius = 4.0f;
+	public static readonly float f_explosionDamage = 75.0f;
 	
-	public Mine() : base(2, 3, 5, 1) {
+	protected override int txtCols { get{return 2;} } //Anzahl Spalten (Frames)
+	protected override int txtRows { get{return 3;} } //Anzahl Zeilen (Zustände)
+	protected override int txtFPS { get{return 5;} }  //Frames per Second
+	
+	public Mine() : base(1) { //1 HP
 		AttackFSM.SetCurrentState(SMineInvisible.Instance);
-	}
-	
-	protected override void Update() {
-		base.Update();
 	}
 	
 	void OnTriggerEnter(Collider other) {
@@ -24,24 +24,14 @@ public class Mine : ImmovableEnemy<Mine> {
 		}
 	}
 	
-	public override void ApplyDamage (int damage)
-	{
+	public override void ApplyDamage(int damage){
 		//Schaden immer
 		Explode();
 	}
 	
 	
 	private void Explode(){
+		//sende eine Nachricht an den Zustandsautomat um in den roten zustand zu gehen.
 		MessageDispatcher.Instance.Dispatch(new Telegram(this, "explode"));
-		
-		/*
-		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): inflict damage.");
-		Collider[] cs = Physics.OverlapSphere(transform.position, explosionRadius);
-		foreach(Collider c in cs){
-			if(c.gameObject.tag == "Enemy" || c.gameObject.tag == "Player" ){
-				c.gameObject.SendMessage("ApplyDamage",explosionDamage);
-			}
-		}
-		*/
 	}
 }
