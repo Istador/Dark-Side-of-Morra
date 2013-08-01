@@ -2,14 +2,16 @@ using UnityEngine;
 /**
  * Zustand in dem das Geschütz nachlädt.
  * Der Zustand überprüft ob der Player außer Reichweite gerät.
- * 
 */
 public class SAGReload : State<Enemy<AutomGeschuetz>> {
 	
 	
+	
 	public override void Enter(Enemy<AutomGeschuetz> owner){
+		//aktuellen Zeitpunkt merken
 		((AutomGeschuetz)owner).BeginReload();
 	}
+	
 	
 	
 	public override void Execute(Enemy<AutomGeschuetz> owner){
@@ -21,14 +23,20 @@ public class SAGReload : State<Enemy<AutomGeschuetz>> {
 		//zu weit
 		else if(distance > AutomGeschuetz.f_outOfRange)
 			owner.AttackFSM.ChangeState(SAGIdle.Instance);
+		//Spieler nicht in LOS
+		else if( ! owner.LineOfSight(owner.player) )
+			owner.AttackFSM.ChangeState(SAGIdle.Instance);
 		//nachladen vorbei
-		else if(((AutomGeschuetz)owner).reloadStart + AutomGeschuetz.reloadTime <= Time.time )
+		else if(((AutomGeschuetz)owner).reloadStart + AutomGeschuetz.d_reloadTime <= Time.time )
 			owner.AttackFSM.ChangeState(SAGFire.Instance);
 	}
 	
 	
+	
 	public override void Exit(Enemy<AutomGeschuetz> owner){}
-		
+	
+	
+	
 	/**
 	 * Singleton
 	*/

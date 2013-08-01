@@ -5,9 +5,11 @@
 public class SMineYellow : State<Enemy<Mine>> {
 	
 	
+	
 	public override void Enter(Enemy<Mine> owner){
-		owner.SetSprite(1);
+		owner.SetSprite(1); //gelb blinken
 	}
+	
 	
 	
 	public override void Execute(Enemy<Mine> owner){
@@ -22,7 +24,9 @@ public class SMineYellow : State<Enemy<Mine>> {
 	}
 	
 	
+	
 	public override void Exit(Enemy<Mine> owner){}
+	
 	
 	
 	public override bool OnMessage(Enemy<Mine> owner, Telegram msg){
@@ -34,6 +38,7 @@ public class SMineYellow : State<Enemy<Mine>> {
 				return false;
 		}
 	}
+	
 	
 	
 	/**

@@ -6,6 +6,7 @@ using UnityEngine;
 public class SMineDead : State<Enemy<Mine>> {
 	
 	
+	
 	public override void Enter(Enemy<Mine> owner){
 		owner.SetInvisible(); //Mine ausblenden
 		
@@ -21,7 +22,7 @@ public class SMineDead : State<Enemy<Mine>> {
 			owner.transform.position.z
 		); 
 		
-		
+		//wer Kollidiert alles mit der runden Explosion
 		Collider[] cs = Physics.OverlapSphere(explosionsursprung, maxrange);
 		foreach(Collider c in cs){
 			if(c.gameObject.tag == "Enemy" || c.gameObject.tag == "Player" ){
@@ -40,14 +41,16 @@ public class SMineDead : State<Enemy<Mine>> {
 		
 		
 		//Explosionsanzeige
-		GameObject explosion = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("prefab Explosion"), explosionsursprung, owner.transform.rotation);
+		GameObject explosion = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("prefab Explosion"), explosionsursprung, owner.transform.rotation);		
 		//scale explosion
 		explosion.particleEmitter.minSize = 0.5f;
 		explosion.particleEmitter.maxSize = 2.0f;
 		explosion.GetComponent<ParticleRenderer>().lengthScale = 2.0f;
+		//TODO : Soundgeräusch
 		
 		UnityEngine.Object.Destroy(explosion,1.0f); //nach 1 sekunden explosion entfernen
 	}
+	
 	
 	
 	public override void Execute(Enemy<Mine> owner){
@@ -55,9 +58,12 @@ public class SMineDead : State<Enemy<Mine>> {
 	}
 	
 	
+	
 	public override void Exit(Enemy<Mine> owner){
 		owner.Death(); //Mine zerstören
 	}
+	
+	
 	
 	/**
 	 * Singleton

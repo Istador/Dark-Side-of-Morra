@@ -4,27 +4,42 @@
 public abstract class State<T> {
 	
 	
-	/**
-	 * Code der beim Betreten des Zustandes ausgeführt werden soll.
-	*/
+	/// <summary>
+	/// Code der beim Betreten des Zustandes ausgeführt werden soll.
+	/// </summary>
+	/// <param name='owner'>
+	/// Objekt das in diesem Zustand ist und für welches diese Methode ausgeführt wird
+	/// </param>
 	public abstract void Enter(T owner);
 	
 	
-	/**
-	 * Code der bei jedem neuem Update ausgeführt werden soll.
-	*/
+	/// <summary>
+	/// Code der bei jedem neuem Update ausgeführt werden soll.
+	/// </summary>
+	/// <param name='owner'>
+	/// Objekt das in diesem Zustand ist und für welches diese Methode ausgeführt wird
+	/// </param>
 	public abstract void Execute(T owner);
 	
 	
-	/**
-	 * Code der beim Verlassen des Zustandes ausgeführt werden soll.
-	*/
+	/// <summary>
+	/// Code der beim Verlassen des Zustandes ausgeführt werden soll.
+	/// </summary>
+	/// <param name='owner'>
+	/// Objekt das in diesem Zustand ist und für welches diese Methode ausgeführt wird
+	/// </param>
 	public abstract void Exit(T owner);
 	
 	
-	/**
-	 * Code der beim Erhalt eines Telegrams ausgeführt werden soll
-	*/
+	/// <summary>
+	/// Code der beim Erhalt einer Nachricht ausgeführt werden soll
+	/// </summary>
+	/// <param name='owner'>
+	/// Objekt das in diesem Zustand ist und für welches diese Methode ausgeführt wird
+	/// </param>
+	/// <param name='msg'>
+	/// Die übermittelte Nachricht
+	/// </param>
 	public virtual bool OnMessage(T owner, Telegram msg){
 		return false;
 	}

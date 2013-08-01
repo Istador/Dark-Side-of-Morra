@@ -6,9 +6,11 @@
 public class SMineVisible : State<Enemy<Mine>> {
 	
 	
+	
 	public override void Enter(Enemy<Mine> owner){
-		owner.SetSprite(0);
+		owner.SetSprite(0); //nicht blinken
 	}
+	
 	
 	
 	public override void Execute(Enemy<Mine> owner){
@@ -23,7 +25,9 @@ public class SMineVisible : State<Enemy<Mine>> {
 	}
 	
 	
+	
 	public override void Exit(Enemy<Mine> owner){}
+	
 	
 	
 	public override bool OnMessage(Enemy<Mine> owner, Telegram msg){
@@ -35,6 +39,7 @@ public class SMineVisible : State<Enemy<Mine>> {
 				return false;
 		}
 	}
+	
 	
 	
 	/**

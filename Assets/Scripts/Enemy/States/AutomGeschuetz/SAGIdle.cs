@@ -1,12 +1,13 @@
 /**
  * Zustand in der das Automatische Geschütz zu weit vom Spieler entfernt ist.
  * Der Zustand überprüft ob der Player in Reichweite kommt.
- * 
 */
 public class SAGIdle : State<Enemy<AutomGeschuetz>> {
 	
 	
+	
 	public override void Enter(Enemy<AutomGeschuetz> owner){}
+	
 	
 	
 	public override void Execute(Enemy<AutomGeschuetz> owner){
@@ -15,13 +16,15 @@ public class SAGIdle : State<Enemy<AutomGeschuetz>> {
 		//zu dicht
 		if(distance <= AutomGeschuetz.f_closeRange)
 			owner.AttackFSM.ChangeState(SAGTooClose.Instance);
-		//in reichweite
-		else if(distance <= AutomGeschuetz.f_outOfRange)
+		//in reichweite && LOS
+		else if(distance <= AutomGeschuetz.f_outOfRange && owner.LineOfSight(owner.player))
 			owner.AttackFSM.ChangeState(SAGReload.Instance);
 	}
 	
 	
+	
 	public override void Exit(Enemy<AutomGeschuetz> owner){}
+	
 	
 	
 	/**

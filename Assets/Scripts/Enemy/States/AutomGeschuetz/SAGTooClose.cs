@@ -6,7 +6,9 @@
 public class SAGTooClose : State<Enemy<AutomGeschuetz>> {
 	
 	
+	
 	public override void Enter(Enemy<AutomGeschuetz> owner){}
+	
 	
 	
 	public override void Execute(Enemy<AutomGeschuetz> owner){
@@ -16,12 +18,14 @@ public class SAGTooClose : State<Enemy<AutomGeschuetz>> {
 		if(distance > AutomGeschuetz.f_outOfRange)
 			owner.AttackFSM.ChangeState(SAGIdle.Instance);
 		//in reichweite
-		else if(distance > AutomGeschuetz.f_closeRange)
+		else if(distance > AutomGeschuetz.f_closeRange && owner.LineOfSight(owner.player))
 			owner.AttackFSM.ChangeState(SAGReload.Instance);
 	}
 	
 	
+	
 	public override void Exit(Enemy<AutomGeschuetz> owner){}
+	
 	
 	
 	/**

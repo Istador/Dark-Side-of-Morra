@@ -6,9 +6,11 @@
 public class SMineInvisible : State<Enemy<Mine>> {
 	
 	
+	
 	public override void Enter(Enemy<Mine> owner){
-		owner.SetInvisible();
+		owner.SetInvisible(); //unsichtbar
 	}
+	
 	
 	
 	public override void Execute(Enemy<Mine> owner){
@@ -23,9 +25,11 @@ public class SMineInvisible : State<Enemy<Mine>> {
 	}
 	
 	
+	
 	public override void Exit(Enemy<Mine> owner){
-		owner.SetVisible();
+		owner.SetVisible(); //sichtbar
 	}
+	
 	
 	
 	public override bool OnMessage(Enemy<Mine> owner, Telegram msg){
@@ -37,6 +41,8 @@ public class SMineInvisible : State<Enemy<Mine>> {
 				return false;
 		}
 	}
+	
+	
 	
 	/**
 	 * Singleton

@@ -12,15 +12,37 @@
  * Mat Buckland - Programming Game AI by Example
 */
 public class StateMachine<T> : MessageReceiver {
+	
+	
+	
+	/// <summary>
+	/// Besitzer dieses Zustandsautomatens
+	/// </summary>
 	private T owner;
+	
+	/// <summary>
+	/// Der globale Zustand des Automatens
+	/// </summary>
 	private State<T> globalState;
+	
+	/// <summary>
+	/// Der aktuelle Zustand des Automatens
+	/// </summary>
 	private State<T> currentState;
+	
+	/// <summary>
+	/// Der vorherige Zustand (vor dem aktuellen Zustand)
+	/// </summary>
 	private State<T> previousState;
-
-	/**
-	 * Konstruktor
-	 * Parameter: Besitzendes Objekt des Zustandsautomaten
-	*/
+	
+	
+	
+	/// <summary>
+	/// Initializes a new instance of the <see cref="StateMachine`1"/> class.
+	/// </summary>
+	/// <param name='owner'>
+	/// Besitzer dieses Zustandsautomatens
+	/// </param>
 	public StateMachine(T owner){
 		this.owner = owner;
 	}
@@ -39,18 +61,28 @@ public class StateMachine<T> : MessageReceiver {
 	/*
 	 * Setter
 	*/ 
-	//nur zum initilaisieren verwenden
+	/// <summary>
+	/// ! nur zum Initialisieren verwenden !
+	/// </summary>
 	public void SetGlobalState(State<T> state){globalState = state;}
-	//nur zum initilaisieren verwenden
+	/// <summary>
+	/// ! nur zum Initialisieren verwenden !
+	/// </summary>
 	public void SetCurrentState(State<T> state){currentState = state;}
-	//nur zum initilaisieren verwenden
+	/// <summary>
+	/// ! nur zum Initialisieren verwenden !
+	/// </summary>
 	public void SetPreviousState(State<T> state){previousState = state;}
 	
 	
-	/**
-	 * Ändert den aktuellen Zustand des Automatens
-	 * ruft Exit() des alten und Enter() des neuen Zustands auf
-	*/
+	
+	/// <summary>
+	/// Ändert den aktuellen Zustand des Automatens.
+	/// ruft Exit() des alten und Enter() des neuen Zustands auf.
+	/// </summary>
+	/// <param name='state'>
+	/// der neue Zustand zu dem gewechselt werden soll.
+	/// </param>
 	public void ChangeState(State<T> state){
 		previousState = currentState;
 		currentState = state;
@@ -59,41 +91,65 @@ public class StateMachine<T> : MessageReceiver {
 		if(currentState!=null) currentState.Enter(owner);
 	}
 	
-	/**
-	 * Kehrt zum vorigem Zustand zurück
-	 * ruft Exit() des aktuellen und Enter() des vorigen Zustandes auf
-	*/
+	
+	
+	/// <summary>
+	/// Kehrt zum vorigem Zustand zurück.
+	/// ruft Exit() des aktuellen und Enter() des vorigen Zustandes auf.
+	/// </summary>
 	public void RevertToPreviousState(){
 		ChangeState(previousState);
 	}
 	
-	/**
-	 * Methode um die Zustandsmaschine zu "starten".
-	 * Ruft die Enter-Methode des aktuellen Zustandes auf
-	*/
+	
+	
+	/// <summary>
+	/// Methode um die Zustandsmaschine zu "starten".
+	/// Ruft die Enter-Methode des aktuellen Zustandes auf.
+	/// </summary>
 	public void Start(){
 		if(currentState!=null) currentState.Enter(owner);
 	}
 	
-	/**
-	 * Update Methode die bei jedem Frame aufgerufen wird
-	 * deligiert an die Zustände
-	*/
+	
+	
+	/// <summary>
+	/// Update Methode die bei jedem Frame aufgerufen wird.
+	/// Deligiert an die jeweiligen Zustände.
+	/// </summary>
 	public void Update(){
 		if(globalState!=null) globalState.Execute(owner);
 		if(currentState!=null) currentState.Execute(owner);
 	}
 	
-	/**
-	 * Ist der Zustandsautomat in dem Zustand?
-	*/
+	
+	
+	/// <summary>
+	/// Ist der Zustandsautomat in dem angefragten Zustand?
+	/// </summary>
+	/// <returns>
+	/// ob der Zustandsautomat in den angefragten Zustand ist.
+	/// </returns>
+	/// <param name='state'>
+	/// Der Zustand der überprüft werden soll.
+	/// </param>
 	public bool isInState(State<T> state){
 		return currentState == state || (currentState!=null && currentState.Equals(state));
 	}
 	
-	/**
-	 * Nachrichten an aktuellen Zustand weitergeben
-	*/
+	
+	
+	/// <summary>
+	/// Nachrichten an den aktuellen Zustand weitergeben.
+	/// Gibt die Nachricht an den globalen Zustand, wenn der aktuelle Zustand
+	/// die Nachricht nicht verarbeiten kann.
+	/// </summary>
+	/// <returns>
+	/// ob die Nachricht verarbeitete werden konnte.
+	/// </returns>
+	/// <param name='msg'>
+	/// Die Nachricht die verarbeitet werden soll.
+	/// </param>
 	public bool HandleMessage(Telegram msg){
 		//wenn der aktuelle Zustand die Nachricht verarbeiten kann
 		if(currentState!=null && currentState.OnMessage(owner, msg))
@@ -104,4 +160,7 @@ public class StateMachine<T> : MessageReceiver {
 		//Nachricht unverarbeitet
 		return false;
 	}
+	
+	
+	
 }

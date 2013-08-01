@@ -1,28 +1,69 @@
 using UnityEngine;
 using System.Collections;
 
+/*
+ * Steering Behaviors System
+ * 
+ * Ein zentrales Objekt um als Gegner aus einer Vielzahl von unterschiedlichen
+ * Steering Behaviors wählen zu können, und bei mehreren ausgewählten diese
+ * gemeinsam zu einem resultierenden Kraft-Vektor zu berechnen.
+ * 
+ * Quelle:
+ * Mat Buckland - Programming Game AI by Example
+*/
 public class SteeringBehaviors<T> {
 	
 	
+	
+	/// <summary>
+	/// Besitzer dieser Instanz
+	/// </summary>
 	private MovableEnemy<T> owner;
 	
+	/// <summary>
+	/// Ziel das für einige Behaviors benötigt wird
+	/// </summary>
 	private MovableEnemy<T> target;
+	
+	/// <summary>
+	/// Zielkoordinaten
+	/// </summary>
 	private Vector3 targetPos;
 	
+	
+	
+	/// <summary>
+	/// Initializes a new instance of the <see cref="SteeringBehaviors`1"/> class.
+	/// </summary>
+	/// <param name='owner'>
+	/// Besitzer dieser Instanz
+	/// </param>
 	public SteeringBehaviors(MovableEnemy<T> owner){
 		this.owner = owner;
 	}
 	
 	
 	
-	//Anstreben
+	/// <summary>
+	/// Anstreben der Zielkoordinaten mit maximaler Geschwindigkeit
+	/// </summary>
+	/// <param name='targetPos'>
+	/// Zielkoordinaten
+	/// </param>
 	private Vector3 Seek(Vector3 targetPos){
 		Vector3 desiredVelocity = 
 			(targetPos - owner.transform.position).normalized * owner.maxSpeed;
 		return desiredVelocity - owner.rigidbody.velocity;
 	}
 	
-	//Fliehen
+	
+	
+	/// <summary>
+	/// Fliehen vor den Zielkoordinaten mit maximaler Geschwindigkeit
+	/// </summary>
+	/// <param name='targetPos'>
+	/// Zielkoordinaten
+	/// </param>
 	private Vector3 Flee(Vector3 targetPos){
 		Vector3 desiredVelocity = 
 			(owner.transform.position - targetPos).normalized * owner.maxSpeed;
@@ -30,7 +71,14 @@ public class SteeringBehaviors<T> {
 		return desiredVelocity - owner.rigidbody.velocity;
 	}
 	
-	//Abfangen
+	
+	
+	/// <summary>
+	/// Abfangen eines Objektes anhand dessen vorraussichtlich zukünftigen Position.
+	/// </summary>
+	/// <param name='evader'>
+	/// Objekt das abgefangen werden soll
+	/// </param>
 	private Vector3 Pursuit(MovableEnemy<T> evader){
 		Vector3 toEvader = evader.transform.position - owner.transform.position;
 		
@@ -48,7 +96,14 @@ public class SteeringBehaviors<T> {
 		return Seek(evader.transform.position + evader.rigidbody.velocity * LAT);
 	}
 	
-	//Ausweichen
+	
+	
+	/// <summary>
+	/// Ausweichen anhand der vorraussichtlich zukünftigen Position eines Verfolgers.
+	/// </summary>
+	/// <param name='evader'>
+	/// Der Verfolger dem man asuweichen will
+	/// </param>
 	private Vector3 Evade(MovableEnemy<T> persuer){
 		Vector3 toPersuer = persuer.transform.position - owner.transform.position;
 		float LAT = toPersuer.magnitude / ( owner.maxSpeed + persuer.rigidbody.velocity.magnitude );
@@ -56,28 +111,75 @@ public class SteeringBehaviors<T> {
 	}
 	
 	
+	
 	private bool seeking = false;
+	/// <summary>
+	/// Anstreben ein-/ausschalten
+	/// </summary>
+	/// <param name='on'>
+	/// true=ein, false=aus
+	/// </param>
 	public void Seek(bool on){seeking = on;}
 	
 	private bool fleeing = false;
+	/// <summary>
+	/// Fliehen ein-/ausschalten
+	/// </summary>
+	/// <param name='on'>
+	/// true=ein, false=aus
+	/// </param>
 	public void Flee(bool on){fleeing = on;}
 	
 	private bool pursuing = false;
+	/// <summary>
+	/// Abfangen ein-/ausschalten
+	/// </summary>
+	/// <param name='on'>
+	/// true=ein, false=aus
+	/// </param>
 	public void Pursuit(bool on){pursuing = on;}
 	
 	private bool evading = false;
+	/// <summary>
+	/// Ausweichen ein-/ausschalten
+	/// </summary>
+	/// <param name='on'>
+	/// true=ein, false=aus
+	/// </param>
 	public void Evade(bool on){evading = on;}
 	
 	
+	
+	/// <summary>
+	/// Setzt die Zielkoordinaten
+	/// </summary>
+	/// <param name='targetPos'>
+	/// Zielkoordinaten
+	/// </param>
 	public void SetTarget(Vector3 targetPos){
 		this.targetPos = targetPos;
 	}
 	
+	
+	
+	/// <summary>
+	/// Setzt das Ziel das für einige Behaviors benötigt wird
+	/// </summary>
+	/// <param name='targetPos'>
+	/// Ziel das für einige Behaviors benötigt wird
+	/// </param>
 	public void SetTarget(MovableEnemy<T> target){
 		this.target = target;
 	}
 	
-	// berechnet die resultierende Kraft aller Steering Behaviours
+	
+	
+	/// <summary>
+	/// berechnet die resultierende Kraft aller Steering Behaviours
+	/// </summary>
+	/// <returns>
+	/// Kraft-Vektor zu der sich bewegt werden soll
+	/// </returns>
 	public Vector3 Calculate(){
 		Vector3 f = Vector3.zero;
 		
@@ -92,4 +194,7 @@ public class SteeringBehaviors<T> {
 		
 		return f;
 	}
+	
+	
+	
 }

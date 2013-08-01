@@ -5,17 +5,25 @@
 public class SMineRed : State<Enemy<Mine>> {
 	
 	
+	
 	public override void Enter(Enemy<Mine> owner){
-		owner.SetSprite(2);
+		owner.SetSprite(2); //rot blinken
+		
+		//sich selbst eine Nachricht in 2 Sekunden schicken zum explodieren
 		MessageDispatcher.Instance.Dispatch(owner, owner, "minetimer", 2.0f, null);
 		
-		//TODO: Soundgeräusch
+		//TODO : Soundgeräusch
 	}
+	
+	
 	
 	public override void Execute(Enemy<Mine> owner){}
 	
 	
+	
 	public override void Exit(Enemy<Mine> owner){}
+	
+	
 	
 	public override bool OnMessage(Enemy<Mine> owner, Telegram msg){
 		switch(msg.message){
@@ -26,6 +34,7 @@ public class SMineRed : State<Enemy<Mine>> {
 				return false;
 		}
 	}
+	
 	
 	
 	/**
