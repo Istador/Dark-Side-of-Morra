@@ -67,17 +67,20 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	/// </summary>
 	protected override void Update() {
 		steering.SetTarget(targetPos);
-		Vector3 relPos = targetPos - transform.position;
 		
 		//rotiere zum Ziel
-		transform.rotation = Quaternion.LookRotation(relPos, zvector);
+		//- sofort
+		//transform.rotation = Quaternion.LookRotation(targetPos - transform.position, zvector);
+		//- träge (entsprechend wirklicher Bewegung)
+		transform.rotation = Quaternion.LookRotation(rigidbody.velocity, zvector);
+		
 		//drehe Sprite um 90°
 		transform.RotateAroundLocal(zvector, deg90);
 		
 		base.Update();
 	}
 	
-	private static readonly Vector3 zvector = new Vector3(0.0f, 0.0f, 1.0f);
+	private static readonly Vector3 zvector = new Vector3(0.0f, 0.0f, 1.0f); //rotation um die Z-Achse
 	private static readonly float deg90 = Mathf.PI/2.0f; // = 90°
 	
 }
