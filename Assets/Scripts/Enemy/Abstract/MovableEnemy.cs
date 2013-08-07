@@ -42,13 +42,28 @@ public abstract class MovableEnemy<T> : Enemy<T> {
 	
 	
 	/// <summary>
+	/// Filtert den Kraftvektor vor der Anwendung auf den rigidbody
+	/// </summary>
+	/// <returns>
+	/// Die gefilterte Kraft
+	/// </returns>
+	/// <param name='vin'>
+	/// Eingehende Kraft der Steering Behaviour Komponente
+	/// </param>
+	protected virtual Vector3 FilterForce(Vector3 vIn){
+		return vIn;
+	}
+	
+	
+	
+	/// <summary>
 	/// Steering Behaviors berechnen und anwenden
 	/// </summary>
 	protected override void Update () {
 		base.Update();
 		
 		//resultierende Kraft der verschiedenen Steering Behaviors berechnen
-		Vector3 f = steering.Calculate();
+		Vector3 f = FilterForce(steering.Calculate());
 		
 		//Kraft auf die Unity-Physik-Engine übertragen, um Bewegung zu erzeugen
 		rigidbody.AddForce(f);

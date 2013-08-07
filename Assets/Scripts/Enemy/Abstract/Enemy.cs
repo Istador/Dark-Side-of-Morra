@@ -157,7 +157,7 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/// Lässt den Gegner sterben, z.B. weil die HP auf 0 gefallen sind
 	/// </summary>
 	public virtual void Death(){
-		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): death");
+		//Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): death");
 		Destroy(gameObject);
 	}
 	

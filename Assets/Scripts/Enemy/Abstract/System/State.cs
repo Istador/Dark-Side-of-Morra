@@ -4,13 +4,15 @@
 public abstract class State<T> {
 	
 	
+	
 	/// <summary>
 	/// Code der beim Betreten des Zustandes ausgeführt werden soll.
 	/// </summary>
 	/// <param name='owner'>
 	/// Objekt das in diesem Zustand ist und für welches diese Methode ausgeführt wird
 	/// </param>
-	public abstract void Enter(T owner);
+	public virtual void Enter(T owner){}
+	
 	
 	
 	/// <summary>
@@ -19,7 +21,8 @@ public abstract class State<T> {
 	/// <param name='owner'>
 	/// Objekt das in diesem Zustand ist und für welches diese Methode ausgeführt wird
 	/// </param>
-	public abstract void Execute(T owner);
+	public virtual void Execute(T owner){}
+	
 	
 	
 	/// <summary>
@@ -28,7 +31,8 @@ public abstract class State<T> {
 	/// <param name='owner'>
 	/// Objekt das in diesem Zustand ist und für welches diese Methode ausgeführt wird
 	/// </param>
-	public abstract void Exit(T owner);
+	public virtual void Exit(T owner){}
+	
 	
 	
 	/// <summary>
@@ -43,6 +47,7 @@ public abstract class State<T> {
 	public virtual bool OnMessage(T owner, Telegram msg){
 		return false;
 	}
+	
 	
 	
 }
