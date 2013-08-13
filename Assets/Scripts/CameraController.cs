@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
 	bool  cameraFollowX	 		= true;			// camera follows on horizontal
 	bool  cameraFollowY	 		= true;			// camera follows on vertical
 	Vector2 velocity;							// speed of camera movement
-	float orthoSize;
+	public float orthoSize;
 
 	private Transform thisTransform; 			// cameras transform
 	private float cameraHeight	= 1.8f;			// height of camera
