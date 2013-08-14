@@ -14,7 +14,7 @@ public class Player : MonoBehaviour {
 	/// <summary>Update is called once per frame</summary>
 	void Update() {
 		float f = Input.GetAxisRaw("Horizontal");
-		rigidbody.AddForce(-Vector3.right * f * 5.0f, ForceMode.Acceleration);
+		rigidbody.AddForce(Vector3.right * f * 5.0f, ForceMode.Acceleration);
 	
 		
 		if(Input.GetButtonDown("Jump") && IsGrounded())

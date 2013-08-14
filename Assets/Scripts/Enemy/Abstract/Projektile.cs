@@ -82,7 +82,7 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 		base.Update();
 	}
 	
-	private static readonly Vector3 zvector = new Vector3(0.0f, 0.0f, 1.0f); //rotation um die Z-Achse
+	private static readonly Vector3 zvector = new Vector3(0.0f, 0.0f, -1.0f); //rotation um die Z-Achse
 	private static readonly float deg90 = Mathf.PI/2.0f; // = 90°
 	
 }
