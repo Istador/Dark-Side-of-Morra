@@ -8,18 +8,18 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	/// <summary>
 	/// Entfernung bei welcher der Spieler zu Dicht ist zum Starten von Raketen
 	/// </summary>
-	public static readonly float f_closeRange = 2.0f;
+	public static readonly float f_closeRange = 1.5f;
 	
 	/// <summary>
 	/// Entfernung bei welcher der Spieler zu weit entfernt ist zum Starten von Raketen
 	/// </summary>
-	public static readonly float f_outOfRange = 10.0f;
+	public static readonly float f_outOfRange = 7.0f;
 	
 	/// <summary>
 	/// Nachladezeit:
 	/// Die Zeit zwischen zwei Raketen die zum Nachladen veranschlagt wird.
 	/// </summary>
-	public static readonly double d_reloadTime = 2.0; // 2 sekunden nachladen
+	public static readonly double d_reloadTime = 3.0; // 2 sekunden nachladen
 	
 	
 	

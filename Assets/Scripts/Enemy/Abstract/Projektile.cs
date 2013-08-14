@@ -58,6 +58,7 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	protected override void Start() {
 		base.Start();
 		steering.Seek(true); //Zielposition anstreben
+		SetInvisible();
 	}
 	
 	
@@ -68,6 +69,13 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	protected override void Update() {
 		steering.SetTarget(targetPos);
 		
+		rotate();
+		
+		SetVisible();
+		base.Update();
+	}
+	
+	protected void rotate(){
 		//Vector3 rotate = targetPos - transform.position; //sofort
 		Vector3 rotate = rigidbody.velocity; //träge
 		
@@ -78,8 +86,6 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 			//drehe Sprite um 90°
 			transform.RotateAroundLocal(zvector, deg90);
 		}
-		
-		base.Update();
 	}
 	
 	private static readonly Vector3 zvector = new Vector3(0.0f, 0.0f, -1.0f); //rotation um die Z-Achse

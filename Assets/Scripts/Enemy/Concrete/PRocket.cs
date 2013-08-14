@@ -4,10 +4,10 @@ using System.Collections;
 public class PRocket : Projektile<PRocket> {
 	
 	
-	
+	//private Vector3 heading = Vector3.zero;
 	private Vector3 _targetPos = Vector3.zero;
 	public override Vector3 targetPos { get{return _targetPos;} }
-	
+	//public override Vector3 targetPos { get{return collider.bounds.center + heading * maxSpeed;} }
 	
 	
 	public override int damage { get{return 40;} }
@@ -30,6 +30,7 @@ public class PRocket : Projektile<PRocket> {
 		if(LineOfSight(player)){
 			//Strebe die Position des Spielers an
 			_targetPos = player.collider.bounds.center;
+			//heading = (_targetPos - collider.bounds.center).normalized;
 			Debug.DrawLine(collider.bounds.center, _targetPos, Color.green);
 		}
 		else
