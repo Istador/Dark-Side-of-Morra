@@ -14,8 +14,8 @@ public class PRocket : Projektile<PRocket> {
 	
 	
 	
-	public override float maxSpeed { get{return 2.0f;} }
-	public override float maxForce { get{return 2.0f;} }
+	public override float maxSpeed { get{return 0.8f;} }
+	public override float maxForce { get{return 0.8f;} }
 	
 	
 	
@@ -29,11 +29,11 @@ public class PRocket : Projektile<PRocket> {
 		//Wenn der Spieler in Sicht ist
 		if(LineOfSight(player)){
 			//Strebe die Position des Spielers an
-			_targetPos = player.transform.position;
-			Debug.DrawLine(transform.position, player.transform.position, Color.green);
+			_targetPos = player.collider.bounds.center;
+			Debug.DrawLine(collider.bounds.center, _targetPos, Color.green);
 		}
 		else
-			Debug.DrawLine(transform.position, player.transform.position, Color.red);
+			Debug.DrawLine(collider.bounds.center, _targetPos, Color.red);
 		
 		base.Update();
 	}
@@ -46,6 +46,7 @@ public class PRocket : Projektile<PRocket> {
 		//Explosionsanzeige
 		GameObject explosion = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("prefab Explosion"), transform.position, transform.rotation);
 		UnityEngine.Object.Destroy(explosion, 0.5f); //nach 0.5 sekunden explosion weg
+		
 		//TODO : Soundgeräusch
 		
 		base.Death();

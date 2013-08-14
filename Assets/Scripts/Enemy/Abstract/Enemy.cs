@@ -202,7 +202,7 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/// Das Objekt zu dem die Distanz ermittelt werden soll
 	/// </param>
 	public float DistanceTo(GameObject obj){
-		return Mathf.Abs(Vector3.Distance(transform.position, obj.transform.position));
+		return Mathf.Abs(Vector3.Distance(collider.bounds.center, obj.collider.bounds.center));
 	}
 	
 	
@@ -214,7 +214,7 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/// Die absolute Distanz zum Spieler
 	/// </returns>
 	public float DistanceToPlayer(){
-		return Mathf.Abs(Vector3.Distance(transform.position, player.transform.position));
+		return Mathf.Abs(Vector3.Distance(collider.bounds.center, player.collider.bounds.center));
 	}
 	
 	
@@ -234,7 +234,7 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 		RaycastHit hit; //wenn kollision, dann steht hier womit
 		int layer = 0; //kollidiert mit nichts
 		layer += 1<<8; //Layer 8: Level (also  Kollision mit Level-Geometrie)
-		if(Physics.Linecast(transform.position, target.transform.position, out hit, layer))
+		if(Physics.Linecast(collider.bounds.center, target.collider.bounds.center, out hit, layer))
 			return hit.collider.gameObject == target;
 		return true;
 	}

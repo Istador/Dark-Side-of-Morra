@@ -6,8 +6,8 @@ public class Stachel : MLeftRight<Stachel> {
 	public static readonly int damage = 5; //Schaden pro beruehrung
 	public static readonly float tickLength = 0.5f; //minimale Zeit in Sekunden zwischen Schaden
 	
-	public override float maxSpeed { get{return 4.0f;} }
-	public override float maxForce { get{return 4.0f;} }
+	public override float maxSpeed { get{return 3.0f;} }
+	public override float maxForce { get{return 3.0f;} }
 	
 	
 	

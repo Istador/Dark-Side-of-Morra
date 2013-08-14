@@ -13,12 +13,21 @@ public class Player : MonoBehaviour {
 	
 	/// <summary>Update is called once per frame</summary>
 	void Update() {
+		/*
+		Vector3 pos = collider;
+		float height = (renderer.bounds.size.y/2.0f+0.0001f);
+		float width = renderer.bounds.size.x/2.0f;
+		Debug.DrawRay(pos, Vector3.down*height, Color.red);
+		Debug.DrawRay(pos + Vector3.left*width, Vector3.down*height, Color.red);
+		Debug.DrawRay(pos + Vector3.right*width, Vector3.down*height, Color.red);
+		*/
+		
 		float f = Input.GetAxisRaw("Horizontal");
-		rigidbody.AddForce(Vector3.right * f * 5.0f, ForceMode.Acceleration);
+		rigidbody.AddForce(Vector3.right * f * 4.0f, ForceMode.Acceleration);
 	
 		
 		if(Input.GetButtonDown("Jump") && IsGrounded())
-			rigidbody.AddForce(Vector3.up * 10.0f, ForceMode.Impulse);
+			rigidbody.AddForce(Vector3.up * 7.0f, ForceMode.Impulse);
 		
 	}
 	
@@ -38,6 +47,8 @@ public class Player : MonoBehaviour {
 		int layer = 1<<8 | 1<<9; //nur mit Level und Enemy
 		float height = (renderer.bounds.size.y/2.0f+0.0001f);
 		float width = renderer.bounds.size.x/2.0f;
+		
+		
 		return Physics.Raycast(transform.position, Vector3.down, height, layer)
 			|| Physics.Raycast(transform.position + Vector3.left*width, Vector3.down, height, layer)
 			|| Physics.Raycast(transform.position + Vector3.right*width, Vector3.down, height, layer)

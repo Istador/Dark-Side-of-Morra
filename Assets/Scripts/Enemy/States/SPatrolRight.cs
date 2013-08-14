@@ -12,8 +12,8 @@ public class SPatrolRight<T> : State<Enemy<T>> {
 	
 	
 	public override void Execute(Enemy<T> owner){
-		Vector3 direction = owner.transform.position + Vector3.right * 1.2f;
-		Vector3 down = direction + Vector3.down * 1.2f;
+		Vector3 direction = owner.transform.position + Vector3.right * 0.48f;
+		Vector3 down = direction + Vector3.down * 0.48f;
 		
 		Debug.DrawLine(owner.transform.position, direction, Color.red);
 		Debug.DrawLine(direction, down, Color.blue);

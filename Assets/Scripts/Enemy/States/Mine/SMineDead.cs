@@ -21,20 +21,24 @@ public class SMineDead : State<Enemy<Mine>> {
 			owner.transform.position.y - owner.renderer.bounds.size.y/2.0f+player.collider.bounds.size.y/2.0f,
 			owner.transform.position.z
 		); 
-		
+		//Debug.Log("1: "+owner.transform.position.y);
+		//Debug.Log("2: "+owner.renderer.bounds.size.y);
+		//Debug.Log("3: "+player.collider.bounds.size.y);
+				
 		//wer Kollidiert alles mit der runden Explosion
 		Collider[] cs = Physics.OverlapSphere(explosionsursprung, maxrange);
 		foreach(Collider c in cs){
 			if(c.gameObject.tag == "Enemy" || c.gameObject.tag == "Player" ){
 				//Entfernung des Objektes zum Explosionszentrum
-				float range = Mathf.Abs(Vector3.Distance(explosionsursprung, c.gameObject.transform.position));
+				float range = Mathf.Abs(Vector3.Distance(explosionsursprung, c.bounds.center));
+				//float range = Mathf.Abs(Vector3.Distance(explosionsursprung, c.gameObject.transform.position));
 				//float range = Mathf.Abs(owner.transform.position.x - c.gameObject.transform.position.x);
 				if(range >= 0.0f && range <= maxrange){
 					//Schaden proportional zur Entfernung berechnen
 					int dmg = (int)( maxdmg * (1.0f - range/maxrange) );
 					
 					//Schadensmeldung verschicken
-					if(dmg > 0) c.gameObject.SendMessage("ApplyDamage", dmg);
+					if(dmg > 0) c.gameObject.SendMessage("ApplyDamage", dmg, SendMessageOptions.DontRequireReceiver);
 				}
 			}
 		}
@@ -43,9 +47,9 @@ public class SMineDead : State<Enemy<Mine>> {
 		//Explosionsanzeige
 		GameObject explosion = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("prefab Explosion"), explosionsursprung, owner.transform.rotation);		
 		//scale explosion
-		explosion.particleEmitter.minSize = 0.5f;
-		explosion.particleEmitter.maxSize = 2.0f;
-		explosion.GetComponent<ParticleRenderer>().lengthScale = 2.0f;
+		//explosion.particleEmitter.minSize = 0.5f;
+		//explosion.particleEmitter.maxSize = 2.0f;
+		//explosion.GetComponent<ParticleRenderer>().lengthScale = 2.0f;
 		//TODO : Soundgeräusch
 		
 		UnityEngine.Object.Destroy(explosion,1.0f); //nach 1 sekunden explosion entfernen

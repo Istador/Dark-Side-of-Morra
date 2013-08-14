@@ -6,13 +6,13 @@ public class Mine : ImmovableEnemy<Mine> {
 	
 	
 	/// <summary>Reichweite in der die Mine beginnt Gelb zu blinken.</summary>
-	public static readonly float f_yellowRange = 6.0f;
+	public static readonly float f_yellowRange = 3.0f;
 	
 	/// <summary>Reichweite in der die Mine beginnt Rot zu blinken und bald zu explodieren.</summary>
-	public static readonly float f_redRange = 3.0f;
+	public static readonly float f_redRange = 1.0f;
 	
 	/// <summary>Explosionsradius der Mine.</summary>
-	public static readonly float f_explosionRadius = 4.0f;
+	public static readonly float f_explosionRadius = 1.5f;
 	
 	/// <summary>Schaden den die Explosion maximal verursachen kann</summary>
 	public static readonly float f_explosionDamage = 75.0f;

@@ -19,8 +19,8 @@ public class PBullet : Projektile<PRocket> {
 	
 	
 	
-	public override float maxSpeed { get{return 8.0f;} }
-	public override float maxForce { get{return 8.0f;} }
+	public override float maxSpeed { get{return 4.0f;} }
+	public override float maxForce { get{return 4.0f;} }
 	
 	
 	
@@ -46,7 +46,7 @@ public class PBullet : Projektile<PRocket> {
 	
 	
 	protected override void Update() {
-		_targetPos = transform.position + heading.normalized * maxSpeed;
+		_targetPos = collider.bounds.center + heading.normalized * maxSpeed;
 		
 		base.Update();
 		

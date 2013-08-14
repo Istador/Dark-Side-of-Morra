@@ -177,5 +177,16 @@ public class PlayerController : MonoBehaviour
 		// enum an spritePlay.animate übergeben an gegebener Stelle
 		spritePlay.animate(columnSize, rowSize, colFrameStart, animType, totalFrames, framesPerSecond);
 	}
-
+	
+	
+	/// <summary>
+	/// Schaden erhalten, der die HP verringert, und zum Tode führen kann
+	/// </summary>
+	/// <param name='damage'>
+	/// Schaden der dem Spieler zugefügt wird
+	/// </param>
+	void ApplyDamage(int damage){
+		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage+" dmg received");
+		//TODO
+	}
 }

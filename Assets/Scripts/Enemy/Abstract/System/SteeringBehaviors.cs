@@ -52,7 +52,7 @@ public class SteeringBehaviors<T> {
 	/// </param>
 	private Vector3 Seek(Vector3 targetPos){
 		Vector3 desiredVelocity = 
-			(targetPos - owner.transform.position).normalized * owner.maxSpeed;
+			(targetPos - owner.collider.bounds.center).normalized * owner.maxSpeed;
 		return desiredVelocity - owner.rigidbody.velocity;
 	}
 	
@@ -66,7 +66,7 @@ public class SteeringBehaviors<T> {
 	/// </param>
 	private Vector3 Flee(Vector3 targetPos){
 		Vector3 desiredVelocity = 
-			(owner.transform.position - targetPos).normalized * owner.maxSpeed;
+			(owner.collider.bounds.center - targetPos).normalized * owner.maxSpeed;
 		
 		return desiredVelocity - owner.rigidbody.velocity;
 	}
@@ -80,7 +80,7 @@ public class SteeringBehaviors<T> {
 	/// Objekt das abgefangen werden soll
 	/// </param>
 	private Vector3 Pursuit(MovableEnemy<T> evader){
-		Vector3 toEvader = evader.transform.position - owner.transform.position;
+		Vector3 toEvader = evader.collider.bounds.center - owner.collider.bounds.center;
 		
 		/*
 		if(
@@ -93,7 +93,7 @@ public class SteeringBehaviors<T> {
 		*/
 						
 		float LAT = toEvader.magnitude / ( owner.maxSpeed + evader.rigidbody.velocity.magnitude );
-		return Seek(evader.transform.position + evader.rigidbody.velocity * LAT);
+		return Seek(evader.collider.bounds.center + evader.rigidbody.velocity * LAT);
 	}
 	
 	
@@ -105,9 +105,9 @@ public class SteeringBehaviors<T> {
 	/// Der Verfolger dem man asuweichen will
 	/// </param>
 	private Vector3 Evade(MovableEnemy<T> persuer){
-		Vector3 toPersuer = persuer.transform.position - owner.transform.position;
+		Vector3 toPersuer = persuer.collider.bounds.center - owner.collider.bounds.center;
 		float LAT = toPersuer.magnitude / ( owner.maxSpeed + persuer.rigidbody.velocity.magnitude );
-		return Flee(persuer.transform.position + persuer.rigidbody.velocity * LAT);
+		return Flee(persuer.collider.bounds.center + persuer.rigidbody.velocity * LAT);
 	}
 	
 	
