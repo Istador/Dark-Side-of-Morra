@@ -7,6 +7,7 @@ public class SRPGSEngaged : State<Enemy<RPGSoldier>> {
 	
 	public override void Enter(Enemy<RPGSoldier> owner){
 		owner.MoveFSM.ChangeState(SRPGSStay.Instance);
+		((RPGSoldier)owner).RememberNow();
 	}
 	
 	

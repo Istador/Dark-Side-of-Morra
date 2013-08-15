@@ -73,6 +73,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	protected override void Update(){
 		SetSprite(DetermineSprite());
 		base.Update();
+		//Debug.Log(MoveFSM.GetCurrentState());
 	}
 	
 	
@@ -81,9 +82,9 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	/// Ob der Spieler vor dem Gegner ist (in seiner Blickrichtung).
 	/// </summary>
 	public bool IsPlayerInfront(){
-		if(rigidbody.velocity == Vector3.zero)
-			return false;
-		return Vector3.Dot((player.collider.bounds.center - collider.bounds.center), rigidbody.velocity) > 0.0f;
+		//Debug.DrawLine(Vector3.zero, player.collider.bounds.center - collider.bounds.center, Color.yellow);
+		//Debug.Log(Vector3.Dot((player.collider.bounds.center - collider.bounds.center), Heading()) );
+		return Vector3.Dot((player.collider.bounds.center - collider.bounds.center), Heading()) > 0.0f;
 	}
 	
 	
@@ -131,10 +132,14 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	private Vector3 _lastKnownPosition;
 	private double _lastTimeVisited;
 	
+	public void RememberNow(){
+		_lastKnownPosition = player.collider.bounds.center;
+		_lastTimeVisited = Time.time;
+	}
+	
 	public void DeterminePlayerPosition(){
 		if(IsPlayerVisible()){
-			_lastKnownPosition = player.collider.bounds.center;
-			_lastTimeVisited = Time.time;
+			RememberNow();
 			//Debug.DrawLine(collider.bounds.center, _lastKnownPosition, Color.green);
 		}	
 		//Debug.DrawLine(collider.bounds.center, _lastKnownPosition, Color.red);
