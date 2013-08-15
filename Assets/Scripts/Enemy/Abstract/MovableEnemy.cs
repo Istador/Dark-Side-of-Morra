@@ -65,12 +65,14 @@ public abstract class MovableEnemy<T> : Enemy<T> {
 		//resultierende Kraft der verschiedenen Steering Behaviors berechnen
 		Vector3 f = FilterForce(steering.Calculate());
 		
-		//Kraft auf die Unity-Physik-Engine übertragen, um Bewegung zu erzeugen
-		rigidbody.AddForce(f);
+		if(f != Vector3.zero){
+			//Kraft auf die Unity-Physik-Engine übertragen, um Bewegung zu erzeugen
+			rigidbody.AddForce(f);
 				
-		//Bewegungsgeschwindigkeit limitieren
-		if(rigidbody.velocity.magnitude > maxSpeed)
-			rigidbody.velocity = rigidbody.velocity.normalized * maxSpeed;
+			//Bewegungsgeschwindigkeit limitieren
+			if(rigidbody.velocity.magnitude > maxSpeed)
+				rigidbody.velocity = rigidbody.velocity.normalized * maxSpeed;
+		}
 	}
 	
 	

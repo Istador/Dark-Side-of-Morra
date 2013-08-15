@@ -12,8 +12,7 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 	/// Maximale Trefferpunkte des Gegners. Bei 0 HP stirbt der Gegner.
 	/// </param>
 	public MLeftRight(int maxHealth) : base(maxHealth){
-		MoveFSM.SetCurrentState(SPatrolLeft<T>.Instance);
-		steering.Seek(true);
+		MoveFSM.ChangeState(SPatrolLeft<T>.Instance);
 	}
 	
 	
@@ -22,6 +21,9 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 	/// Beschränkt die Bewegung auf Links/Rechts durch Drehung
 	/// </summary>
 	protected override Vector3 FilterForce(Vector3 vIn){
+		if(vIn == Vector3.zero) 
+			return vIn;
+		
 		float a = Vector3.Angle(Vector3.left, vIn);
 		//Debug.DrawLine(transform.position, transform.position + vIn * 3.0f, Color.green);
 		//Debug.DrawLine(transform.position, transform.position + Vector3.left * 2.0f, Color.red);

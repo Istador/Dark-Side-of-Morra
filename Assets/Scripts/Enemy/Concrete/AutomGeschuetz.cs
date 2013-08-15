@@ -19,7 +19,7 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	/// Nachladezeit:
 	/// Die Zeit zwischen zwei Raketen die zum Nachladen veranschlagt wird.
 	/// </summary>
-	public static readonly double d_reloadTime = 3.0; // 2 sekunden nachladen
+	public static readonly double d_reloadTime = 3.0; // 3 sekunden nachladen
 	
 	
 	

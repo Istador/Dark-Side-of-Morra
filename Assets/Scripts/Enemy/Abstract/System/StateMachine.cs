@@ -94,6 +94,21 @@ public class StateMachine<T> : MessageReceiver {
 	
 	
 	/// <summary>
+	/// Ändert den globalen Zustand des Automatens.
+	/// ruft Exit() des alten und Enter() des neuen Zustands auf.
+	/// </summary>
+	/// <param name='state'>
+	/// der neue Zustand zu dem gewechselt werden soll.
+	/// </param>
+	public void ChangeGlobalState(State<T> state){
+		if(globalState!=null) globalState.Exit(owner);
+		globalState = state;
+		if(globalState!=null) globalState.Enter(owner);
+	}
+	
+	
+	
+	/// <summary>
 	/// Kehrt zum vorigem Zustand zurück.
 	/// ruft Exit() des aktuellen und Enter() des vorigen Zustandes auf.
 	/// </summary>

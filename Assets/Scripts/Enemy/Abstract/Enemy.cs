@@ -208,6 +208,21 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	
 	
 	/// <summary>
+	/// Entfernung des Gegners zu einer Position bestimmen
+	/// </summary>
+	/// <returns>
+	/// Die absolute Distanz zur Position
+	/// </returns>
+	/// <param name='obj'>
+	/// Die Position zu dem die Distanz ermittelt werden soll
+	/// </param>
+	public float DistanceTo(Vector3 pos){
+		return Mathf.Abs(Vector3.Distance(collider.bounds.center, pos));
+	}
+	
+	
+	
+	/// <summary>
 	/// Entfernung des Gegners zum Spieler
 	/// </summary>
 	/// <returns>
