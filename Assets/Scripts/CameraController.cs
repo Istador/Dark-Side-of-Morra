@@ -34,12 +34,12 @@ public class CameraController : MonoBehaviour
 		
 		if (cameraFollowY)
 		{
-			if(cameraTarget.transform.position.y >= orthoSize-3 && cameraTarget.transform.position.y <= orthoSize+3 )
-			{
+			//if(cameraTarget.transform.position.y >= orthoSize-3 && cameraTarget.transform.position.y <= orthoSize+3 )
+			//{
 				Vector3 temp = thisTransform.position;
 				temp.y = Mathf.SmoothDamp(thisTransform.position.y, cameraTarget.transform.position.y + cameraHeight, ref velocity.y,smoothTime);
 				thisTransform.position = temp;
-			}
+			//}
 		}
 	}
 
