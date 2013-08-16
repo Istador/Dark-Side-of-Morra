@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
 	public float orthoSize;
 
 	private Transform thisTransform; 			// cameras transform
-	private float cameraHeight	= 1.8f;			// height of camera
+	public float cameraHeight	= 1.0f;			// height of camera
 
 	void  Start ()
 	{
