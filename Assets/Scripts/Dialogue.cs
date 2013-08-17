@@ -31,6 +31,7 @@ public class Dialogue : MonoBehaviour {
 			}
 		}
 
+
 	void Speek()
 	{
 		if(talking){
