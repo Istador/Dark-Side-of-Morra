@@ -5,7 +5,7 @@ public class Finish : MonoBehaviour {
 
 	void OnTriggerEnter ( Collider characterController )
 	{
-		if (characterController.gameObject.CompareTag("Player1"))
+		if (characterController.gameObject.CompareTag("Player"))
 		{
 			if ( SaveData.levelReached == Application.loadedLevel)
 			{
