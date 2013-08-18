@@ -7,6 +7,7 @@ public class openDoor : MonoBehaviour {
 	private CharacterController characterController;
 	public GameObject magicDoor;
 	public GameObject magicKey;
+	public GameObject magicSparcle;
 	// Use this for initialization
 	void Start () {
 		characterController = GetComponent<CharacterController>();
@@ -25,12 +26,13 @@ public class openDoor : MonoBehaviour {
 			key = 1;
 			Debug.Log("Juhuu du hast den Schlüssel gefunden, nun kannst du gewinnen");
 			Destroy(magicKey);
+			Destroy(magicSparcle);
 			// character is on the trigger
 		}
-		if (characterController.gameObject.CompareTag ("Door")){
+		if (characterController.gameObject.CompareTag ("Lock")){
 			Debug.Log ("Rainbowsparkle beinhaltet die Antwort");
 		}
-		if (characterController.gameObject.CompareTag ("Door") && key == 1){
+		if (characterController.gameObject.CompareTag ("Lock") && key == 1){
 			Debug.Log("jetzt kann es knallen");
 			
 		
