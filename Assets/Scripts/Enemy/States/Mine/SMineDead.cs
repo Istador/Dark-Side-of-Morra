@@ -38,7 +38,8 @@ public class SMineDead : State<Enemy<Mine>> {
 					int dmg = (int)( maxdmg * (1.0f - range/maxrange) );
 					
 					//Schadensmeldung verschicken
-					if(dmg > 0) c.gameObject.SendMessage("ApplyDamage", dmg, SendMessageOptions.DontRequireReceiver);
+					if(dmg > 0) 
+						owner.DoDamageTo(c.gameObject, dmg);
 				}
 			}
 		}

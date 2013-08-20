@@ -53,8 +53,8 @@ public class Mine : ImmovableEnemy<Mine> {
 	/// <param name='damage'>
 	/// Schadenswert.
 	/// </param>
-	public override void ApplyDamage(int damage){
-		//Schaden immer
+	public override void ApplyDamage(Vector3 damage){
+		//Schaden führt immer zur Explosion
 		Explode();
 	}
 	

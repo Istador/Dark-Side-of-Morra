@@ -64,7 +64,7 @@ public class Stachel : MLeftRight<Stachel> {
 	
 	void DoPlayerDamage(){
 		if(lastPlayerDamage + tickLength < Time.time){
-			player.SendMessage("ApplyDamage",damage);
+			DoDamageTo(player, damage);
 			lastPlayerDamage = Time.time;
 		}
 	}

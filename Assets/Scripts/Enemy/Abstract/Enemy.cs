@@ -132,9 +132,9 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/// <param name='damage'>
 	/// Schaden der dem Gegner zugefügt wird
 	/// </param>
-	public virtual void ApplyDamage(int damage){
-		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage+" dmg received");
-		health -= damage;
+	public virtual void ApplyDamage(Vector3 damage){
+		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage.magnitude+" dmg received");
+		health -= (int)damage.magnitude;
 		if(health <= 0) Death();
 	}
 	
@@ -254,6 +254,11 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 		return true;
 	}
 	
+	
+	public void DoDamageTo(GameObject other, int damage){
+		Vector3 dmg = (other.collider.bounds.center - collider.bounds.center).normalized * damage;
+		other.SendMessage("ApplyDamage", dmg, SendMessageOptions.DontRequireReceiver);
+	}
 	
 	
 }

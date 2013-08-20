@@ -48,8 +48,9 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	/// Objekt mit dem die Kollision stattfindet
 	/// </param>
 	void OnTriggerEnter(Collider other) {
-		if(other.gameObject.tag == "Player")
-			other.gameObject.SendMessage("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
+		if(other.gameObject.tag == "Player"){
+			DoDamageTo(other.gameObject, damage);
+		}
 		Death();
 	}
 	

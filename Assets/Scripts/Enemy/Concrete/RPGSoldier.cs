@@ -161,7 +161,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	/// <param name='damage'>
 	/// Schaden der dem Gegner zugefügt wird
 	/// </param>
-	public override void ApplyDamage(int damage){
+	public override void ApplyDamage(Vector3 damage){
 		//Zustandsautomaten informieren
 		MessageDispatcher.Instance.Dispatch(new Telegram(this, "damage"));
 		

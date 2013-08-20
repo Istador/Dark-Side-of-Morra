@@ -64,8 +64,8 @@ public class Player : MonoBehaviour {
 	/// <param name='damage'>
 	/// Schaden der dem Spieler zugefügt wird
 	/// </param>
-	void ApplyDamage(int damage){
-		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage+" dmg received");
+	void ApplyDamage(Vector3 damage){
+		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage.magnitude+" dmg received");
 	}
 	
 	
