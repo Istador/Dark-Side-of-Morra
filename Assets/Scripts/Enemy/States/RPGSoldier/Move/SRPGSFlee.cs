@@ -27,7 +27,7 @@ public class SRPGSFlee : State<Enemy<RPGSoldier>> {
 		
 		if(   ((RPGSoldier)owner).CanMoveTo(pos, true)   ){
 			((RPGSoldier)owner).steering.Flee(true);
-			((RPGSoldier)owner).steering.SetTarget(owner.player.collider.bounds.center);
+			((RPGSoldier)owner).steering.SetTarget(pos);
 		} else {
 			((RPGSoldier)owner).steering.Flee(false);
 		}

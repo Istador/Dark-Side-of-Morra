@@ -28,7 +28,7 @@ public class SRPGSSeekPosition : State<Enemy<RPGSoldier>> {
 		
 		if(   ((RPGSoldier)owner).CanMoveTo(pos)   ){
 			((RPGSoldier)owner).steering.Seek(true);
-			((RPGSoldier)owner).steering.SetTarget(owner.player.collider.bounds.center);
+			((RPGSoldier)owner).steering.SetTarget(pos);
 			
 		} else {
 			((RPGSoldier)owner).steering.Seek(false);

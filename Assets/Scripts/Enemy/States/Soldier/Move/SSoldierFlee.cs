@@ -27,7 +27,7 @@ public class SSoldierFlee : State<Enemy<Soldier>> {
 		
 		if( ((Soldier)owner).CanMoveTo(pos, true)   ){
 			((Soldier)owner).steering.Flee(true);
-			((Soldier)owner).steering.SetTarget(owner.player.collider.bounds.center);
+			((Soldier)owner).steering.SetTarget(pos);
 		} else {
 			((Soldier)owner).steering.Flee(false);
 		}

@@ -171,8 +171,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 		MessageDispatcher.Instance.Dispatch(new Telegram(this, "damage"));
 		
 		//Position merken
-		_lastKnownPosition = player.collider.bounds.center;
-		_lastTimeVisited = Time.time;
+		RememberNow();
 		
 		//Schaden anwenden
 		base.ApplyDamage(damage);

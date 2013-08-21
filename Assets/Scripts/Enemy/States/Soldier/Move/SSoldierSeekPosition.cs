@@ -26,9 +26,9 @@ public class SSoldierSeekPosition : State<Enemy<Soldier>> {
 		}
 		
 		
-		if(   ((Soldier)owner).CanMoveTo(pos)   ){
+		if( ((Soldier)owner).CanMoveTo(pos)   ){
 			((Soldier)owner).steering.Seek(true);
-			((Soldier)owner).steering.SetTarget(owner.player.collider.bounds.center);
+			((Soldier)owner).steering.SetTarget(pos);
 			
 		} else {
 			((Soldier)owner).steering.Seek(false);
