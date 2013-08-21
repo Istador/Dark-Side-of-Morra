@@ -45,7 +45,7 @@ public class PRocket : Projektile<PRocket> {
 	public override void Death(){
 				
 		//Explosionsanzeige
-		GameObject explosion = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("prefab Explosion"), transform.position, transform.rotation);
+		GameObject explosion = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("prefab kleineExplosion"), transform.position, transform.rotation);
 		UnityEngine.Object.Destroy(explosion, 0.5f); //nach 0.5 sekunden explosion weg
 		
 		//TODO : Soundgeräusch

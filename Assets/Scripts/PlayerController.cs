@@ -179,6 +179,7 @@ public class PlayerController : MonoBehaviour
 	}
 	
 	
+	
 	/// <summary>
 	/// Schaden erhalten, der die HP verringert, und zum Tode führen kann
 	/// </summary>
@@ -190,4 +191,20 @@ public class PlayerController : MonoBehaviour
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
 		//TODO
 	}
+	
+	
+	
+	/// <summary>
+	/// Health erhalten. Heilt den Spieler.
+	/// </summary>
+	/// <param name='hp'>
+	/// Wert um den der Spieler geheilt werden soll
+	/// </param>
+	void ApplyHealth(int hp){
+		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+hp+" hp received");
+		//TODO
+	}
+	
+	
+	
 }

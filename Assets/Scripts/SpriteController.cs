@@ -3,13 +3,23 @@ using System.Collections;
 
 public class SpriteController : MonoBehaviour
 {
-	private int rndCol;
 	
 	
-	SpriteController(){
+	
+	private int rndCol = 0;
+	
+	
+	
+	private static System.Random rnd = new System.Random();
+	
+	
+	
+	void Start(){
 		//random positive integer -> random animation position for different entities
-		rndCol = System.Math.Abs(new System.Random().Next());
+		rndCol = System.Math.Abs(rnd.Next());
 	}
+	
+	
 	
 	public void  animate (int columnSize, int rowSize, int colFrameStart, int rowFrameStart, int totalFrames, int framesPerSecond)
 	{
@@ -29,7 +39,7 @@ public class SpriteController : MonoBehaviour
 		// scale
 		Vector2 size = new Vector2( (1.0f / columnSize) , (1.0f / rowSize) );
 		// offset
-		float u = index + rndCol % columnSize;
+		float u = (index + (rndCol % columnSize )) % columnSize;
 		
 		//float v = index / columnSize; //v is always 0 because both are int and index < columnSize
 		//it also makes no sense to animate on the X axis AND on the Y axis simultaneously

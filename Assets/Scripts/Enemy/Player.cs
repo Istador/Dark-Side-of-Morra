@@ -71,4 +71,15 @@ public class Player : MonoBehaviour {
 	
 	
 	
+	/// <summary>
+	/// Health erhalten. Heilt den Spieler.
+	/// </summary>
+	/// <param name='hp'>
+	/// Wert um den der Spieler geheilt werden soll
+	/// </param>
+	void ApplyHealth(int hp){
+		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+hp+" hp received");
+	}
+	
+	
 }
