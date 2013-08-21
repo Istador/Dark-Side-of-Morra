@@ -125,7 +125,6 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 			&& LineOfSight(player)
 			&& IsPlayerInfront()
 		);
-			
 	}
 	
 	

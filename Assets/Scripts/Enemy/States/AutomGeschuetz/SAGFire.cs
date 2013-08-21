@@ -10,20 +10,13 @@ public class SAGFire : State<Enemy<AutomGeschuetz>> {
 		//Rakete vom Prefab erstellen
 		GameObject rocket = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("pRocket"), owner.transform.position, owner.transform.rotation);
 		
-		//Kollisionen zwischen diesem Geschütz und dieser Rakete ignorieren
+		//Kollisionen zwischen diesem Gegner und dieser Rakete ignorieren
 		Physics.IgnoreCollision(owner.collider, rocket.collider);
+		Physics.IgnoreCollision(rocket.collider, owner.collider);
+		
+		//zum Nachlade Zustand wechseln
+		owner.AttackFSM.ChangeState(SAGReload.Instance);
 	}
-	
-	
-	
-	public override void Execute(Enemy<AutomGeschuetz> owner){
-		//zum vorigem Zustand (Nachladen)
-		owner.AttackFSM.RevertToPreviousState();
-	}
-	
-	
-	
-	public override void Exit(Enemy<AutomGeschuetz> owner){}
 	
 	
 	

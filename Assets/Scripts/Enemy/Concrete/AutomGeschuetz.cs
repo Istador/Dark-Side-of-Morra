@@ -30,7 +30,7 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	
 	
 	public AutomGeschuetz() : base(250) { //250 HP
-		AttackFSM.SetCurrentState(SAGIdle.Instance);
+		AttackFSM.SetCurrentState(SAGHoldFire.Instance);
 	}
 	
 	
@@ -48,20 +48,15 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	
 	
 	
-	//Zustandsvariable für das Nachladen
-	private float _reloadStart = 0.0f;
 	/// <summary>
-	/// Zeitpunkt an dem begonnen wurde Nachzuladen
+	/// Ob der Spieler in Schussreichweite ist.
 	/// </summary>
-	/// <value>
-	/// Zeit in Sekunden seit Spielstart
-	/// </value>
-	public float reloadStart { get{return _reloadStart;} }
-	/// <summary>
-	/// Setzt die aktuelle Zeit als Zeitpunkt des Nachladebeginns
-	/// </summary>
-	public void BeginReload(){
-		_reloadStart = Time.time;
+	public bool IsPlayerInFireRange(){
+		float distance = DistanceToPlayer();
+		return ( 
+			   distance <= f_outOfRange
+			&& distance >= f_closeRange
+			&& LineOfSight(player)
+		);
 	}
-	
 }

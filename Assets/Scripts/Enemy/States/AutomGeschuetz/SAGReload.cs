@@ -8,32 +8,24 @@ public class SAGReload : State<Enemy<AutomGeschuetz>> {
 	
 	
 	public override void Enter(Enemy<AutomGeschuetz> owner){
-		//aktuellen Zeitpunkt merken
-		((AutomGeschuetz)owner).BeginReload();
+		//Nachtricht an sich selbst in x sekunden, das Nachladen vorbei
+		MessageDispatcher.Instance.Dispatch(owner, owner, "reloaded", (float)AutomGeschuetz.d_reloadTime, null);
 	}
 	
 	
 	
-	public override void Execute(Enemy<AutomGeschuetz> owner){
-		//Distanz zum Spieler ermitteln
-		float distance = owner.DistanceToPlayer();
-		//zu dicht
-		if(distance <= AutomGeschuetz.f_closeRange)
-			owner.AttackFSM.ChangeState(SAGTooClose.Instance);
-		//zu weit
-		else if(distance > AutomGeschuetz.f_outOfRange)
-			owner.AttackFSM.ChangeState(SAGIdle.Instance);
-		//Spieler nicht in LOS
-		else if( ! owner.LineOfSight(owner.player) )
-			owner.AttackFSM.ChangeState(SAGIdle.Instance);
-		//nachladen vorbei
-		else if(((AutomGeschuetz)owner).reloadStart + AutomGeschuetz.d_reloadTime <= Time.time )
-			owner.AttackFSM.ChangeState(SAGFire.Instance);
+	public override bool OnMessage(Enemy<AutomGeschuetz> owner, Telegram msg){
+		switch(msg.message){
+			case "reloaded":
+				//zum Warte Zustand wechseln
+				owner.AttackFSM.ChangeState(SAGHoldFire.Instance);
+				return true;
+			default:
+				return false;
+		}
 	}
 	
 	
-	
-	public override void Exit(Enemy<AutomGeschuetz> owner){}
 	
 	
 	
