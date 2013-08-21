@@ -141,8 +141,10 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 		if(IsPlayerVisible()){
 			RememberNow();
 			//Debug.DrawLine(collider.bounds.center, _lastKnownPosition, Color.green);
-		}	
-		//Debug.DrawLine(collider.bounds.center, _lastKnownPosition, Color.red);
+		} else {
+			//Debug.DrawLine(collider.bounds.center, _lastKnownPosition, Color.red);
+		}
+		
 	}
 	
 	public Vector3 LastKnownPosition(){
@@ -152,6 +154,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	public bool IsRememberingPlayer(){
 		return _lastTimeVisited + d_memoryTime >= Time.time;
 	}
+	
 	
 	
 	
@@ -216,4 +219,12 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 		}
 	}
 	
+	
+	
+	public bool CanMoveTo(Vector3 pos, bool invertDirection = false){
+		if(IsRight(pos) ^ invertDirection) //ist das Ziel rechts vom Gegner?
+			return CanMoveRight();
+		else 
+			return CanMoveLeft();
+	}
 }

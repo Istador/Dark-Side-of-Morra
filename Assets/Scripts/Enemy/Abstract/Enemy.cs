@@ -66,6 +66,9 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	
 	
 	
+	public readonly static System.Random rnd = new System.Random();
+	
+	
 	/*
 	 * Konstruktor
 	*/

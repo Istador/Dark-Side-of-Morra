@@ -7,7 +7,7 @@ public class SRPGSPatrol : State<Enemy<RPGSoldier>> {
 	
 	public override void Enter(Enemy<RPGSoldier> owner){
 		//zufällig nach links/rechts patrouillieren
-		if(new System.Random().Next(0,2) == 0)
+		if(Enemy<RPGSoldier>.rnd.Next(0,2) == 0)
 			owner.MoveFSM.ChangeState(SPatrolLeft<RPGSoldier>.Instance);
 		else
 			owner.MoveFSM.ChangeState(SPatrolRight<RPGSoldier>.Instance);

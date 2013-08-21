@@ -1,28 +1,26 @@
 using UnityEngine;
 using System.Collections;
 
-public class SRPGSSeek : State<Enemy<RPGSoldier>> {
+public class SRPGSSeekPosition : State<Enemy<RPGSoldier>> {
 	
 	
 	
-	public override void Enter(Enemy<RPGSoldier> owner){
-		((RPGSoldier)owner).steering.Flee(false);
-	}
+	public override void Enter(Enemy<RPGSoldier> owner){}
 	
 	
 	
 	public override void Execute(Enemy<RPGSoldier> owner){
-		if(!owner.LineOfSight(owner.player)){
-			owner.MoveFSM.ChangeState(SRPGSSeekPosition.Instance);
+		if(owner.LineOfSight(owner.player)){
+			owner.MoveFSM.ChangeState(SRPGSStay.Instance);
 			return;
 		}
 		
-		//Distanz zum Spieler ermitteln
-		Vector3 pos = owner.player.collider.bounds.center;
+		//Distanz zur letzt bekannten Spielerposition ermitteln
+		Vector3 pos = ((RPGSoldier)owner).LastKnownPosition();
 		float distance = owner.DistanceTo(pos);
 		
-		//optimale position erreicht
-		if(distance <= (RPGSoldier.f_optimum_min + RPGSoldier.f_optimum_max)/2.0f ){
+		//position erreicht
+		if(distance <= 0.05f ){
 			owner.MoveFSM.ChangeState(SRPGSStay.Instance);
 			return;
 		}
@@ -48,10 +46,10 @@ public class SRPGSSeek : State<Enemy<RPGSoldier>> {
 	/**
 	 * Singleton
 	*/
-	private static SRPGSSeek instance;
-	private SRPGSSeek(){}
-	public static SRPGSSeek Instance{get{
-			if(instance==null) instance = new SRPGSSeek();
+	private static SRPGSSeekPosition instance;
+	private SRPGSSeekPosition(){}
+	public static SRPGSSeekPosition Instance{get{
+			if(instance==null) instance = new SRPGSSeekPosition();
 			return instance;
 		}}
 	

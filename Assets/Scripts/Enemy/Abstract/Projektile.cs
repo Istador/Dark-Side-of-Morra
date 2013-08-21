@@ -64,6 +64,9 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 		//Kollision mit Spieler einschalten
 		Physics.IgnoreCollision(collider, player.collider, false);
 		Physics.IgnoreCollision(player.collider, collider, false);
+		
+		Physics.IgnoreLayerCollision(10, 12); //Projektile mit Leitern
+		Physics.IgnoreLayerCollision(12, 10); //Leitern mit Projektilen
 	}
 	
 	

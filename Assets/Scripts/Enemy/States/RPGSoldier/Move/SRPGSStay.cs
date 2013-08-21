@@ -14,9 +14,14 @@ public class SRPGSStay : State<Enemy<RPGSoldier>> {
 	
 	
 	public override void Execute(Enemy<RPGSoldier> owner){
-		Vector3 pos = ((RPGSoldier)owner).LastKnownPosition();
+		//Spieler nicht sichtbar
+		if(!owner.LineOfSight(owner.player)){
+			owner.MoveFSM.ChangeState(SRPGSSeekPosition.Instance);
+			return;
+		}
 		
 		//Distanz zum Spieler ermitteln
+		Vector3 pos = owner.player.collider.bounds.center;
 		float distance = owner.DistanceTo(pos);
 		//zu nah
 		if(distance < RPGSoldier.f_optimum_min)

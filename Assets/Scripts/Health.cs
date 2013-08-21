@@ -25,7 +25,7 @@ public class Health : MonoBehaviour {
 	/// <summary>Zeile der Animation</summary>
 	private int txtState = 0;
 	/// <summary>Anzahl Spalten (Frames)</summary>
-	private int txtCols = 8;
+	private int txtCols = 10;
 	/// <summary>Anzahl Zeilen (Zustände)</summary>
 	private int txtRows = 2;
 	/// <summary>Frames per Second</summary>
