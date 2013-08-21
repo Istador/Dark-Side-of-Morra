@@ -190,6 +190,9 @@ public class PlayerController : MonoBehaviour
 		int dmg = Mathf.RoundToInt(damage.magnitude);
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
 		//TODO
+		
+		//Geräusch
+		audio.PlayOneShot(hitSound);
 	}
 	
 	

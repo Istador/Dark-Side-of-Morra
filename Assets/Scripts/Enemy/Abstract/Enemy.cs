@@ -107,6 +107,9 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 		//SpriteController hinzufügen
 		spriteCntrl = gameObject.AddComponent<SpriteController>();
 		
+		//AudioSource hinzufügen
+		gameObject.AddComponent<AudioSource>();
+		
 		//Zustandsautomaten starten (Enter)
 		MoveFSM.Start();
 		AttackFSM.Start();

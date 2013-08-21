@@ -5,6 +5,10 @@ public class Soldier : MLeftRight<Soldier> {
 	
 	
 	
+	public AudioClip ac_shoot;
+	
+	
+	
 	public override float maxSpeed { get{return 3.0f;} }
 	public override float maxForce { get{return 3.0f;} }
 	
