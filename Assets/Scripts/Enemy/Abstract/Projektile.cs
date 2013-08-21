@@ -36,7 +36,10 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Projektile`1"/> class.
 	/// </summary>
-	public Projektile() : base(1) {}
+	public Projektile() : base(1) {
+		f_HealthGlobeProbability = 0.01f; //1% drop, 99% kein drop
+		f_HealthGlobeBigProbability = 0.1f; //10% big, 90% small
+	}
 	
 	
 	
@@ -64,9 +67,6 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 		//Kollision mit Spieler einschalten
 		Physics.IgnoreCollision(collider, player.collider, false);
 		Physics.IgnoreCollision(player.collider, collider, false);
-		
-		Physics.IgnoreLayerCollision(10, 12); //Projektile mit Leitern
-		Physics.IgnoreLayerCollision(12, 10); //Leitern mit Projektilen
 	}
 	
 	

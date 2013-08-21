@@ -13,13 +13,6 @@ public class PlayerCollider : MonoBehaviour {
 	
 	void Start(){
 		lastPlayerDamage = Time.time;
-		Physics.IgnoreLayerCollision(11,  0); //Default
-		Physics.IgnoreLayerCollision(11,  8); //Level
-		Physics.IgnoreLayerCollision(11, 10); //Projektile
-		Physics.IgnoreLayerCollision(11, 11); //PlayerCollider
-		Physics.IgnoreLayerCollision( 0, 11);
-		Physics.IgnoreLayerCollision( 8, 11);
-		Physics.IgnoreLayerCollision(10, 11);
 	}
 	
 	

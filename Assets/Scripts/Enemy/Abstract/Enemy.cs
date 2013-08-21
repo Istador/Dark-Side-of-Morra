@@ -49,6 +49,17 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	*/
 	private int health; //aktuell
 	private int maxHealth; //maximal
+
+	
+	
+	/// <summary>Wahrscheinlichkeit das ein Health Globe droppt</summary>
+	protected float f_HealthGlobeProbability = 0.3f; //30% drop, 70% kein drop
+	
+	/// <summary>Wahrscheinlichkeit das der gedroppte Health Globe groß ist</summary>
+	protected float f_HealthGlobeBigProbability = 0.3f; //30% big, 70% small
+	
+	/// <summary>Lebenszeit von Health Globes. Wie lange Health Globes vorhanden bleiben.</summary>
+	protected float f_HealthGlobeLifetime = 10.0f; //10 Sekunden
 	
 	
 	
@@ -161,6 +172,29 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/// </summary>
 	public virtual void Death(){
 		//Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): death");
+		
+		//soll ein Health Globe droppen?
+		if(rnd.NextDouble() <= f_HealthGlobeProbability ){
+			UnityEngine.Object res;
+			
+			//soll es ein großer oder kleiner Health Globe sein?
+			if(rnd.NextDouble() <= f_HealthGlobeBigProbability){
+				//groß
+				res = Resources.Load("bigHP");
+			} else { 
+				//klein
+				res = Resources.Load("smallHP");
+			}
+			
+			//Health Globe erstellen
+			GameObject obj = (GameObject)UnityEngine.Object.Instantiate(res, transform.position, new Quaternion(0.0f, 0.7f, -0.7f, 0.0f));
+			
+			//Health Globe kurz nach oben bewegen lassen
+			obj.rigidbody.AddForce(Vector3.up * 4.0f, ForceMode.Impulse);
+			
+			Destroy(obj, f_HealthGlobeLifetime);
+		}
+		
 		Destroy(gameObject);
 	}
 	
