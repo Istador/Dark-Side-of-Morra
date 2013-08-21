@@ -60,6 +60,10 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 		base.Start();
 		steering.Seek(true); //Zielposition anstreben
 		SetInvisible();
+		
+		//Kollision mit Spieler einschalten
+		Physics.IgnoreCollision(collider, player.collider, false);
+		Physics.IgnoreCollision(player.collider, collider, false);
 	}
 	
 	

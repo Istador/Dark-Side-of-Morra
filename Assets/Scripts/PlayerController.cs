@@ -186,7 +186,8 @@ public class PlayerController : MonoBehaviour
 	/// Schaden der dem Spieler zugefügt wird
 	/// </param>
 	void ApplyDamage(Vector3 damage){
-		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage.magnitude+" dmg received");
+		int dmg = Mathf.RoundToInt(damage.magnitude);
+		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
 		//TODO
 	}
 }

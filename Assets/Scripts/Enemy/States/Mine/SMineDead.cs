@@ -20,10 +20,7 @@ public class SMineDead : State<Enemy<Mine>> {
 			owner.transform.position.x,
 			owner.transform.position.y - owner.renderer.bounds.size.y/2.0f+player.collider.bounds.size.y/2.0f,
 			owner.transform.position.z
-		); 
-		//Debug.Log("1: "+owner.transform.position.y);
-		//Debug.Log("2: "+owner.renderer.bounds.size.y);
-		//Debug.Log("3: "+player.collider.bounds.size.y);
+		);
 				
 		//wer Kollidiert alles mit der runden Explosion
 		Collider[] cs = Physics.OverlapSphere(explosionsursprung, maxrange);
