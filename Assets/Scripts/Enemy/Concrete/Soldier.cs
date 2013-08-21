@@ -1,66 +1,57 @@
 using UnityEngine;
 using System.Collections;
 
-public class RPGSoldier : MLeftRight<RPGSoldier> {
+public class Soldier : MLeftRight<Soldier> {
 	
 	
 	
-	public override float maxSpeed { get{return 2.0f;} }
-	public override float maxForce { get{return 2.0f;} }
+	public override float maxSpeed { get{return 3.0f;} }
+	public override float maxForce { get{return 3.0f;} }
 	
 	
 	
 	protected override int txtCols { get{return 8;} } //Anzahl Spalten (Frames)
-	protected override int txtRows { get{return 6;} } //Anzahl Zeilen (Zustände)
+	protected override int txtRows { get{return 10;} } //Anzahl Zeilen (Zustände)
 	protected override int txtFPS { get{return 4;} }  //Frames per Second
 	
 	
-	
-	/// <summary>
-	/// Entfernung bei welcher der Spieler zu Dicht ist zum Starten von Raketen
-	/// </summary>
-	public static readonly float f_closeRange = 2.0f;
-	
+		
 	/// <summary>
 	/// Optimale Entfernung in der stehen geblieben wird. Untere Grenze
 	/// </summary>
-	public static readonly float f_optimum_min = 3.5f;
+	public static readonly float f_optimum_min = 2.5f;
 	
 	/// <summary>
 	/// Optimale Entfernung in der stehen geblieben wird. Obere Grenze
 	/// </summary>
-	public static readonly float f_optimum_max = 4.5f;
+	public static readonly float f_optimum_max = 6.5f;
 	
 	/// <summary>
 	/// Entfernung bei welcher der Spieler zu weit entfernt ist zum Starten von Raketen
 	/// </summary>
-	public static readonly float f_outOfRange = 6.0f;
+	public static readonly float f_outOfRange = 8.0f;
 	
 	/// <summary>
 	/// Nachladezeit:
 	/// Die Zeit zwischen zwei Raketen die zum Nachladen veranschlagt wird.
 	/// </summary>
-	public static readonly double d_reloadTime = 3.0; // 3 sekunden nachladen
+	public static readonly double d_reloadTime = 0.8; // 0,5 sekunden nachladen
 	
 	/// <summary>
 	/// Gedächtnis:
 	/// Die Zeit die der Gegner sich noch an den Spieler erinnert.
 	/// </summary>
-	public static readonly double d_memoryTime = 5.0; // 5 sekunden
+	public static readonly double d_memoryTime = 10.0; // 5 sekunden
 	
 	/// <summary>
 	/// Sichtweite des Gegners. Bis zu dieser Distanz kann der Gegner sehen.
 	/// </summary>
-	public static readonly float f_visibleRange = 8.0f;
+	public static readonly float f_visibleRange = 10.0f;
 	
 	
-	public RPGSoldier() : base(100) {
-		MoveFSM.SetGlobalState(SRPGSPatrol.Instance);
-		AttackFSM.SetCurrentState(SRPGSHoldFire.Instance);
-		
-		f_HealthGlobeProbability = 0.6f; //60% drop, 40% kein drop
-		f_HealthGlobeBigProbability = 0.6f; //60% big, 40% small
-		// 0,6 * ( 0,6 * 50 + 0,4 * 10 ) = 20,4 HP on average
+	public Soldier() : base(150) {
+		MoveFSM.SetGlobalState(SSoldierPatrol.Instance);
+		AttackFSM.SetCurrentState(SSoldierHoldFire.Instance);
 	}
 	
 	
@@ -124,7 +115,6 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 		float distance = DistanceToPlayer();
 		return ( 
 			   distance <= f_outOfRange
-			&& distance >= f_closeRange
 			&& LineOfSight(player)
 			&& IsPlayerInfront()
 		);
@@ -181,9 +171,9 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	
 	public Vector3 Heading(){
-		if(MoveFSM.GetCurrentState() == SPatrolLeft<RPGSoldier>.Instance)
+		if(MoveFSM.GetCurrentState() == SPatrolLeft<Soldier>.Instance)
 			return Vector3.left;
-		else if(MoveFSM.GetCurrentState() == SPatrolRight<RPGSoldier>.Instance)
+		else if(MoveFSM.GetCurrentState() == SPatrolRight<Soldier>.Instance)
 			return Vector3.right;
 		else if(IsRight(_lastKnownPosition))
 			return Vector3.right;

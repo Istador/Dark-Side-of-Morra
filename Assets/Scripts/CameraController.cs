@@ -20,6 +20,8 @@ public class CameraController : MonoBehaviour
 	{
 		thisTransform = transform;
 		orthoSize	  = camera.orthographicSize;
+		
+		cameraTarget = GameObject.FindWithTag("Player");
 	}
 
 
