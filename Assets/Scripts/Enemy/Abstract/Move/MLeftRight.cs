@@ -12,7 +12,11 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 	/// Maximale Trefferpunkte des Gegners. Bei 0 HP stirbt der Gegner.
 	/// </param>
 	public MLeftRight(int maxHealth) : base(maxHealth){
-		MoveFSM.ChangeState(SPatrolLeft<T>.Instance);
+		//zufällig nach links/rechts patrouillieren
+		if(new System.Random().Next(0,2) == 0)
+			MoveFSM.ChangeState(SPatrolLeft<T>.Instance);
+		else
+			MoveFSM.ChangeState(SPatrolRight<T>.Instance);
 	}
 	
 	
