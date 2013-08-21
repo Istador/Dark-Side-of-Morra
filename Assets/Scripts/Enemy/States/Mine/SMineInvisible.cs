@@ -14,14 +14,15 @@ public class SMineInvisible : State<Enemy<Mine>> {
 	
 	
 	public override void Execute(Enemy<Mine> owner){
-		//Distanz zum Spieler ermitteln
-		float distance = owner.DistanceToPlayer();
-		//rote Reichweite
-		if(distance <= Mine.f_redRange)
-			owner.AttackFSM.ChangeState(SMineRed.Instance);
-		//gelbe Reichweite
-		else if(distance <= Mine.f_yellowRange)
-			owner.AttackFSM.ChangeState(SMineYellow.Instance);
+		//nur wenn der Spieler die Mine auch sehen kann
+		if(owner.LineOfSight(owner.player))
+		{
+			//Distanz zum Spieler ermitteln
+			float distance = owner.DistanceToPlayer();
+			//Spieler in Reichweite
+			if(distance <= Mine.f_yellowRange)
+				owner.AttackFSM.ChangeGlobalState(null);
+		}
 	}
 	
 	

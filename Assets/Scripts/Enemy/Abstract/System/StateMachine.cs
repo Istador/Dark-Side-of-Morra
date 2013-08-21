@@ -123,6 +123,7 @@ public class StateMachine<T> : MessageReceiver {
 	/// Ruft die Enter-Methode des aktuellen Zustandes auf.
 	/// </summary>
 	public void Start(){
+		if(globalState!=null) globalState.Enter(owner);
 		if(currentState!=null) currentState.Enter(owner);
 	}
 	

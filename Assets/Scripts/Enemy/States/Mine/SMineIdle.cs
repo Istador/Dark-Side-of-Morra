@@ -3,7 +3,7 @@
  * Der Zustand überprüft ob der Player in Reichweite gerät
  * 
 */
-public class SMineVisible : State<Enemy<Mine>> {
+public class SMineIdle : State<Enemy<Mine>> {
 	
 	
 	
@@ -45,10 +45,10 @@ public class SMineVisible : State<Enemy<Mine>> {
 	/**
 	 * Singleton
 	*/
-	private static SMineVisible instance;
-	private SMineVisible(){}
-	public static SMineVisible Instance{get{
-			if(instance==null) instance = new SMineVisible();
+	private static SMineIdle instance;
+	private SMineIdle(){}
+	public static SMineIdle Instance{get{
+			if(instance==null) instance = new SMineIdle();
 			return instance;
 		}}
 }

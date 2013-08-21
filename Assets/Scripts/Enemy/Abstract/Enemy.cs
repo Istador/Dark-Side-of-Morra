@@ -61,6 +61,8 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/// <summary>Lebenszeit von Health Globes. Wie lange Health Globes vorhanden bleiben.</summary>
 	protected float f_HealthGlobeLifetime = 10.0f; //10 Sekunden
 	
+	// 0,3 * ( 0,3 * 50 + 0,7 * 10 ) = 6,6 HP on average
+	
 	
 	
 	/**

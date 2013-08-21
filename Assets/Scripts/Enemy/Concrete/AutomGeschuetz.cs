@@ -34,6 +34,7 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 		
 		f_HealthGlobeProbability = 0.8f; //80% drop, 20% kein drop
 		f_HealthGlobeBigProbability = 0.8f; //80% big, 20% small
+		// 0,8 * ( 0,8 * 50 + 0,2 * 10 ) = 33,6 HP on average
 	}
 	
 	

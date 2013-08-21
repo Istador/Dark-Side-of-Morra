@@ -58,6 +58,9 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 		MoveFSM.SetGlobalState(SRPGSPatrol.Instance);
 		AttackFSM.SetCurrentState(SRPGSHoldFire.Instance);
 		
+		f_HealthGlobeProbability = 0.6f; //60% drop, 40% kein drop
+		f_HealthGlobeBigProbability = 0.6f; //60% big, 40% small
+		// 0,6 * ( 0,6 * 50 + 0,4 * 10 ) = 20,4 HP on average
 	}
 	
 	

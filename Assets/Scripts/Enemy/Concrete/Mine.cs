@@ -26,7 +26,8 @@ public class Mine : ImmovableEnemy<Mine> {
 	
 	
 	public Mine() : base(1) { //1 HP
-		AttackFSM.SetCurrentState(SMineInvisible.Instance);
+		AttackFSM.SetGlobalState(SMineInvisible.Instance);
+		AttackFSM.SetCurrentState(SMineIdle.Instance);
 	}
 	
 	

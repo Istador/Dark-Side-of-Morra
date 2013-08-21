@@ -39,6 +39,7 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	public Projektile() : base(1) {
 		f_HealthGlobeProbability = 0.01f; //1% drop, 99% kein drop
 		f_HealthGlobeBigProbability = 0.1f; //10% big, 90% small
+		// 0,01 * ( 0,1 * 50 + 0,9 * 10 ) = 0,14 HP on average
 	}
 	
 	

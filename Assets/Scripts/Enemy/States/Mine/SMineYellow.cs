@@ -20,7 +20,7 @@ public class SMineYellow : State<Enemy<Mine>> {
 			owner.AttackFSM.ChangeState(SMineRed.Instance);
 		//außerhalb gelber Reichweite
 		else if(distance > Mine.f_yellowRange)
-			owner.AttackFSM.ChangeState(SMineVisible.Instance);
+			owner.AttackFSM.ChangeState(SMineIdle.Instance);
 	}
 	
 	
