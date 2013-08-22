@@ -50,9 +50,6 @@ public class openDoor : MonoBehaviour {
 			
 			Destroy(magicDoor);	
 		}
-		if (characterController.gameObject.CompareTag ("Falle")){
-			Destroy(magicFalle, .5f);
-			
-		}
+		
 	}
 }
