@@ -1,17 +1,22 @@
 #pragma strict
-var damage:float;
+var damage:int;
 var xLimit: float;
+var lifetime:float;
 
-function Update () {}
+;
+function Update () {
+	Destroy(gameObject, lifetime);
+}
 	function OnCollisionEnter(hit: Collision){
 	if(hit.gameObject.CompareTag("Enemy")){
 		 var target = hit.gameObject;
     	// Apply damage to target object
-    	target.collider.SendMessage("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
+    	target.collider.SendMessage("ApplyDamage", (hit.collider.bounds.center - this.collider.bounds.center).normalized * damage , SendMessageOptions.DontRequireReceiver);
     	Destroy(gameObject);
 	}
-	if (transform.position.x <= xLimit)
-	{
-	Destroy(gameObject);	 // remove the object from the scene
+	if(hit.gameObject.CompareTag("Ground")){
+		Destroy(gameObject);
 	}
+	
+	
 }	
