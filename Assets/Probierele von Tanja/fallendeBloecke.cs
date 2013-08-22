@@ -2,11 +2,12 @@ using UnityEngine;
 using System.Collections;
 
 public class fallendeBloecke : MonoBehaviour, MessageReceiver {
+	public float zeitBisFall = 1.0f;
 	public GameObject owner;
 void OnTriggerEnter(Collider other) {
 		if(other.gameObject.tag == "Player"){
 		
-			MessageDispatcher.Instance.Dispatch(this,this,"enter",1.0f,null);
+			MessageDispatcher.Instance.Dispatch(this,this,"enter",zeitBisFall,null);
 					
 		}
 		
