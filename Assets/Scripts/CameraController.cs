@@ -7,14 +7,15 @@ using System.Collections;
 public class CameraController : MonoBehaviour
 {
 	public GameObject cameraTarget; 			// object to look at / follow
-	public float smoothTime		= 0.2f;			// time for camera dumpen
+	public float smoothTime		= 0.1f;			// time for camera dampen
 	bool  cameraFollowX	 		= true;			// camera follows on horizontal
-	bool  cameraFollowY	 		= true;			// camera follows on vertical
+	bool  cameraFollowY	 		= false;			// camera follows on vertical
 	Vector2 velocity;							// speed of camera movement
-	public float orthoSize;
+	float orthoSize;
 
-	private Transform thisTransform; 			// cameras transform
-	public float cameraHeight	= 1.0f;			// height of camera
+	Transform thisTransform; 					// cameras transform
+	public float cameraHeightOffset	= 3.0f;		// height offset of camera
+	public float playerHeight;
 
 	void  Start ()
 	{
@@ -22,6 +23,9 @@ public class CameraController : MonoBehaviour
 		orthoSize	  = camera.orthographicSize;
 		
 		cameraTarget = GameObject.FindWithTag("Player");
+
+		StartCoroutine(WaitAndSetPlayerHeight(0.5f));
+		
 	}
 
 
@@ -34,15 +38,37 @@ public class CameraController : MonoBehaviour
 			thisTransform.position = temp;
 		}
 		
-		if (cameraFollowY)
+		if (cameraFollowY) // only use for vertical levels
 		{
-			//if(cameraTarget.transform.position.y >= orthoSize-3 && cameraTarget.transform.position.y <= orthoSize+3 )
-			//{
-				Vector3 temp = thisTransform.position;
-				temp.y = Mathf.SmoothDamp(thisTransform.position.y, cameraTarget.transform.position.y + cameraHeight, ref velocity.y,smoothTime);
-				thisTransform.position = temp;
-			//}
+			smoothMoveY();
 		}
+		else		// normal camera follow, based on initial player height and some math
+		{
+			if (cameraTarget.transform.position.y - playerHeight > 5) // if player moves 5 higher, camera follows
+			{
+				smoothMoveY();
+				StartCoroutine(WaitAndSetPlayerHeight(0.5f));
+			}
+			if (cameraTarget.transform.position.y - playerHeight < -0.9) // if player moves 1 lower, camera follows
+			{
+				smoothMoveY();				
+				StartCoroutine(WaitAndSetPlayerHeight(0.5f));
+			}
+		}
+
+	}
+
+	IEnumerator WaitAndSetPlayerHeight(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		playerHeight = cameraTarget.transform.position.y; // stores initial player height for else of cameraFollowY in Update function
+	}
+
+	void smoothMoveY()
+	{
+		Vector3 temp = thisTransform.position;
+		temp.y = Mathf.SmoothDamp(thisTransform.position.y, cameraTarget.transform.position.y + cameraHeightOffset, ref velocity.y, smoothTime);
+		thisTransform.position = temp;
 	}
 
 }
