@@ -26,7 +26,9 @@ public class Dialogue : MonoBehaviour {
 			    Debug.Log ("Trigger Unicorn");
 				talking = true;
 				currentLine = 0;
-				talkTextGUI.text = talkLines[currentLine];
+			    talkTextGUI.text = talkLines[currentLine];
+				
+				
 				startScrolling();
 			}
 		}
