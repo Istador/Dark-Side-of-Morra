@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Soldier : MLeftRight<Soldier> {
+public class Soldier : MLeftRightClimb<Soldier> {
 	
 	
 	

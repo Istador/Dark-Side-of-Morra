@@ -52,9 +52,11 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	/// Objekt mit dem die Kollision stattfindet
 	/// </param>
 	void OnTriggerEnter(Collider other) {
-		if(other.gameObject.tag == "Player"){
+		//Kollision mit Spieler?
+		if(other.gameObject.tag == "Player")
+			//Schaden verursachen
 			DoDamageTo(other.gameObject, damage);
-		}
+		//auch bei Kollisionen die nicht mit dem Spieler sind sterben
 		Death();
 	}
 	
@@ -68,6 +70,8 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 		//Kollision mit Spieler einschalten
 		Physics.IgnoreCollision(collider, player.collider, false);
 		Physics.IgnoreCollision(player.collider, collider, false);
+		
+		transform.RotateAroundLocal(zvector, deg90);
 	}
 	
 	
@@ -91,6 +95,9 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 		if(!rotate.Equals(Vector3.zero)){
 			//rotiere zum Ziel
 			transform.rotation = Quaternion.LookRotation(rotate, zvector);
+			//Quaternion rot = Quaternion.LookRotation(rotate, zvector);
+			//float speed = 0.5f;
+			//transform.rotation = Quaternion.Slerp(transform.rotation, rot, speed*Time.deltaTime);
 		
 			//drehe Sprite um 90°
 			transform.RotateAroundLocal(zvector, deg90);
