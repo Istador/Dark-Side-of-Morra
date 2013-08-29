@@ -5,7 +5,7 @@ public class Soldier : MLeftRight<Soldier> {
 	
 	
 	
-	public AudioClip ac_shoot;
+	public static AudioClip ac_shoot;
 	
 	
 	
@@ -64,6 +64,7 @@ public class Soldier : MLeftRight<Soldier> {
 		base.Start();
 		_lastKnownPosition = player.collider.bounds.center;
 		_lastTimeVisited = Time.time;
+		if(ac_shoot == null) ac_shoot = (AudioClip) Resources.Load("Sounds/shoot2");
 	}
 	
 	

@@ -48,7 +48,9 @@ public class SMineDead : State<Enemy<Mine>> {
 		//explosion.particleEmitter.minSize = 0.5f;
 		//explosion.particleEmitter.maxSize = 2.0f;
 		//explosion.GetComponent<ParticleRenderer>().lengthScale = 2.0f;
-		//TODO : Soundgeräusch
+		
+		//Explosionsgeräusch
+		AudioSource.PlayClipAtPoint(Mine.ac_explosion, owner.collider.bounds.center);
 		
 		UnityEngine.Object.Destroy(explosion,1.0f); //nach 1 sekunden explosion entfernen
 	}

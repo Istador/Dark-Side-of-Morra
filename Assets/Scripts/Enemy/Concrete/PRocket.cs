@@ -10,7 +10,13 @@ public class PRocket : Projektile<PRocket> {
 	//public override Vector3 targetPos { get{return collider.bounds.center + heading * maxSpeed;} }
 	
 	
+	
 	public override int damage { get{return 40;} }
+	
+	
+	
+	/// <summary>Explosionsgeräusch</summary>
+	public static AudioClip ac_explosion;
 	
 	
 	
@@ -22,6 +28,14 @@ public class PRocket : Projektile<PRocket> {
 	protected override int txtCols { get{return 1;} } //Anzahl Spalten (Frames)
 	protected override int txtRows { get{return 1;} } //Anzahl Zeilen (Zustände)
 	protected override int txtFPS { get{return 1;} }  //Frames per Second
+	
+	
+	
+	protected override void Start(){
+		base.Start();
+		
+		if(ac_explosion == null) ac_explosion = (AudioClip) Resources.Load("Sounds/explode");
+	}
 	
 	
 	
@@ -48,7 +62,8 @@ public class PRocket : Projektile<PRocket> {
 		GameObject explosion = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("prefab kleineExplosion"), transform.position, transform.rotation);
 		UnityEngine.Object.Destroy(explosion, 0.5f); //nach 0.5 sekunden explosion weg
 		
-		//TODO : Soundgeräusch
+		//Explosionsgeräusch
+		AudioSource.PlayClipAtPoint(ac_explosion, collider.bounds.center);
 		
 		base.Death();
 	}

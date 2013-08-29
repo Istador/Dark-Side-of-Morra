@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /**
  * Zustand in der die Mine rot blinkt, und nach einer Sekunde explodiert.
  * 
@@ -11,13 +13,20 @@ public class SMineRed : State<Enemy<Mine>> {
 		
 		//sich selbst eine Nachricht in 2 Sekunden schicken zum explodieren
 		MessageDispatcher.Instance.Dispatch(owner, owner, "minetimer", 2.0f, null);
-		
-		//TODO : Soundgeräusch
 	}
 	
 	
 	
-	public override void Execute(Enemy<Mine> owner){}
+	public override void Execute(Enemy<Mine> owner){
+		//Ticken
+		if(owner.spriteCntrl.index == 1){
+			if(! ((Mine)owner).ticked){
+				AudioSource.PlayClipAtPoint(Mine.ac_tick, owner.collider.bounds.center);
+				((Mine)owner).ticked = true;
+			}
+		} else
+			((Mine)owner).ticked = false;
+	}
 	
 	
 	

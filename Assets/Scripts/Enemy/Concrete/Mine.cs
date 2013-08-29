@@ -18,6 +18,12 @@ public class Mine : ImmovableEnemy<Mine> {
 	public static readonly float f_explosionDamage = 75.0f;
 	
 	
+	/// <summary>Explosionsgeräusch</summary>
+	public static AudioClip ac_explosion;
+	/// <summary>Tickgeräusch</summary>
+	public static AudioClip ac_tick;
+	public bool ticked = false; //für den roten zustand, ob bereits getickt wurde
+	
 	
 	protected override int txtCols { get{return 2;} } //Anzahl Spalten (Frames)
 	protected override int txtRows { get{return 3;} } //Anzahl Zeilen (Zustände)
@@ -28,6 +34,15 @@ public class Mine : ImmovableEnemy<Mine> {
 	public Mine() : base(1) { //1 HP
 		AttackFSM.SetGlobalState(SMineInvisible.Instance);
 		AttackFSM.SetCurrentState(SMineIdle.Instance);
+	}
+	
+	
+	
+	protected override void Start(){
+		base.Start();
+		
+		if(ac_explosion == null) ac_explosion = (AudioClip) Resources.Load("Sounds/explode");
+		if(ac_tick == null) ac_tick = (AudioClip) Resources.Load("Sounds/minetick");
 	}
 	
 	

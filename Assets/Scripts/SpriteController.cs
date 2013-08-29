@@ -6,18 +6,14 @@ public class SpriteController : MonoBehaviour
 	
 	
 	
-	private int rndCol = 0;
-	
-	
-	
 	private static System.Random rnd = new System.Random();
 	
+	public int index {get; private set;}
+	//public int index {public get{return _index;}}
 	
 	
-	void Start(){
-		//random positive integer -> random animation position for different entities
-		rndCol = System.Math.Abs(rnd.Next());
-	}
+	//random positive integer -> random animation position for different entities
+	public readonly int rndCol = System.Math.Abs(rnd.Next());
 	
 	
 	
@@ -32,7 +28,7 @@ public class SpriteController : MonoBehaviour
 		 */
 		
 		// time control fps
-		int index = (int) (Time.time * framesPerSecond);
+		index = (int) (Time.time * framesPerSecond);
 		// modulate
 		index %= totalFrames;
 

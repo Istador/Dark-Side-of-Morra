@@ -13,7 +13,7 @@ public class SSoldierFire : State<Enemy<Soldier>> {
 		bullet.GetComponent<PBullet>().heading = ((Soldier)owner).Heading();
 		
 		//Sound abspielen
-		owner.audio.PlayOneShot(((Soldier)owner).ac_shoot);
+		AudioSource.PlayClipAtPoint(Soldier.ac_shoot, owner.collider.bounds.center);
 		
 		//Kollisionen zwischen diesem Gegner und dieser Rakete ignorieren
 		Physics.IgnoreCollision(owner.collider, bullet.collider);

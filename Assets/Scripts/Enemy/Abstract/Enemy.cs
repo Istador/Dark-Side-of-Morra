@@ -32,7 +32,7 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/*
 	 * Textur / Sprite Controller
 	*/
-	private SpriteController spriteCntrl;
+	public SpriteController spriteCntrl {get; private set;}
 	/// <summary>Zeile der Animation</summary>
 	private int txtState = 0;
 	/// <summary>Anzahl Spalten (Frames)</summary>
@@ -49,7 +49,8 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	*/
 	private int health; //aktuell
 	private int maxHealth; //maximal
-
+	private static AudioClip ac_healthdrop; //Health Globe Drop Sound
+	
 	
 	
 	/// <summary>Wahrscheinlichkeit das ein Health Globe droppt</summary>
@@ -106,9 +107,8 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 		
 		//SpriteController hinzufügen
 		spriteCntrl = gameObject.AddComponent<SpriteController>();
-		
-		//AudioSource hinzufügen
-		gameObject.AddComponent<AudioSource>();
+				
+		if(ac_healthdrop == null) ac_healthdrop = (AudioClip) Resources.Load("Sounds/healthfall");
 		
 		//Zustandsautomaten starten (Enter)
 		MoveFSM.Start();
@@ -193,6 +193,9 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 			
 			//Health Globe erstellen
 			GameObject obj = (GameObject)UnityEngine.Object.Instantiate(res, transform.position, new Quaternion(0.0f, 0.7f, -0.7f, 0.0f));
+			
+			//Geräusch machen
+			AudioSource.PlayClipAtPoint(ac_healthdrop, obj.collider.bounds.center);
 			
 			//Health Globe kurz nach oben bewegen lassen
 			obj.rigidbody.AddForce(Vector3.up * 4.0f, ForceMode.Impulse);

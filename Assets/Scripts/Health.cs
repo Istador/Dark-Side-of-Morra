@@ -9,6 +9,9 @@ public class Health : MonoBehaviour {
 	
 	
 	
+	private static AudioClip ac_pickupsound;
+	
+	
 	/// <summary>HP Wert von kleinen Health Globes</summary>
 	public static readonly int i_smallHP = 10;
 	
@@ -36,6 +39,8 @@ public class Health : MonoBehaviour {
 	void Start () {
 		//SpriteController hinzufügen
 		spriteCntrl = gameObject.AddComponent<SpriteController>();
+				
+		if(ac_pickupsound == null) ac_pickupsound = (AudioClip) Resources.Load("Sounds/healthpickup");
 		
 		if(big) txtState = 1;
 	}
@@ -52,7 +57,7 @@ public class Health : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		if(other.gameObject.layer == 8){ //fällt auf Level
 			//Gravitation ausschalten
-			rigidbody.isKinematic = true; 
+			rigidbody.isKinematic = true;
 			rigidbody.useGravity = false;
 		} else if(other.gameObject.tag == "Player"){ //Kollision mit Spieler
 			
@@ -62,7 +67,8 @@ public class Health : MonoBehaviour {
 			else 
 				SendHealthTo(other.gameObject, i_smallHP);
 			
-			//TODO PickUp-Geräusch
+			//PickUp-Geräusch
+			AudioSource.PlayClipAtPoint(ac_pickupsound, collider.bounds.center);
 			
 			Destroy(gameObject);
 		}
