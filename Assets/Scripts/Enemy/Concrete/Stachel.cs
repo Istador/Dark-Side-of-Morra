@@ -5,8 +5,8 @@ public class Stachel : MLeftRight<Stachel> {
 	
 	
 	
-	public override float maxSpeed { get{return 2.5f;} }
-	public override float maxForce { get{return 2.5f;} }
+	public override float maxSpeed { get{return 4.0f;} }
+	public override float maxForce { get{return 4.0f;} }
 	
 	
 	

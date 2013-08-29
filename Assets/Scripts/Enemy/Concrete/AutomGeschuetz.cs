@@ -5,6 +5,11 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	
 	
 	
+	/// <summary>Explosionsgeräusch</summary>
+	public static AudioClip ac_explosion;
+	
+	
+	
 	/// <summary>
 	/// Entfernung bei welcher der Spieler zu Dicht ist zum Starten von Raketen
 	/// </summary>
@@ -39,13 +44,23 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	
 	
 	
+	protected override void Start(){
+		base.Start();
+		
+		if(ac_explosion == null) ac_explosion = (AudioClip) Resources.Load("Sounds/explode");
+	}
+	
+	
+	
 	//Überschreiben um beim Tod zu explodieren
 	public override void Death(){
 				
 		//Explosionsanzeige
 		GameObject explosion = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("prefab Explosion"), transform.position, transform.rotation);
 		UnityEngine.Object.Destroy(explosion, 0.5f); //nach 0.5 sekunden explosion weg
-		//TODO : Soundgeräusch
+		
+		//Explosionsgeräusch
+		AudioSource.PlayClipAtPoint(ac_explosion, collider.bounds.center);
 		
 		base.Death();
 	}

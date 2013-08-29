@@ -189,10 +189,14 @@ public class PlayerController : MonoBehaviour
 	void ApplyDamage(Vector3 damage){
 		int dmg = Mathf.RoundToInt(damage.magnitude);
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
-		//TODO
+		
+		//TODO HP verringern
 		
 		//Geräusch
-		audio.PlayOneShot(hitSound);
+		
+		float volume = 0.2f + 0.8f * ((float)dmg)/30.0f; //ab 30 dmg volle lautstärke, dadrunter abhängig vom schaden
+		audio.PlayOneShot(hitSound, volume); 
+		
 	}
 	
 	
@@ -205,7 +209,8 @@ public class PlayerController : MonoBehaviour
 	/// </param>
 	void ApplyHealth(int hp){
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+hp+" hp received");
-		//TODO
+		
+		//TODO HP erhöhen
 	}
 	
 	
