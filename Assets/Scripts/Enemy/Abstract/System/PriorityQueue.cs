@@ -49,6 +49,15 @@ public class PriorityQueue<T> where T: IComparable<T> {
 	
 	
 	/// <summary>
+	/// Leert die Proiority Queue, so dass sie keine Elemente mehr enthält.
+	/// </summary>
+	public void Empty(){
+		list.Clear();
+		menge.Clear();
+	}
+	
+	
+	/// <summary>
 	/// Einfügen eines Elementes in Warteschleife, wenn nicht bereits vorhanden
 	/// </summary>
 	/// <param name='t'>

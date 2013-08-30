@@ -83,6 +83,14 @@ public class MessageDispatcher {
 	
 	
 	
+	/// <summary>
+	/// Löscht alle noch verbleibenden Nachrichten, z.B. bei einem Level Neustart
+	/// </summary>
+	public void EmptyQueue(){
+		pq.Empty();
+	}
+	
+	
 	/**
 	 * Singleton
 	*/

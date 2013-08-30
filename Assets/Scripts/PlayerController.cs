@@ -246,6 +246,7 @@ public class PlayerController : MonoBehaviour
 	/// </summary>
 	void ReloadLevel()
 	{
+		MessageDispatcher.Instance.EmptyQueue();
 		Application.LoadLevel(Application.loadedLevel);
 	}
 
