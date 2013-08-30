@@ -1,6 +1,3 @@
-// Converted from UnityScript to C# at http://www.M2H.nl/files/js_to_c.php - by Mike Hergaarden
-// Do test the code! You usually need to change a few small bits.
-
 using UnityEngine;
 using System.Collections;
 
@@ -46,13 +43,13 @@ public class CameraController : MonoBehaviour
 		{
 			if (cameraTarget.transform.position.y - playerHeight > 5) // if player moves 5 higher, camera follows
 			{
-				smoothMoveY();
 				StartCoroutine(WaitAndSetPlayerHeight(0.5f));
+				smoothMoveY();
 			}
 			if (cameraTarget.transform.position.y - playerHeight < -0.9) // if player moves 1 lower, camera follows
 			{
-				smoothMoveY();				
 				StartCoroutine(WaitAndSetPlayerHeight(0.5f));
+				smoothMoveY();				
 			}
 		}
 

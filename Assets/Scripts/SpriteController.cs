@@ -3,9 +3,6 @@ using System.Collections;
 
 public class SpriteController : MonoBehaviour
 {
-	
-	
-	
 	private static System.Random rnd = new System.Random();
 	
 	public int index {get; private set;}
@@ -18,15 +15,7 @@ public class SpriteController : MonoBehaviour
 	
 	
 	public void  animate (int columnSize, int rowSize, int colFrameStart, int rowFrameStart, int totalFrames, int framesPerSecond)
-	{
-		/*
-		 * TODO
-		 * 
-		 * Ist columnSize nicht eigtl. das selbe wie totalFrames ?
-		 * 
-		 * Ist colFrameStart nicht überflüssig weil es immer 0 ist ?
-		 */
-		
+	{		
 		// time control fps
 		index = (int) (Time.time * framesPerSecond);
 		// modulate
@@ -37,10 +26,10 @@ public class SpriteController : MonoBehaviour
 		// offset
 		float u = (index + (rndCol % columnSize )) % columnSize;
 		
-		//float v = index / columnSize; //v is always 0 because both are int and index < columnSize
-		//it also makes no sense to animate on the X axis AND on the Y axis simultaneously
+		//float v = (float) index /  (float) columnSize;
+
 				
-		Vector2 offset = new Vector2( (u + colFrameStart) * size.x, (1.0f - size.y) - ( (rowFrameStart) * size.y) );
+		Vector2 offset = new Vector2( (u + colFrameStart) * size.x, (1.0f - size.y) - ( (/*v + */rowFrameStart) * size.y) );
 		
 		// texture scale
 		renderer.material.mainTextureScale = size;

@@ -30,9 +30,14 @@ public class PlayerController : MonoBehaviour
 	public AudioClip jumpSound;
 	public AudioClip hitSound;
 
+	// health
+	const int MAX_HEALTH = 100;
+	public int currentHealth;
+
 	void  Start ()
 	{
 		characterController = GetComponent<CharacterController>();
+		currentHealth = MAX_HEALTH;
 	}
 
 	void  Update ()
@@ -40,6 +45,7 @@ public class PlayerController : MonoBehaviour
 		InputCheck();
 		Move();
 		Animate();
+		CheckForDeath();
 	}
 
 	void  InputCheck ()
@@ -179,7 +185,8 @@ public class PlayerController : MonoBehaviour
 	}
 	
 	
-	
+	// TODO param mit damage und dmg richtig kommentieren
+
 	/// <summary>
 	/// Schaden erhalten, der die HP verringert, und zum Tode führen kann
 	/// </summary>
@@ -190,8 +197,8 @@ public class PlayerController : MonoBehaviour
 		int dmg = Mathf.RoundToInt(damage.magnitude);
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
 		
-		//TODO HP verringern
-		
+		// HP verringern
+		currentHealth -= dmg;
 		//Geräusch
 		
 		float volume = 0.2f + 0.8f * ((float)dmg)/30.0f; //ab 30 dmg volle lautstärke, dadrunter abhängig vom schaden
@@ -210,9 +217,37 @@ public class PlayerController : MonoBehaviour
 	void ApplyHealth(int hp){
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+hp+" hp received");
 		
-		//TODO HP erhöhen
+		// HP erhöhen
+		currentHealth += hp;
 	}
 	
+
+	/// <summary>
+	/// Überprüft diverse Parameter und ruft bei Tod die Funtkion zum Neuladen des Levels auf.
+	/// </summary>
+	/// <param name='dead'>
+	/// Zustand ob tod oder nicht
+	/// </param>
+	void CheckForDeath()
+	{
+		if (currentHealth <= 0)
+		{
+			ReloadLevel();
+		}
+		if (transform.position.y <= -10)
+		{
+			ReloadLevel();
+		}
+
+	}
 	
+	/// <summary>
+	/// Läd das aktuelle Level neu
+	/// </summary>
+	void ReloadLevel()
+	{
+		Application.LoadLevel(Application.loadedLevel);
+	}
+
 	
 }
