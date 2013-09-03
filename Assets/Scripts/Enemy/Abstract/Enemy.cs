@@ -192,7 +192,7 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 			}
 			
 			//Health Globe erstellen
-			GameObject obj = (GameObject)UnityEngine.Object.Instantiate(res, transform.position, new Quaternion(0.0f, 0.7f, -0.7f, 0.0f));
+			GameObject obj = (GameObject)UnityEngine.Object.Instantiate(res, transform.position, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
 			
 			//Geräusch machen
 			AudioSource.PlayClipAtPoint(ac_healthdrop, obj.collider.bounds.center);

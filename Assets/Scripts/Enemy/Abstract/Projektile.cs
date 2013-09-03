@@ -71,7 +71,7 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 		Physics.IgnoreCollision(collider, player.collider, false);
 		Physics.IgnoreCollision(player.collider, collider, false);
 		
-		transform.RotateAroundLocal(zvector, deg90);
+		transform.Rotate(-90.0f, 0.0f, -90.0f);
 	}
 	
 	
@@ -88,6 +88,7 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 		base.Update();
 	}
 	
+	float inc = 0.0f;
 	protected void rotate(){
 		//Vector3 rotate = targetPos - transform.position; //sofort
 		Vector3 rotate = rigidbody.velocity; //träge
@@ -99,12 +100,12 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 			//float speed = 0.5f;
 			//transform.rotation = Quaternion.Slerp(transform.rotation, rot, speed*Time.deltaTime);
 		
+			inc += 0.02f;
 			//drehe Sprite um 90°
-			transform.RotateAroundLocal(zvector, deg90);
+			transform.Rotate(-90.0f, 0.0f, -90.0f);
 		}
 	}
 	
-	private static readonly Vector3 zvector = new Vector3(0.0f, 0.0f, -1.0f); //rotation um die Z-Achse
-	private static readonly float deg90 = Mathf.PI/2.0f; // = 90°
+	private static readonly Vector3 zvector = new Vector3(0.0f, 0.0f, 1.0f); //rotation um die Z-Achse
 	
 }
