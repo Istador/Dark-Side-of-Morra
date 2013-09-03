@@ -100,22 +100,6 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	
 	/// <summary>
-	/// Ob die Position rechts vom Gegner ist.
-	/// </summary>
-	public bool IsRight(Vector3 pos){
-		return Vector3.Dot((pos - collider.bounds.center), Vector3.right) > 0.0f;
-	}
-	
-	/// <summary>
-	/// Ob die Position über den Gegner ist.
-	/// </summary>
-	public bool IsOver(Vector3 pos){
-		return Vector3.Dot((pos - collider.bounds.center), Vector3.up) > 0.0f;
-	}
-	
-	
-	
-	/// <summary>
 	/// Ob der Spieler in Sichtweite und in Blickrichtung ist, sowie keine geometrie
 	/// zwischen Spieler und Gegner liegen.
 	/// </summary>

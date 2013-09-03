@@ -52,6 +52,20 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	
 	
 	
+	protected override void Update(){
+		base.Update();
+		
+		//Spieler rechts vom Geschütz
+		if(IsRight(player.collider.bounds.center)){
+			//Textur vertikal spiegeln
+			Vector2 tmp = gameObject.renderer.material.mainTextureScale;
+			tmp = new Vector2(-tmp.x, tmp.y);
+			gameObject.renderer.material.mainTextureScale = tmp;
+		}
+	}
+	
+	
+	
 	//Überschreiben um beim Tod zu explodieren
 	public override void Death(){
 				

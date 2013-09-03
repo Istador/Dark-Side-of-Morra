@@ -93,15 +93,6 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	
 	/// <summary>
-	/// Ob die Position rechts vom Gegner ist.
-	/// </summary>
-	public bool IsRight(Vector3 pos){
-		return Vector3.Dot((pos - collider.bounds.center), Vector3.right) > 0.0f;
-	}
-	
-	
-	
-	/// <summary>
 	/// Ob der Spieler in Sichtweite und in Blickrichtung ist, sowie keine geometrie
 	/// zwischen Spieler und Gegner liegen.
 	/// </summary>

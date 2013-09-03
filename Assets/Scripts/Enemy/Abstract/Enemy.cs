@@ -306,4 +306,21 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	}
 	
 	
+	
+	/// <summary>
+	/// Ob die Position rechts vom Gegner ist.
+	/// </summary>
+	public bool IsRight(Vector3 pos){
+		return Vector3.Dot((pos - collider.bounds.center), Vector3.right) > 0.0f;
+	}
+	
+	
+	
+	/// <summary>
+	/// Ob die Position über den Gegner ist.
+	/// </summary>
+	public bool IsOver(Vector3 pos){
+		return Vector3.Dot((pos - collider.bounds.center), Vector3.up) > 0.0f;
+	}
+	
 }
