@@ -13,7 +13,7 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	/// <summary>
 	/// Entfernung bei welcher der Spieler zu Dicht ist zum Starten von Raketen
 	/// </summary>
-	public static readonly float f_closeRange = 1.5f;
+	public static readonly float f_closeRange = 2.0f;
 	
 	/// <summary>
 	/// Entfernung bei welcher der Spieler zu weit entfernt ist zum Starten von Raketen
