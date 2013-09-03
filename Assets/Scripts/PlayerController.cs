@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 	private Vector2 moveDirection = Vector2.zero;
 	private bool  InputJump		= false;
 	private bool  isOnLadder	= false;
-	private bool  lookRight		= true;
+	public  bool  lookRight		= true;
 
 	// animation
 	public int columnSize		= 10;
@@ -34,6 +34,11 @@ public class PlayerController : MonoBehaviour
 	const int MAX_HEALTH = 100;
 	public int currentHealth;
 
+	// shoot
+	public Transform bullet;
+	public Transform bulletSpawn;
+	private bool	  InputShoot = false;
+
 	void  Start ()
 	{
 		characterController = GetComponent<CharacterController>();
@@ -44,6 +49,7 @@ public class PlayerController : MonoBehaviour
 	{
 		InputCheck();
 		Move();
+		Shoot();
 		Animate();
 		CheckForDeath();
 	}
@@ -70,6 +76,15 @@ public class PlayerController : MonoBehaviour
 		else
 		{
 			InputJump = false;
+		}
+
+		if (Input.GetButtonDown("Fire1"))
+		{
+			InputShoot = true;
+		}
+		else
+		{
+			InputShoot = false;
 		}
 	}
 
@@ -118,6 +133,23 @@ public class PlayerController : MonoBehaviour
 		{
 			isOnLadder = false;
 			// character is out of the trigger
+		}
+	}
+
+	void Shoot ()
+	{
+		if (InputShoot)
+		{
+			if (bullet)
+			{
+				Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);	
+			}
+			else
+			{
+				Debug.Log("No Bullet! Please assign in Inspector!");
+			}
+			
+			audio.PlayOneShot(shootSound, 1); 
 		}
 	}
 
