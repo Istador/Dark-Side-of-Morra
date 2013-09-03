@@ -18,7 +18,7 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 	/// <summary>Ob der Gegner sich auf einer Leiter befindet. Wird von außen verändert</summary>
 	public bool IsOnLadder = false;
 	
-	
+		
 	
 	/// <summary>
 	/// Beschränkt die Bewegung auf Links/Rechts durch Drehung
@@ -26,18 +26,20 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 	protected override Vector3 FilterForce(Vector3 vIn){
 		if(IsOnLadder){
 			if(vIn == Vector3.zero) 
-			return vIn;
-		
-			float a = Vector3.Angle(Vector3.left, vIn);
+				return vIn;
+			
+			float a = Mathf.Atan2 (vIn.x, vIn.y) * Mathf.Rad2Deg + 90.0f;
+			// -90 links, 90° rechts, 0° oben, 180° unten
+			
 			
 			if( (a >= -45.0f && a < 45.0f) || a >= 315.0f || a < -315.0f)
-				return Vector3.left * vIn.magnitude;
+				return Vector3.left * vIn.magnitude * 0.5f;
 			if( (a >=45.0f && a < 135.0f) || (a >= -135.0f && a < -45.0f) )
-				return Vector3.up * vIn.magnitude;
+				return Vector3.up * vIn.magnitude * 0.5f;
 			if( (a >= 135.0f && a < 225.0f) || (a >= -225.0f && a < -135.0f) )
-				return Vector3.right * vIn.magnitude;
+				return Vector3.right * vIn.magnitude * 0.5f;
 			if( (a >= 225.0f && a < 315.0f) || (a >= -315.0f && a < -225.0f) )
-				return Vector3.down * vIn.magnitude;
+				return Vector3.down * vIn.magnitude * 0.5f;
 			return Vector3.zero;
 		} else {
 			return base.FilterForce(vIn);
@@ -58,6 +60,16 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 		
 		int level = 1<<8;
 		int leiter = 1<<12;
+		
+		//nicht in der Mitte der Leiter
+		if(
+			!(
+			     Physics.Linecast(pos + left, pos, leiter) //links nach mitte
+			  && Physics.Linecast(pos + right, pos, leiter) //rechts nach mitte
+			)
+		){
+			return false;
+		}
 		
 		//keine Wand
 		if(
@@ -85,7 +97,7 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 	
 	private bool CanClimbToHeading(Vector3 heading){
 		Bounds bb = collider.bounds;
-		Vector3 direction = bb.center + heading * bb.size.x/1.95f;
+		Vector3 direction = bb.center + heading * bb.size.y/1.95f;
 		return CanClimbToDirection(direction);
 	}
 	

@@ -71,7 +71,18 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	protected override void Update(){
 		SetSprite(DetermineSprite());
+		
+		if(MoveFSM.GetCurrentState() != SLClimbU.Instance 
+			&& MoveFSM.GetCurrentState() != SLClimbD.Instance 
+			){
+			if(CanClimbUp()){
+				MoveFSM.ChangeState(SLClimbU.Instance);
+			}
+		}
+		
 		base.Update();
+		
+		Debug.DrawLine(collider.bounds.center, collider.bounds.center + rigidbody.velocity, Color.green);
 		//Debug.Log(MoveFSM.GetCurrentState());
 	}
 	
@@ -93,6 +104,13 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	/// </summary>
 	public bool IsRight(Vector3 pos){
 		return Vector3.Dot((pos - collider.bounds.center), Vector3.right) > 0.0f;
+	}
+	
+	/// <summary>
+	/// Ob die Position über den Gegner ist.
+	/// </summary>
+	public bool IsOver(Vector3 pos){
+		return Vector3.Dot((pos - collider.bounds.center), Vector3.up) > 0.0f;
 	}
 	
 	
@@ -191,7 +209,22 @@ public class Soldier : MLeftRightClimb<Soldier> {
 		Vector3 f = steering.Calculate();
 		if(f == Vector3.zero)
 			return Vector3.zero;
-		else if(IsRight(collider.bounds.center + rigidbody.velocity))
+		
+		if(IsOnLadder){
+			float a = Mathf.Atan2 (f.x, f.y) * Mathf.Rad2Deg + 90.0f;
+			
+			if( (a >= -45.0f && a < 45.0f) || a >= 315.0f || a < -315.0f)
+				return Vector3.left;
+			if( (a >=45.0f && a < 135.0f) || (a >= -135.0f && a < -45.0f) )
+				return Vector3.up;
+			if( (a >= 135.0f && a < 225.0f) || (a >= -225.0f && a < -135.0f) )
+				return Vector3.right;
+			if( (a >= 225.0f && a < 315.0f) || (a >= -315.0f && a < -225.0f) )
+				return Vector3.down;
+			return Vector3.zero;
+		}
+		
+		if(IsRight(collider.bounds.center + rigidbody.velocity))
 			return Vector3.right;
 		else
 			return Vector3.left;
@@ -202,16 +235,29 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	public int DetermineSprite(){
 		Vector3 h = Heading();
 		Vector3 m = Moving();
+		
+		//auf Leiter
+		if(IsOnLadder){
+			if(m == Vector3.up) return 7;	//nach oben
+			if(m == Vector3.down) return 8; //nach unten
+			return 6;						//stehen/links/rechts
+		}
+		
 		//keine Bewegung
 		if(m == Vector3.zero){
-			if(h == Vector3.left) return 2;
-			else return 3;
-		} else if(m == h){
-			if(h == Vector3.left) return 0;
-			else return 1;
-		} else {
-			if(h == Vector3.left) return 4;
-			else return 5;
+			if(h == Vector3.left) return 2;	//nach links gucken
+			else return 3;					//nach rechts gucken
+		}
+		
+		//Bewegung == Blickrichtung
+		if(m == h){ 
+			if(h == Vector3.left) return 0;	//nach links
+			else return 1;					//nach rechts
+		}
+		//Bewegung != Blickrichtung
+		else {
+			if(h == Vector3.left) return 4;	//nach rechts gehen, links gucken
+			else return 5;					//nach links gehen, rechts gucken
 		}
 	}
 	
