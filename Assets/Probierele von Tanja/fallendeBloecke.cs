@@ -2,8 +2,12 @@ using UnityEngine;
 using System.Collections;
 
 public class fallendeBloecke : MonoBehaviour, MessageReceiver {
+	
 	public float zeitBisFall = 1.0f;
-	public GameObject owner;
+	
+	public GameObject owner; //Block zu dem dieser Collider gehört
+	
+	private bool touched = false; //damit der Spieler nicht mehrfach OnTriggerEnter ausführt
 	
 	//Sound fürs bröckeln des Blocks
 	private static AudioClip ac_disapear; 
@@ -27,7 +31,8 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 	
 	
 	void OnTriggerEnter(Collider other) {
-		if(other.gameObject.tag == "Player"){
+		if(!touched && other.gameObject.tag == "Player"){
+			touched = true;
 			//Nachricht an sich selbst für später
 			MessageDispatcher.Instance.Dispatch(this,this,"verschwinden",zeitBisFall,null);
 			//Rote Textur benutzen
@@ -49,6 +54,7 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 				MessageDispatcher.Instance.Dispatch(this,this,"auftauchen",3.0f,null);
 				return true;
 			case "auftauchen":
+				touched = false;
 				owner.renderer.materials = normal; //Normale Textur benutzen
 				owner.renderer.enabled = true; //Sichtbar werden
 				owner.collider.enabled = true; //Kollisionen einschalten
