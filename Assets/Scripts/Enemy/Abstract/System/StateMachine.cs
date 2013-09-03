@@ -84,10 +84,11 @@ public class StateMachine<T> : MessageReceiver {
 	/// der neue Zustand zu dem gewechselt werden soll.
 	/// </param>
 	public void ChangeState(State<T> state){
+		if(currentState!=null) currentState.Exit(owner);
+		
 		previousState = currentState;
 		currentState = state;
 		
-		if(previousState!=null) previousState.Exit(owner);
 		if(currentState!=null) currentState.Enter(owner);
 	}
 	

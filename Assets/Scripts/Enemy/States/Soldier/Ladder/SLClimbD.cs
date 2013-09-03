@@ -6,29 +6,27 @@ public class SLClimbD : State<Enemy<Soldier>> {
 	
 	
 	public override void Enter(Enemy<Soldier> owner){
-		((Soldier)owner).IsOnLadder = true;
 		owner.rigidbody.velocity = Vector3.zero;
 		owner.rigidbody.angularVelocity = Vector3.zero;
-		owner.rigidbody.useGravity = false;
 	}
 	
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
-		if(((Soldier)owner).CanClimbDown()){
-			((Soldier)owner).steering.SetTarget(owner.collider.bounds.center + Vector3.down * ((Soldier)owner).maxSpeed);
-		} else {
-			owner.MoveFSM.ChangeState(SLClimbU.Instance);
+		//kann nicht weiter nach unten
+		if( ! ((Soldier)owner).CanClimbDown()){
+			//verlasse die Leiter nach oben
+			owner.MoveFSM.ChangeState(SLLeaveU.Instance);
+			return;
 		}
 		
+		//weiter nach unten
+		((Soldier)owner).steering.SetTarget(owner.collider.bounds.center + Vector3.down * ((Soldier)owner).maxSpeed);
 	}
 	
 	
 	
-	public override void Exit(Enemy<Soldier> owner){
-		//((Soldier)owner).IsOnLadder = false;
-		owner.rigidbody.useGravity = true;
-	}
+	public override void Exit(Enemy<Soldier> owner){}
 	
 	
 	

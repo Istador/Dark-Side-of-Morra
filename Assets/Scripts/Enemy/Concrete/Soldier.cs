@@ -68,16 +68,13 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	}
 	
 	
-	
+	bool once = true;
 	protected override void Update(){
 		SetSprite(DetermineSprite());
 		
-		if(MoveFSM.GetCurrentState() != SLClimbU.Instance 
-			&& MoveFSM.GetCurrentState() != SLClimbD.Instance 
-			){
-			if(CanClimbUp()){
-				MoveFSM.ChangeState(SLClimbU.Instance);
-			}
+		if(once && CanClimbUp() ){
+			once = false;
+			MoveFSM.ChangeState(SLEnter.Instance);
 		}
 		
 		base.Update();

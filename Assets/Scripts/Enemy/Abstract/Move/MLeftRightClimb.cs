@@ -83,9 +83,9 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 		//nicht das Ende der Leiter
 		//kollidiert nicht wenn der Line-Ursprung innerhalb der Leiter ist, deshalb umgedrehte Logik
 		if(
-			   Physics.Linecast(direction + left, pos + left, leiter) //links
-			|| Physics.Linecast(direction, pos, leiter) //mitte
-			|| Physics.Linecast(direction + right, pos + right, leiter) //rechts
+			//   Physics.Linecast(direction + left, pos + left, leiter) //links
+			/*||*/ Physics.Linecast(direction, pos, leiter) //mitte
+			//|| Physics.Linecast(direction + right, pos + right, leiter) //rechts
 		){
 			return false;
 		}
@@ -95,6 +95,7 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 	
 	
 	
+	//Hilfsmethode
 	private bool CanClimbToHeading(Vector3 heading){
 		Bounds bb = collider.bounds;
 		Vector3 direction = bb.center + heading * bb.size.y/1.95f;
@@ -103,26 +104,76 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 	
 	
 	
+	/// <summary>Ob der Gegner weiter nach oben klettern kann (kein Hindernis, nicht das Leiterende)</summary>
 	public bool CanClimbUp(){
 		return CanClimbToHeading(Vector3.up);
 	}
-	
-	
-	
+	/// <summary>Ob der Gegner weiter nach unten klettern kann (kein Hindernis, nicht das Leiterende)</summary>
 	public bool CanClimbDown(){
 		return CanClimbToHeading(Vector3.down);
 	}
 	
 	
 	
-	public bool CanClimbLeft(){
-		return CanMoveLeft();
+	//Hilfsmethode
+	private bool IsPlatformBelow(Vector3 heading){
+		Bounds bb = collider.bounds;
+		Vector3 pos = bb.center;
+		Vector3 direction = heading * bb.size.x/1.7f + Vector3.down * bb.size.y/1.9f;
+		int layer = 1<<8; //Level
+		
+		Debug.DrawLine(pos, pos + direction, Color.yellow);
+		return Physics.Linecast(pos, pos + direction, layer);
 	}
 	
 	
 	
+	/// <summary>Ob Rechts unter dem Gegner eine Platform ist die betreten werden kann</summary>
+	public bool IsPlatformRight(){
+		return IsPlatformBelow(Vector3.right);
+	}
+	/// <summary>Ob Links unter dem Gegner eine Platform ist die betreten werden kann</summary>
+	public bool IsPlatformLeft(){
+		return IsPlatformBelow(Vector3.right);
+	}
+	
+	
+	
+	//Hilfsmethode
+	private bool CanClimbLeftRight(Vector3 heading){
+		Bounds bb = collider.bounds;
+		Vector3 pos = bb.center;
+		
+		Vector3 up = Vector3.up * bb.size.y/2.05f;
+		Vector3 down = Vector3.down * bb.size.y/2.2f;
+		
+		Vector3 vFrom = pos - heading * bb.size.x / 4.0f;
+		Vector3 vTo = pos + heading * bb.size.x/1.95f;
+		
+		
+		int level = 1<<8; //Level
+		int leiter = 1<<12; //Leiter
+		
+		//Hindernisse?
+		if(
+			   Physics.Linecast(pos + up, vTo + up, level)		//Hindernis oben
+			|| Physics.Linecast(pos, vTo, level)				//Hindernis mitte
+			|| Physics.Linecast(pos + down, vTo + down, level)	//Hindernis unten
+		){
+			return false;
+		}
+		
+		//Leiter vorhanden?
+		return Physics.Linecast(vTo, vFrom, leiter);
+	}
+	
+	
+	
+	public bool CanClimbLeft(){
+		return CanMoveLeft() || CanClimbLeftRight(Vector3.left);
+	}
 	public bool CanClimbRight(){
-		return CanMoveRight();
+		return CanMoveRight() || CanClimbLeftRight(Vector3.right);
 	}
 	
 	

@@ -45,21 +45,22 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 	
 	private bool CanMoveToDirection(Vector3 direction){
 		Bounds bb = collider.bounds;
+		Vector3 pos = bb.center;
 		
 		Vector3 up = Vector3.up * bb.size.y/2.05f;
 		Vector3 down = Vector3.down * bb.size.y/2.1f;
 		
-		Debug.DrawLine(bb.center, direction, Color.red);
-		Debug.DrawLine(bb.center + up, direction + up, Color.red);
-		Debug.DrawLine(bb.center + down, direction + down, Color.red);
+		Debug.DrawLine(pos, direction, Color.red);
+		Debug.DrawLine(pos + up, direction + up, Color.red);
+		Debug.DrawLine(pos + down, direction + down, Color.red);
 		Debug.DrawLine(direction, direction + down * 1.2f, Color.blue);
 		
 		int layer = 1<<8; //Layer 8: Level (also  Kollision mit Level-Geometrie)
 		//Kollision mit Level (z.B. Wand)
 		if(
-			   Physics.Linecast(bb.center+up, direction+up, layer) //oben
-			|| Physics.Linecast(bb.center, direction, layer) //mitte
-			|| Physics.Linecast(bb.center+down, direction+down, layer) //unten
+			   Physics.Linecast(pos + up, direction + up, layer) //oben
+			|| Physics.Linecast(pos, direction, layer) //mitte
+			|| Physics.Linecast(pos + down, direction + down, layer) //unten
 			|| ! Physics.Linecast(direction, direction + down * 1.2f, layer) //boden vorhanden
 		){
 			return false;
