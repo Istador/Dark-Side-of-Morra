@@ -29,6 +29,13 @@ public class SLClimbD : State<Enemy<Soldier>> {
 		
 		//kann nicht weiter nach unten
 		if( ! ((Soldier)owner).CanClimbDown()){
+			//kann auch nicht weiter nach oben
+			if( ! ((Soldier)owner).CanClimbUp() ){
+				//Betrete die Leiter neu
+				owner.MoveFSM.ChangeState(SLEnter.Instance);
+				return;
+			}
+			
 			//verlasse die Leiter nach oben
 			owner.MoveFSM.ChangeState(SLLeaveU.Instance);
 			return;
