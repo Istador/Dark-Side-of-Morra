@@ -15,14 +15,21 @@ public class SSoldierStay : State<Enemy<Soldier>> {
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
+		Vector3 pos = owner.player.collider.bounds.center;
+		
 		//Spieler nicht sichtbar
 		if(!owner.LineOfSight(owner.player)){
 			owner.MoveFSM.ChangeState(SSoldierSeekPosition.Instance);
 			return;
 		}
 		
+		//Höhe nicht in Ordnung
+		if(!((Soldier)owner).IsHeightOk(pos)){
+			owner.MoveFSM.ChangeState(SSoldierSeekPosition.Instance);
+			return;
+		}
+		
 		//Distanz zum Spieler ermitteln
-		Vector3 pos = owner.player.collider.bounds.center;
 		float distance = owner.DistanceTo(pos);
 		//zu nah
 		if(distance < Soldier.f_optimum_min)

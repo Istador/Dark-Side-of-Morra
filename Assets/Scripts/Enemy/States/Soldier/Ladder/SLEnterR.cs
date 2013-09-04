@@ -21,7 +21,6 @@ public class SLEnterR : State<Enemy<Soldier>> {
 	public override void Execute(Enemy<Soldier> owner){
 		//kann nach oben oder unten klettern -> mitte erreicht
 		if(   ((Soldier)owner).CanClimbUp() || ((Soldier)owner).CanClimbDown()   ){
-			Debug.Log(((Soldier)owner).steering.Calculate()+" => "+owner.rigidbody.velocity);
 			owner.MoveFSM.ChangeState(SLClimb.Instance);
 			return;
 		}

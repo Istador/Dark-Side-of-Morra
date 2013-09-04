@@ -27,9 +27,6 @@ public class SLEnter : State<Enemy<Soldier>> {
 		owner.rigidbody.useGravity = false;	
 		
 		//Herausfinden ob die Leiter links oder rechts ist.
-		Vector3 pos = owner.collider.bounds.center;
-		
-		
 		//Richtung zur Leitermitte
 		Vector3 heading = ((Soldier)owner).DirectionToLadder();
 		

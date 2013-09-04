@@ -9,6 +9,7 @@ public class SLLeaveU : State<Enemy<Soldier>> {
 	
 	
 	public override void Enter(Enemy<Soldier> owner){
+		Debug.Log("SLLeaveU");
 		//anhalten
 		owner.rigidbody.velocity = Vector3.zero;
 		owner.rigidbody.angularVelocity = Vector3.zero;
@@ -33,7 +34,7 @@ public class SLLeaveU : State<Enemy<Soldier>> {
 		//kann nicht weiter nach oben
 		if( ! ((Soldier)owner).CanClimbUp()){
 			//gehe wieder nach unten
-			owner.MoveFSM.ChangeState(SLClimbD.Instance);
+			owner.MoveFSM.ChangeState(SLLeaveD.Instance);
 			return;
 		}
 		

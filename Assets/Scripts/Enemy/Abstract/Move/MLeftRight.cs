@@ -43,17 +43,22 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 	
 	
 	
-	private bool CanMoveToDirection(Vector3 direction){
+	private bool CanMoveToHeading(Vector3 heading){
 		Bounds bb = collider.bounds;
 		Vector3 pos = bb.center;
 		
+		Vector3 direction = bb.center + heading * bb.size.x/1.95f;
+		Vector3 direction2 = bb.center + heading * bb.size.x/4.0f;
+		
 		Vector3 up = Vector3.up * bb.size.y/2.05f;
 		Vector3 down = Vector3.down * bb.size.y/2.1f;
+		Vector3 down2 = Vector3.down * bb.size.y/1.8f;
 		
 		Debug.DrawLine(pos, direction, Color.red);
 		Debug.DrawLine(pos + up, direction + up, Color.red);
 		Debug.DrawLine(pos + down, direction + down, Color.red);
 		Debug.DrawLine(direction, direction + down * 1.2f, Color.blue);
+		Debug.DrawLine(direction2, direction2 + down * 1.2f, Color.blue);
 		
 		int layer = 1<<8; //Layer 8: Level (also  Kollision mit Level-Geometrie)
 		//Kollision mit Level (z.B. Wand)
@@ -61,7 +66,8 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 			   Physics.Linecast(pos + up, direction + up, layer) //oben
 			|| Physics.Linecast(pos, direction, layer) //mitte
 			|| Physics.Linecast(pos + down, direction + down, layer) //unten
-			|| ! Physics.Linecast(direction, direction + down * 1.2f, layer) //boden vorhanden
+			|| ! Physics.Linecast(direction, direction + down2, layer) //boden vorhanden
+			|| ! Physics.Linecast(direction2, direction2 + down2, layer) //boden vorhanden
 		){
 			return false;
 		} else {
@@ -69,15 +75,7 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 		}
 	}
 	
-	
-	
-	private bool CanMoveToHeading(Vector3 heading){
-		Bounds bb = collider.bounds;
-		Vector3 direction = bb.center + heading * bb.size.x/1.95f;
-		return CanMoveToDirection(direction);
-	}
-	
-	
+		
 	
 	public bool CanMoveLeft(){
 		return CanMoveToHeading(Vector3.left);

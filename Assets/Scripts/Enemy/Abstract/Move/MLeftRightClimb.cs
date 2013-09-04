@@ -51,8 +51,8 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 	public bool CanClimbToDirection(Vector3 direction){
 		Bounds bb = collider.bounds;
 		Vector3 pos = bb.center;
-		Vector3 left = Vector3.left * bb.size.x/2.05f;
-		Vector3 right = Vector3.right * bb.size.x/2.05f;
+		Vector3 left = Vector3.left * bb.size.x/2.15f;
+		Vector3 right = Vector3.right * bb.size.x/2.15f;
 		
 		Debug.DrawLine(pos, direction, Color.red);
 		Debug.DrawLine(pos + left, direction + left, Color.red);
@@ -120,15 +120,28 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 		Bounds bb = collider.bounds;
 		Vector3 pos = bb.center;
 		Vector3 direction = heading * bb.size.x/1.0f;
-		Vector3 down1 = Vector3.down * bb.size.y/2.2f;
-		Vector3 down2 = Vector3.down * bb.size.y/1.8f;
+		Vector3 down = Vector3.down * bb.size.y/1.8f;
 		int layer = 1<<8; //Level
 		
-		Debug.DrawLine(pos + down1, pos + direction + down1, Color.red);
-		Debug.DrawLine(pos, pos + direction + down2, Color.yellow);
-		return 
-			! Physics.Linecast(pos + down1, pos + direction + down1, layer) //Platform nicht neben einem
-			&& Physics.Linecast(pos, pos + direction + down2, layer); //Platform unter einem
+		
+		Debug.DrawLine(pos, pos + direction + down, Color.yellow);
+		Debug.DrawLine(pos + down*0.9f, pos + direction + down*0.9f, Color.red);
+		Debug.DrawLine(pos + down*0.8f, pos + direction + down*0.8f, Color.red);
+		Debug.DrawLine(pos + down*0.6f, pos + direction + down*0.6f, Color.red);
+		Debug.DrawLine(pos + down*0.4f, pos + direction + down*0.4f, Color.red);
+		Debug.DrawLine(pos + down*0.2f, pos + direction + down*0.2f, Color.red);
+		Debug.DrawLine(pos, pos + direction, Color.red);
+		
+		return Physics.Linecast(pos, pos + direction + down, layer) //Platform unter einem
+			//Platform nicht neben einem	
+			&& ! Physics.Linecast(pos + down*0.9f, pos + direction + down*0.9f, layer)
+			&& ! Physics.Linecast(pos + down*0.8f, pos + direction + down*0.8f, layer)
+			&& ! Physics.Linecast(pos + down*0.6f, pos + direction + down*0.6f, layer)
+			&& ! Physics.Linecast(pos + down*0.4f, pos + direction + down*0.4f, layer)
+			&& ! Physics.Linecast(pos + down*0.2f, pos + direction + down*0.2f, layer)
+			&& ! Physics.Linecast(pos, pos + direction, layer)
+			;
+			 
 	}
 	
 	
@@ -173,14 +186,14 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 		Bounds bb = collider.bounds;
 		Vector3 pos = bb.center;
 		
-		Vector3 up = Vector3.up * bb.size.y/2.05f;
-		Vector3 down = Vector3.down * bb.size.y/2.2f;
+		//Vector3 up = Vector3.up * bb.size.y/2.05f;
+		//Vector3 down = Vector3.down * bb.size.y/2.2f;
 		
 		Vector3 vFrom = pos - heading * bb.size.x / 4.0f;
 		Vector3 vTo = pos + heading * bb.size.x / 1.0f;
 		
 		
-		int level = 1<<8; //Level
+		//int level = 1<<8; //Level
 		int leiter = 1<<12; //Leiter
 		
 		

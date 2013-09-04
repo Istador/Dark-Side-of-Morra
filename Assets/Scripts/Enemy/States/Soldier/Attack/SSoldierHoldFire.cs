@@ -7,7 +7,7 @@ public class SSoldierHoldFire : State<Enemy<Soldier>> {
 	
 	public override void Execute(Enemy<Soldier> owner){
 		//auf Spieler kann geschossen werden
-		if(((Soldier)owner).IsPlayerInFireRange()){
+		if(((Soldier)owner).IsPlayerInFireRange() && ! ((Soldier)owner).IsOnLadder){
 			//zum Feuern Zustand wechseln
 			owner.AttackFSM.ChangeState(SSoldierFire.Instance);
 		}

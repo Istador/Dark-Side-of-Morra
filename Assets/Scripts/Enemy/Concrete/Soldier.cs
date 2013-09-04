@@ -118,9 +118,24 @@ public class Soldier : MLeftRightClimb<Soldier> {
 			   distance <= f_outOfRange		//in Reichweite
 			&& LineOfSight(player)			//Sicht frei
 			&& IsPlayerInfront()			//vor dem Gegner
-			&& Mathf.Abs(collider.bounds.center.y - player.collider.bounds.center.y) < (collider.bounds.size.y)
-			//Höhenunterschied nicht zu groß
+			&& IsHeightOk(player.collider.bounds.center) //Höhenunterschied nicht zu groß
 		);
+	}
+	
+	
+	/// <summary>
+	/// Ob die Höhe der Position innerhalb der des Gegners ist (ob grob auf selber Ebene)
+	/// </summary>
+	public bool IsHeightOk(Vector3 pos){
+		return Mathf.Abs(collider.bounds.center.y - pos.y) < (collider.bounds.size.y / 2.0f);
+	}
+	
+	
+	/// <summary>
+	/// Die Position ist direkt über oder unter dem Gegner
+	/// </summary>
+	public bool DirectlyAboveOrUnder(Vector3 pos){
+		return Mathf.Abs(collider.bounds.center.x - pos.x) < (collider.bounds.size.x / 2.0f);
 	}
 	
 	

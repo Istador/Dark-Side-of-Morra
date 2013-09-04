@@ -19,7 +19,11 @@ public class SLClimbU : State<Enemy<Soldier>> {
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
-		//TODO: feststellen ob auf Höhe des Spielers
+		//auf Höhe des Spielers
+		if( ((Soldier)owner).IsHeightOk( ((Soldier)owner).LastKnownPosition() )  ){
+			owner.MoveFSM.ChangeState(SLLeaveU.Instance);
+			return;	
+		}
 		
 		//Player bereits unter einen
 		if( ! ((Soldier)owner).IsOver( ((Soldier)owner).LastKnownPosition() )  ){

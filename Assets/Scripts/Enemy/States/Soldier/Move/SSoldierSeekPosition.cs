@@ -12,19 +12,44 @@ public class SSoldierSeekPosition : State<Enemy<Soldier>> {
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
-		if(owner.LineOfSight(owner.player)){
+		Vector3 pos = ((Soldier)owner).LastKnownPosition();
+		
+		if(owner.LineOfSight(owner.player) && ((Soldier)owner).IsHeightOk(pos)){
 			owner.MoveFSM.ChangeState(SSoldierStay.Instance);
 			return;
 		}
 		
+		//höhe nicht in Ordnung
+		if( ! ((Soldier)owner).IsHeightOk(pos) ){
+			//auf Leiter
+			if( 
+				(
+					((Soldier)owner).CanClimbUp() && ((Soldier)owner).IsOver(pos)  
+				)
+				||
+				(
+					((Soldier)owner).CanClimbDown() && ! ((Soldier)owner).IsOver(pos)
+				)
+			){
+				owner.MoveFSM.ChangeState(SLEnter.Instance);
+				return;
+			}
+		}
+		
 		//Distanz zur letzt bekannten Spielerposition ermitteln
-		Vector3 pos = ((Soldier)owner).LastKnownPosition();
 		float distance = owner.DistanceTo(pos);
 		
 		//position erreicht
 		if(distance <= 0.05f ){
 			owner.MoveFSM.ChangeState(SSoldierStay.Instance);
 			return;
+		}
+		
+		//Position die Angestrebt wird befindet sich direkt über oder unter
+		//dem Gegner
+		if( ((Soldier)owner).DirectlyAboveOrUnder(pos) ){
+			//Bewege in die Richtung weiter, nicht zum Ziel
+			pos = owner.collider.bounds.center + ((Soldier)owner).Heading() * ((Soldier)owner).maxSpeed;
 		}
 		
 		//Kann sich in gewünschte Richtung bewegen
