@@ -2,13 +2,14 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// Verlasse die Leiter nach Links
+/// Betrete die Leiter von Rechts nach Links
 /// </summary>
-public class SLLeaveL : State<Enemy<Soldier>> {
+public class SLEnterL : State<Enemy<Soldier>> {
 	
 	
 	
 	public override void Enter(Enemy<Soldier> owner){
+		Debug.Log("SLEnterL");
 		//anhalten
 		owner.rigidbody.velocity = Vector3.zero;
 		owner.rigidbody.angularVelocity = Vector3.zero;
@@ -18,21 +19,20 @@ public class SLLeaveL : State<Enemy<Soldier>> {
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
-		//kann gehen statt klettern
-		if(((Soldier)owner).CanMoveLeft()){
-			owner.MoveFSM.ChangeState(SLLeave.Instance);
+		//kann nach oben oder unten klettern -> mitte erreicht
+		if(   ((Soldier)owner).CanClimbUp() || ((Soldier)owner).CanClimbDown()   ){
+			owner.MoveFSM.ChangeState(SLClimb.Instance);
+			return;
 		}
 		
-		//kann nur klettern
-		else if(
-			((Soldier)owner).CanClimbLeft()
-		){
+		//kann nach links gehen oder klettern
+		if(   ((Soldier)owner).CanClimbLeft()   ){
+			//Bewegung nach links
 			Vector3 direction = owner.collider.bounds.center + Vector3.left * ((Soldier)owner).maxSpeed;
 			((Soldier)owner).steering.SetTarget(direction);
 			((Soldier)owner).steering.Seek(true);
 		}
-		
-		//nicht klettern - Hindernis? wieder auf die Leiter zurück
+		//klettern nicht möglich - Hindernis? wieder zurück
 		else {
 			owner.MoveFSM.ChangeState(SLEnter.Instance);
 		}
@@ -47,10 +47,10 @@ public class SLLeaveL : State<Enemy<Soldier>> {
 	/**
 	 * Singleton
 	*/
-	private static SLLeaveL instance;
-	private SLLeaveL(){}
-	public static SLLeaveL Instance{get{
-			if(instance==null) instance = new SLLeaveL();
+	private static SLEnterL instance;
+	private SLEnterL(){}
+	public static SLEnterL Instance{get{
+			if(instance==null) instance = new SLEnterL();
 			return instance;
 		}}
 	

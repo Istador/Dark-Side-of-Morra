@@ -9,8 +9,10 @@ public class SLLeaveU : State<Enemy<Soldier>> {
 	
 	
 	public override void Enter(Enemy<Soldier> owner){
+		//anhalten
 		owner.rigidbody.velocity = Vector3.zero;
 		owner.rigidbody.angularVelocity = Vector3.zero;
+		((Soldier)owner).steering.Seek(false);
 	}
 	
 	
@@ -37,6 +39,8 @@ public class SLLeaveU : State<Enemy<Soldier>> {
 		
 		//weiter nach oben
 		((Soldier)owner).steering.SetTarget(owner.collider.bounds.center + Vector3.up * ((Soldier)owner).maxSpeed);
+		((Soldier)owner).steering.Seek(true);
+		
 	}
 	
 	

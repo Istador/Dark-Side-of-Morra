@@ -6,7 +6,11 @@ public class SSoldierEngaged : State<Enemy<Soldier>> {
 	
 	
 	public override void Enter(Enemy<Soldier> owner){
-		owner.MoveFSM.ChangeState(SSoldierStay.Instance);
+		//wenn der Gegner sich nicht auf der Leiter befindet
+		if(! ((Soldier)owner).IsOnLadder)
+			//auf Verfolgungszustände wechseln
+			owner.MoveFSM.ChangeState(SSoldierStay.Instance);
+		//merke die Position des Spielers
 		((Soldier)owner).RememberNow();
 	}
 	

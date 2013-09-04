@@ -9,6 +9,8 @@ public class SLLeave : State<Enemy<Soldier>> {
 	
 	
 	public override void Enter(Enemy<Soldier> owner){
+		Debug.Log("SLLeave");
+		
 		//Jagd auf den Gegner
 		if(owner.MoveFSM.GetGlobalState() == SSoldierEngaged.Instance){
 			owner.MoveFSM.ChangeState(SSoldierStay.Instance);

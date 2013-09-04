@@ -6,11 +6,14 @@ public class SSoldierPatrol : State<Enemy<Soldier>> {
 	
 	
 	public override void Enter(Enemy<Soldier> owner){
-		//zufällig nach links/rechts patrouillieren
-		if(Enemy<Soldier>.rnd.Next(0,2) == 0)
-			owner.MoveFSM.ChangeState(SPatrolLeft<Soldier>.Instance);
-		else
-			owner.MoveFSM.ChangeState(SPatrolRight<Soldier>.Instance);
+		//wenn der Gegner sich nicht auf der Leiter befindet
+		if(! ((Soldier)owner).IsOnLadder){
+			//zufällig nach links/rechts patrouillieren
+			if(Enemy<Soldier>.rnd.Next(0,2) == 0)
+				owner.MoveFSM.ChangeState(SPatrolLeft<Soldier>.Instance);
+			else
+				owner.MoveFSM.ChangeState(SPatrolRight<Soldier>.Instance);
+		}
 	}
 	
 	

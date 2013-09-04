@@ -185,11 +185,11 @@ public class SteeringBehaviors<T> {
 		
 		if(seeking) f += Seek(targetPos);
 		if(fleeing) f += Flee(targetPos);
-		if(pursuing) f+= Pursuit(target);
-		if(evading) f+= Evade(target);
+		if(pursuing && target != null) f+= Pursuit(target);
+		if(evading && target != null) f+= Evade(target);
 		
 		//truncat
-		if(f.magnitude > owner.maxForce)
+		if(f != Vector3.zero && f.magnitude > owner.maxForce)
 			f = f.normalized * owner.maxForce;
 		
 		return f;

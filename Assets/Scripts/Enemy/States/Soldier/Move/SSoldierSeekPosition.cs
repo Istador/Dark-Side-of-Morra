@@ -5,7 +5,9 @@ public class SSoldierSeekPosition : State<Enemy<Soldier>> {
 	
 	
 	
-	public override void Enter(Enemy<Soldier> owner){}
+	public override void Enter(Enemy<Soldier> owner){
+		Debug.Log("SSoldierSeekPosition");
+	}
 	
 	
 	
@@ -25,12 +27,18 @@ public class SSoldierSeekPosition : State<Enemy<Soldier>> {
 			return;
 		}
 		
-		
+		//Kann sich in gewünschte Richtung bewegen
 		if( ((Soldier)owner).CanMoveTo(pos)   ){
 			((Soldier)owner).steering.Seek(true);
 			((Soldier)owner).steering.SetTarget(pos);
 			
-		} else {
+		}
+		//kann nicht gehen, aber klettern
+		else if(   ((Soldier)owner).CanClimbTo(pos)   ){
+			owner.MoveFSM.ChangeState(SLEnter.Instance);
+		}
+		//keine Bewegung möglich
+		else {
 			((Soldier)owner).steering.Seek(false);
 		}
 	}

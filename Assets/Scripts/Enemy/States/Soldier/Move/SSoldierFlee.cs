@@ -5,7 +5,9 @@ public class SSoldierFlee : State<Enemy<Soldier>> {
 	
 	
 	
-	public override void Enter(Enemy<Soldier> owner){}
+	public override void Enter(Enemy<Soldier> owner){
+		Debug.Log("SSoldierFlee");
+	}
 	
 	
 	

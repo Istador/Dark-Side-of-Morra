@@ -119,11 +119,16 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 	private bool IsPlatformBelow(Vector3 heading){
 		Bounds bb = collider.bounds;
 		Vector3 pos = bb.center;
-		Vector3 direction = heading * bb.size.x/1.7f + Vector3.down * bb.size.y/1.9f;
+		Vector3 direction = heading * bb.size.x/1.0f;
+		Vector3 down1 = Vector3.down * bb.size.y/2.2f;
+		Vector3 down2 = Vector3.down * bb.size.y/1.8f;
 		int layer = 1<<8; //Level
 		
-		Debug.DrawLine(pos, pos + direction, Color.yellow);
-		return Physics.Linecast(pos, pos + direction, layer);
+		Debug.DrawLine(pos + down1, pos + direction + down1, Color.red);
+		Debug.DrawLine(pos, pos + direction + down2, Color.yellow);
+		return 
+			! Physics.Linecast(pos + down1, pos + direction + down1, layer) //Platform nicht neben einem
+			&& Physics.Linecast(pos, pos + direction + down2, layer); //Platform unter einem
 	}
 	
 	
@@ -134,9 +139,33 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 	}
 	/// <summary>Ob Links unter dem Gegner eine Platform ist die betreten werden kann</summary>
 	public bool IsPlatformLeft(){
-		return IsPlatformBelow(Vector3.right);
+		return IsPlatformBelow(Vector3.left);
 	}
 	
+	
+	public Vector3 DirectionToLadder(){
+		Bounds bb = collider.bounds;
+		Vector3 pos = bb.center;
+		Vector3 left = Vector3.left * bb.size.x/2.05f;
+		Vector3 right = Vector3.right * bb.size.x/2.05f;
+		
+		int leiter = 1<<12;
+		
+		//ob in Mitte
+		bool leftOk = Physics.Linecast(pos + left, pos, leiter); //links nach mitte
+		bool rightOk = Physics.Linecast(pos + right, pos, leiter); //rechts nach mitte
+		
+		if(leftOk && rightOk) return Vector3.zero;
+		if(leftOk && !rightOk) return Vector3.right;
+		if(!leftOk && rightOk) return Vector3.left;
+		
+		//Leiter ist Links
+		if( Physics.Linecast(pos, pos + left * 2.0f, leiter) ) return Vector3.left;
+		//Leiter ist Rechts
+		if( Physics.Linecast(pos, pos + right * 2.0f, leiter) ) return Vector3.right;
+		
+		return Vector3.down;
+	}
 	
 	
 	//Hilfsmethode
@@ -148,11 +177,17 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 		Vector3 down = Vector3.down * bb.size.y/2.2f;
 		
 		Vector3 vFrom = pos - heading * bb.size.x / 4.0f;
-		Vector3 vTo = pos + heading * bb.size.x/1.95f;
+		Vector3 vTo = pos + heading * bb.size.x / 1.0f;
 		
 		
 		int level = 1<<8; //Level
 		int leiter = 1<<12; //Leiter
+		
+		
+		/*
+		Debug.DrawLine(pos + up, vTo + up);
+		Debug.DrawLine(pos, vTo);
+		Debug.DrawLine(pos + down, vTo + down);
 		
 		//Hindernisse?
 		if(
@@ -162,9 +197,10 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 		){
 			return false;
 		}
+		*/
 		
 		//Leiter vorhanden?
-		return Physics.Linecast(vTo, vFrom, leiter);
+		return Physics.Linecast(vFrom, vTo, leiter) || Physics.Linecast(vTo, vFrom, leiter);
 	}
 	
 	

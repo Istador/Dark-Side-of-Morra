@@ -68,16 +68,13 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	}
 	
 	
-	bool once = true;
+	//bool once = true;
 	protected override void Update(){
 		SetSprite(DetermineSprite());
 		
-		if(once && CanClimbUp() ){
-			once = false;
-			MoveFSM.ChangeState(SLEnter.Instance);
-		}
-		
 		base.Update();
+		
+		Debug.DrawLine(collider.bounds.center, LastKnownPosition(), Color.yellow);
 		
 		Debug.DrawLine(collider.bounds.center, collider.bounds.center + rigidbody.velocity, Color.green);
 		//Debug.Log(MoveFSM.GetCurrentState());
@@ -105,7 +102,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 		return ( 
 			   distance < f_visibleRange 
 			&& LineOfSight(player)
-			&& IsPlayerInfront()
+			&& (IsOnLadder || IsPlayerInfront() )
 		);
 			
 	}
@@ -118,9 +115,11 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	public bool IsPlayerInFireRange(){
 		float distance = DistanceToPlayer();
 		return ( 
-			   distance <= f_outOfRange
-			&& LineOfSight(player)
-			&& IsPlayerInfront()
+			   distance <= f_outOfRange		//in Reichweite
+			&& LineOfSight(player)			//Sicht frei
+			&& IsPlayerInfront()			//vor dem Gegner
+			&& Mathf.Abs(collider.bounds.center.y - player.collider.bounds.center.y) < (collider.bounds.size.y)
+			//Höhenunterschied nicht zu groß
 		);
 	}
 	
@@ -249,5 +248,12 @@ public class Soldier : MLeftRightClimb<Soldier> {
 			return CanMoveRight();
 		else 
 			return CanMoveLeft();
+	}
+	
+	public bool CanClimbTo(Vector3 pos, bool invertDirection = false){
+		if(IsRight(pos) ^ invertDirection) //ist das Ziel rechts vom Gegner?
+			return CanClimbRight();
+		else 
+			return CanClimbLeft();
 	}
 }
