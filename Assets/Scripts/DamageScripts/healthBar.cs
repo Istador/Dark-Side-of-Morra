@@ -23,20 +23,40 @@ public class healthBar : MonoBehaviour {
 	 */
 	// Health vom Spieler aufrufen
 	
-	public GameObject player;
-	PlayerController playerController;
+	private PlayerController pc;
 	
 	void Start(){
-	 playerController = player.GetComponent<PlayerController>();
+	 pc = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 	}
-	private int MAX_HEALTH = 100;
+	
 	
 	
 	
 	void OnGUI (){
 		
-		int hp = GameObject.FindWithTag("Player").GetComponent<PlayerController>().currentHealth;
+		int hp = pc.currentHealth;
 		
+		int factor = (int) ( ((float)hp) / ((float)PlayerController.MAX_HEALTH) * 10.0f );
+		
+		Texture txt = null;
+		switch(factor){
+			case 10: default:
+			case  9: txt = healthBar1; break;
+			case  8: txt = healthBar2; break;
+			case  7: txt = healthBar3; break;
+			case  6: txt = healthBar4; break;
+			case  5: txt = healthBar5; break;
+			case  4: txt = healthBar6; break;
+			case  3: txt = healthBar7; break;
+			case  2: txt = healthBar8; break;
+			case  1: txt = healthBar9; break;
+			case  0: txt = healthBar10; break;
+			
+		}
+		
+		GUI.Label(new Rect(100, 100, 100, 30), txt);
+		
+		/*
 		if (MAX_HEALTH <= hp && hp>=90){
 			GUI.Label(new Rect(100, 100, 100, 100),healthBar1); // bin mir nicht sicher, ob mit new GUIContent oder einfach nur so, geht aber beides nicht :D
 		}
@@ -76,6 +96,7 @@ public class healthBar : MonoBehaviour {
 		
 			GUI.Label(new Rect(100, 100, 100, 30),healthBar11);
 		}
+		*/
 		
 	}
 }

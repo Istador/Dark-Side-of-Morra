@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 	public AudioClip hitSound;
 
 	// health
-	const int MAX_HEALTH = 100;
+	public const int MAX_HEALTH = 100;
 	public int currentHealth;
 
 	// shoot
