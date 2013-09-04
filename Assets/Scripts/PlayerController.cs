@@ -3,6 +3,9 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+	// debug vars
+	public bool godMode = false;
+
 	// movement
 	public float gravity		= 0.8f;
 	public float runSpeed		= 10;
@@ -230,9 +233,12 @@ public class PlayerController : MonoBehaviour
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
 		
 		// HP verringern
-		currentHealth -= dmg;
+		if (!godMode)
+		{
+			currentHealth -= dmg;	
+		}
+				
 		//Geräusch
-		
 		float volume = 0.2f + 0.8f * ((float)dmg)/30.0f; //ab 30 dmg volle lautstärke, dadrunter abhängig vom schaden
 		audio.PlayOneShot(hitSound, volume); 
 		

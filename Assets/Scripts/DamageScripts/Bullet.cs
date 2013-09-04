@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
 	public Transform explosion; // explosion
 	public AudioClip fxSound;	// sound on explosion
 
-	public PlayerController playerController;
+	PlayerController playerController;
 
 	void Start ()
 	{
@@ -20,7 +20,6 @@ public class Bullet : MonoBehaviour
 		Destroy(gameObject, lifetime);
 		// TODO auf lookRight von playerController prüfen
 		// TODO dementsprechend nach links oder rechts bewegen
-		// TODO Bullet Partikel durch etwas anderes ersetzen...
 	}
 
 	void  OnCollisionEnter ( Collision hit  )
