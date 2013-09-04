@@ -5,7 +5,8 @@ public class LevelSelect : MonoBehaviour {
 
 	public int buttonWidth = 200;
 	public int buttonHeight = 50;
-
+	public Texture2D hintergrundLevel;
+	
 	void Start ()
 	{
 		SaveLoad.Load();
@@ -13,18 +14,21 @@ public class LevelSelect : MonoBehaviour {
 
 	void OnGUI ()
 	{
-		GUI.BeginGroup(new Rect(Screen.width / 2 - 400, Screen.height / 2 - 300, 800, 600));
+		GUI.BeginGroup(new Rect( 300, 200, 800, 600), new GUIContent(hintergrundLevel));
 
-		GUI.Box(new Rect(0, 0, 800, 600), " ");
+	
 
-		if (GUI.Button(new Rect( (Screen.width / 2) - (buttonWidth / 2),30,buttonWidth,buttonHeight),"Level 1"))
+		if (GUI.Button(new Rect( 200,30,buttonWidth,buttonHeight),"Level 1"))
 		{
 			Application.LoadLevel(3);
 		}
-
+		if (GUI.Button(new Rect (200, 100, buttonWidth,buttonHeight),"Main menu"))
+		{
+			Application.LoadLevel("MainMenu");
+		}
 		if (SaveData.levelReached >= 4)
 		{
-			if (GUI.Button(new Rect( (Screen.width / 2) - (buttonWidth / 2),65,buttonWidth,buttonHeight),"Level 2"))
+			if (GUI.Button(new Rect(200,65,buttonWidth,buttonHeight),"Level 2"))
 			{
 				Application.LoadLevel(4);
 			}
