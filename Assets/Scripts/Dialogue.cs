@@ -21,15 +21,14 @@ public class Dialogue : MonoBehaviour {
 	
 		void  OnTriggerEnter ( Collider characterController  )
 		{
+				// Ist der Spieler beim Einhorn ?
 			if (characterController.gameObject.CompareTag ("Unicorn"))
 			{
-			    Debug.Log ("Trigger Unicorn");
+				
+			    // nun kann der Text abgespielt werden
 				talking = true;
 				currentLine = 0;
-			    talkTextGUI.text = talkLines[currentLine];
-				
-				
-				startScrolling();
+			   	startScrolling();
 			}
 		}
 
@@ -37,7 +36,9 @@ public class Dialogue : MonoBehaviour {
 	void Speek()
 	{
 		if(talking){
+			
         if(Input.GetButtonDown("Fire1")){
+				// mit diesem Butten wird die nächste Zeile des ausgegebenen Textes aufgerufen
            if(textIsScrolling){
               talkTextGUI.text = talkLines[currentLine];
               textIsScrolling = false;
