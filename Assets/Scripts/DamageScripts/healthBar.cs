@@ -23,7 +23,7 @@ public class healthBar : MonoBehaviour {
 	
 	void OnGUI (){
 		if (MAX_HEALTH <= hp && hp>=90){
-			GUI.Label(new Rect(25, 25, 100, 30),healthBar1); // bin mir nicht sicher, ob mit new GUIContent oder einfach nur so, geht aber beides nicht :D
+			GUI.Label(new Rect(100, 1100, 100, 100),healthBar1); // bin mir nicht sicher, ob mit new GUIContent oder einfach nur so, geht aber beides nicht :D
 		}
 		if (89 <= hp && hp>=80){
 			GUI.Label(new Rect(25, 25, 100, 30),healthBar2);
