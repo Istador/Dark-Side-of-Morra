@@ -51,6 +51,11 @@ public class PRocket : Projektile<PRocket> {
 			Debug.DrawLine(collider.bounds.center, _targetPos, Color.red);
 		
 		base.Update();
+		
+		//Ziel erreicht, wenn Spieler z.B. nicht mehr sichtbar
+		if(DistanceTo(_targetPos) < 0.001){
+			Death();
+		}
 	}
 	
 	

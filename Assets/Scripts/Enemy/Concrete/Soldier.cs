@@ -141,10 +141,13 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	private Vector3 _lastKnownPosition;
 	private double _lastTimeVisited;
+	private Vector3 _lastHeading;
 	
 	public void RememberNow(){
 		_lastKnownPosition = player.collider.bounds.center;
 		_lastTimeVisited = Time.time;
+		if( ! DirectlyAboveOrUnder(_lastKnownPosition))
+			_lastHeading = Heading();
 	}
 	
 	public void DeterminePlayerPosition(){
@@ -186,6 +189,9 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	}
 	
 	
+	public Vector3 LastHeading(){
+		return _lastHeading;
+	}
 	
 	public Vector3 Heading(){
 		if(MoveFSM.GetCurrentState() == SPatrolLeft<Soldier>.Instance)

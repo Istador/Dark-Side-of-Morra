@@ -280,6 +280,22 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	
 	
 	/// <summary>
+	/// ist die Position sichtbar für den Gegner
+	/// </summary>
+	/// <returns>
+	/// false: wenn zw. Gegner und Ziel eine Wand oder Platform ist
+	/// </returns>
+	/// <param name='target'>
+	/// Das Objekt zu dem LOS geprüft werden soll
+	/// </param>
+	public bool LineOfSight(Vector3 pos){
+		int layer = 1<<8; //Layer 8: Level (also  Kollision mit Level-Geometrie)
+		return ! Physics.Linecast(collider.bounds.center, pos, layer);
+	}
+	
+	
+	
+	/// <summary>
 	/// ist das Objekt Sichtbar für den Gegner
 	/// dies prüft nicht ob sich das Objekt in einem bestimmten Winkel
 	/// zum Gegner befindet (z.B. ob es vor ihm ist).

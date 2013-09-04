@@ -12,11 +12,30 @@ public class SLLeave : State<Enemy<Soldier>> {
 		Debug.Log("SLLeave");
 		
 		//Jagd auf den Gegner
-		if(owner.MoveFSM.GetGlobalState() == SSoldierEngaged.Instance){
-			owner.MoveFSM.ChangeState(SSoldierStay.Instance);
+		if( owner.MoveFSM.GetGlobalState() == SSoldierEngaged.Instance ){
+			//Spieler auf neuer Platform sichtbar?
+			if( ((Soldier)owner).IsPlayerVisible() ){
+				owner.MoveFSM.ChangeState(SSoldierStay.Instance);
+				return;
+			}
+			//nicht sichtbar
+			else {
+				//Letzt Bekannte Position sichtbar -> Patroullieren
+				if(owner.LineOfSight( ((Soldier)owner).LastKnownPosition() )){
+					owner.MoveFSM.ChangeGlobalState(SSoldierPatrol.Instance);
+				}
+				//nicht sichtbar, position hat sich auf der Leiter verändert
+				else {
+					//Leiter erneut betreten
+					owner.MoveFSM.ChangeState(SLEnter.Instance);
+					return;
+				}
+				
+			}
 		}
+		
 		//Patroulieren Links
-		else if(owner.MoveFSM.GetPreviousState() == SLLeaveL.Instance){
+		if(owner.MoveFSM.GetPreviousState() == SLLeaveL.Instance){
 			owner.MoveFSM.ChangeState(SPatrolLeft<Soldier>.Instance);
 		}
 		//Patroulieren Rechts

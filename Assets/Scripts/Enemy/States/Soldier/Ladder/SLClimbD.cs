@@ -19,14 +19,10 @@ public class SLClimbD : State<Enemy<Soldier>> {
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
-		//auf Höhe des Spielers
-		if( ((Soldier)owner).IsHeightOk( ((Soldier)owner).LastKnownPosition() )  ){
-			owner.MoveFSM.ChangeState(SLLeaveD.Instance);
-			return;	
-		}
-		
-		//Player bereits über einen
-		if(  ((Soldier)owner).IsOver( ((Soldier)owner).LastKnownPosition() )  ){
+		//auf Höhe des Spielers && Spieler ist unter einem
+		if( ((Soldier)owner).IsHeightOk( ((Soldier)owner).LastKnownPosition() )  
+			&& ! ((Soldier)owner).IsOver( ((Soldier)owner).LastKnownPosition() )
+		){
 			owner.MoveFSM.ChangeState(SLLeaveD.Instance);
 			return;	
 		}
