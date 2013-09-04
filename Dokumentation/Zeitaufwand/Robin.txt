@@ -1,0 +1,287 @@
+15.05.2013 - 23.05.2013
+Versionskontrolle
+~30m	GIT-Server installiert / konfiguriert
+~2h	GIT Eclipse-Plugin installiert / konfiguriert - kein Erfolg
+	festgestellt das es keine kostenfreien GIT-Plugins für Unity 3D gibt
+	-> umstieg auf SVN
+~1h	SVN-Server installiert und konfigueriert (SVN-Benutzer, Rechte, Daemon), Repository angelegt
+~40min	SVN Eclipse-Plugin konfiguriert (bereits vorhanden, Repo angelegt) um Verbindung über SVN+SSH auszuprobieren
+~3h	Unity SVN-Plugin installiert und zum laufen gebracht
+	Probleme:
+		benötigt erst funktionierendes svn über die Kommandozeile (Windows Lösung: TortoiseSVN),
+		manuell SSH als Protokoll für TortoiseSVN über Putty-Link einrichten,
+		Problem Server-SSH-Zertifikat über Kommandozeile zu akzeptieren (std:in geht nicht ans Programm...)
+~30min	Leeres Unity-Projekt angelegt und auf Server commited
+	
+------	SVN+SSH nicht akzeptabel, da für andere Teammitglieder ein Shell-Zugang nötig wäre.
+------	eine chrooted shell scheint zu kompliziert einzurichten (Veränderung am vorhandenem SSH-Dienst nötig - blöd bei Fehlern, da direkter Zugriff auf Server nötig zum beheben).
+
+~10h	probiert SVN+HTTPS (mit bereits vorhandener Apache-Webserver) zum laufen zu bekommen.
+	(mod_dav_svn.so wurde nicht mit SVN kompiliert, da dependencys probleme, versucht zu lösen, nicht möglich aufgrund von Paketkonflikten)
+	-> gescheitert. 
+~8h	Alternativplan: VPN-Verbindung zu Server einrichten und dann nur direkt das SVN-Protokoll verwenden.
+	Probleme dabei:
+		zweites TAP Device erfolgreich anzulegen,
+		Server-Config Datei ändern, neue CA einrichten (Zertifikatsbasiert), 
+		Script zum erstellen von Client-Config-Dateien (in denen die Zertifikate liegen) erstellt create-client-cert.sh,
+		Firewallkonfiguration mittels iptables damit das neue VPN-Netz nur auf den SVN-Port zugreifen kann
+		Verbindungstest mit VPN-Client
+---
+Gesamt bis hier: ~ 25h 40m
+---
+
+2013-05-23
+~2h		1. Meeting mit Bent und Tanja
+~1h		Einlesen in bisherige Dokumentation / Projektverwaltung / Kommunikation mit Profs
+		-> gelesen das Zeitplan notwendig zur Aufwandseinschätzung der Mitglieder
+50min		Zeitplan bis hier hin aus Erinnerung erstellt.
+18:50-19:09 	2 VPN-Zertifikate für Bend und Tanja erstellen und testen.
+		. ./vars ; ./build-key $name ; ./create-client-cert.sh $name
+		funktionieren einwandfrei (zumindest bei mir)
+		TODO: Anleitung für VPN und SVN konfiguration schreiben, bevor ich es per E-Mail verschicke.
+19:09-19:36	Aktuellen Stand der Versionskontrolle in Projektverwaltung(trello.com) eingetragen.
+19:36-20:02	Labels/Farben in Projektverwaltung beschriftet (Modulstatus farblich kennzeichnen können),
+		Aufgaben/Ziele der Versionskontrolle und vom Modul Enemy-Controller in Projektverwaltung formuliert
+--- 2h + 1h + 50m + 19m + 27m + 26m = 5h 2m
+Gesamt: ~ 30h 42m
+---
+
+2013-05-26
+20:28-20:34	VPN-Zertifikate für Florian + Dennis erstellen
+20:34-20:44	SVN-Repository zum Backup-Skript hinzufügen.
+		Backup jeden Mi & So um 03:00 Uhr, speichert die letzten 7 Versionen.
+--- 6m + 10m = 16m
+Gesamt: ~ 30h 58m
+---
+
+2013-05-27
+10:08-10:16	Für jedes Zertifikat eine IP-Adresse zuweisen
+19:09-20:08	Installations-Anleitung für SVN und VPN
+	Pause
+20:11-22:14	weiter Install-Anleitung schreiben, sowie allgemein Hinweise zur Verwendung von SVN (Update, Commit, locks, ...)
+	Anleitung TODO: servername, Port, Zertifikatsgültigkeit, Sinn und Zweck von VPN
+--- 8m + 59m + 2h 3m = 3h 10m
+Gesamt: ~ 34h 8m
+---
+
+2013-05-28
+10:14-10:33	weitere Ergänzungen der Anleitung
+12:29-12:45	SVN-Benutzer erstellen und Passwörter generieren 
+12:45-13:14	E-Mail-Text schreiben, Anleitung uploaden,
+		RAR-Archiv-Passwort: y4OSn1lg57Z*twe-8C-O publizieren
+		verschlüsselte RAR-Archive erstellen (bestehend aus Anleitung, SVN-Zugangsdaten und VPN-Konfigurationsdatei)
+16:41-18:37	SVN-Dienst zur Linux-Startroutine auf Server hinzufügen.
+		Manuell ln $to $from -s in /etc/init.d/rc3.d/ anlegen hat nicht funktioniert.
+		Geht mit dem Befehl "insserv" benötigt aber im script den Kommentar "# Required-Start: $network", sonst startet das Script zu früh.
+19:22-19:38	E-Mails verschicken
+--- 19m + 16m + 29m + 1h56m + 16m = 3h 16m
+Gesamt: ~ 37h 24m
+---
+05.06.2013	
+22:18-23:08	Vorbereitung für morgiges Meeting
+		source code im repository begutachtet, feedback/verbesserungsvorschläge aufgeschrieben
+		fragen die für meinen Bereich notwendig sind notiert
+		(behandeln von gegnern auf anderen Platformen? chasing nur wenn LoS, oder immer -> NavGraph nötig)
+---50m
+Gesamt: ~ 38h 14m
+---
+06.06.2013
+12:50 – 14:03	2. Meeting
+--- 1h 13m
+Gesamt: ~ 39h 27m
+---
+18.06.2013
+20:45 - 21:08	Persona für weibliche Zielgruppe
+21:13 - 23:49	Gegner-Analyse (Welche Gegenertypen existieren, welches Verhalten haben sie)
+--- 23m + 2h 36m = 2h 59m
+Gesamt: ~ 42h 26m
+---
+19.06.2013
+22:32 - 23:57	Objektorientierte Gegner-Analyse (Was wird zur Umsetzung des Verhaltens benötigt)
+		2 Seiten text, noch nicht fertig
+--- 1h 25m
+Gesamt: ~ 43h 51m
+---
+20.06.2013
+12:46 - 14:22	Meeting. Gemeinsam erarbeitet: Produktvision, Product-Backlog
+		Pause
+14:30 -	15:14	weiterarbeiten
+--- 1h 36m + 44m = 2h 20m
+Gesamt: ~ 46h 11m
+---
+03.07.2013
+19:21 -	21:18	an Objektorientierte Gegner-Analyse weiterarbeiten
+		insgesamt 3 Seiten
+--- 1h 57m
+Gesamt: ~ 48h 8m
+---
+17.07.2013
+09:57 - 10:33	Unity Beginner Editor Tutorial Videos
+10:33 - 11:08	Unity Beginner Graphics Tutorial Videos
+11:08 - 11:27	Unity Beginner Physics Tutorial Videos
+		pause
+11:33 - 11:55	forts.
+		Bewegung von Player und Enemys viel einfacher und realistischer mit 
+		rigidbodys und AddForce statt manuellem Transform.
+11:55 - 13:46	Unity Beginner Scripting Tutorial Videos
+		Langweilig: größtenteils einführung in C# (mir bereits bekannt) und Erklärung von Begriffen wie Variablen, Funktionen, etc.
+		Aber: nützliche Anwendungsbeispiele in Unity
+		Debug.log(...);
+		nebenbei Skype Unterhaltung mit Bent übers Audio und Player-Movement
+14:07 - 14:47	forts.
+14:47 - 18:10	erste programmierungen: rigidbody bewegung/kollisionen, kollisions-beispiel mit einfachen minen, enemy-test-scene
+--- 36m + 35m + 19m + 22m + 1h 51m + 40m + 3h 23m
+Gesamt: ~ 55h 54m
+---
+18.07.2013
+11:55 - 13:05	Anfahrtsweg
+13:05 - 13:21	Teammeeting nur Tanja anwesend, warten auf weitere Teilnehmer, solange am Projekt arbeiten
+13:21 - 14:30	Teammeeting mit Tanja, Bent und Florian
+14:30 - 15:35	Rückweg
+--- 1h 10m + 16m + 1h 9m + 1h 5m = 3h 40m
+Gesamt: ~ 59h 34m
+---
+19.07.2013
+09:24 - 12:29	Programmierung
+12:29 - 12:56	SVN ignore erweitern um Assembly tmp dateien
+13:20 - 14:03	mich für Flo über SVN auf OSX informiert
+15:30 - 17:02	Programmierung: Zustandsautomat nach M. Buckland, Programming Game AI by Example
+--- 3h 5m + 27m + 43m + 1h 32m = 5h 47m
+Gesamt: ~ 65h 21m
+---
+25.07.2013
+18:47 - 19:06	Zeichnen des Minen-Zustandsautomatens (Whiteboard)
+19:06 - 19:34	in UML-Zustandsdiagramm umwandeln (Dia)
+19:41 - 20:39	Zustände der Mine programmieren
+20:39 - 21:38	Zustandsautomaten um MessageDispatcher erweitern
+22:42 - 23:05	PriorityQueue<T> selbst schreiben, da nicht in C# standartmäßig vorhanden...
+23:05 - 01:23	weiter am MessageDispatcher programmieren
+		Minen funktionieren nun einwandfrei, es fehlen nur noch Sounds
+--- 19m + 28m + 58m + 59m + 23m + 2h 18m = 5h 25m
+Gesamt: ~ 70h 46m
+---
+30.07.2013
+15:12 - 16:15	Bewegliche Gegner allgemein programmieren (Steering Behaviors)
+17:08 - 20:27	Projektile, verfolgende Rakete
+20:27 - 20:40	Zustandsautomat fürs Automatische Geschütz zeichnen (WhiteBoard)
+20:40 - 22:19	Zustandsautomat programmieren
+--- 1h 3m + 3h 19m + 13m + 1h 39m = 6h 14m
+Gesamt: ~ 77h 0m
+---
+01.08.2013
+14:35 - 19:10	Eigenes Code Review, Kommentierung, Dokumentierung
+		Raketen ändern ihre Flugbahn nur noch solange der Spieler in LoS ist
+--- 4h 35m
+Gesamt: ~ 81h 35m
+---
+06.08.2013
+22:25 - 22:38	Ordnerstruktur verändern, drehen des Raketensprites nicht sofort in Richtung des Ziels, sondern träge mit der aktuellen Bewegung.
+22:40 - 02:14	Rollender Stachel, Rechts/Links Patroullieren
+--- 13m + 3h 34m = 3h 47m
+Gesamt: ~ 85h 22m
+---
+08.08.2013
+10:46 - 11:33	RPG-Soldat Zustände Zeichnen (Whiteboard)
+12:05 - 13:12	Hinfahrt Meeting, Termin für 13:15 Uhr
+		Raum nicht offen, niemand da...
+		keine E-Mail oder Skype-Nachricht das der Termin abgesagt oder verschoben wurde...
+13:32 - 14:23	verspätete Ankunft von Bent und Dennis, Meeting
+14:23 - 15:24	Rückfahrt Meeting
+--- 47m + 1h 7m + 20m + 51m + 1h 1m = 4h 6m
+Gesamt: ~ 89h 28m
+---
+14.08.2013
+13:16 - 13:43	Drehen der Gegner im Gegner-Testlevel von Front zu Back zur Vereinheitlichung
+		sowie Anpassung der Skripts
+13:43 - 16:58	Einfügen der bisherigen Gegner ins aktuelle Level
+		größe anpassen, Probleme mit Kollisionen mit dem Spieler, da der CharController keine Physik hat
+18:28 - 18:31	Alle Prefabs in eigenen Ordner verschoben
+18:44 - 20:14	RPG Soldat programmieren
+20:32 - 21:21	weiter
+23:50 - 01:59	weiter
+--- 27m + 3h 15m + 3m + 1h 30m + 49m + 2h 9m = 8h 13m
+Gesamt: ~ 97h 41m
+---
+15.08.2013
+02:07 - 03:39	weiter
+12:05 - 13:11	Meeting Hinfahrt
+13:11 - 14:26	Meeting mit Bent und Tanja
+14:26 - 15:44	Meeting Rückfahrt
+--- 1h 32m + 1h 6m + 1h 15m + 1h 18m = 5h 11m
+Gesamt: ~ 102h 52m
+---
+21.08.2013
+01:28 - 01:55	Schaden als Vektor, mit Schadenswert = Vektorlänge, Winkel gibt an aus welcher Richtung der Schaden kommt
+01:55 - 03:20	Gegner ignorieren Kollision mit Spieler und verursachen bei berührung Schaden
+03:20 - 03:38	Zufällig links oder rechts patrouillieren, nicht immer links
+03:38 - 04:12	SpriteController überarbeitet, damit mehrere Gegner im selben Zustand nicht immer im identischen Animationsschritt sind
+04:12 - 06:26	kleine Explosion für Raketen einbinden
+		Health Globes zeichnen und einbauen
+07:57 - 11:02	Health Globes und RPG-Soldat in aktuellem Level zum Testen einbauen
+		kleinere Bugs im RPG-Soldat behoben, doppelt verwendeten Code (CanMove) in Funktionen umgeschrieben
+11:41 - 12:10	Zustandsautomat vom Automatischen Geschütz ändern auf den vom RPG-Soldaten,
+		weil er einfacher verständlich ist, und weil der aktuelle nicht optimal funktioniert.
+--- 27m + 1h 25m + 18m + 34m + 2h 14m + 3h 5m + 29m = 8h 7m
+12:26 - 14:08	Health Globes von besiegten Gegnern fallen lassen
+		Minen werden nur sichtbar wenn sie auch Line of Sight zum Spieler haben
+14:53 - 15:31	Whiteboard: Soldat Zustandsautomat mit Leitern zeichnen
+15:31 - 15:52	Soldaten erstellen
+16:11 - 16:28	bisherige Zustände vom RPG-Soldaten kopieren
+21:41 - 22:35	weiter
+22:35 - 23:22	Schuss- und Schadens-Geräusche aufrufen/abspielen
+		Fehlerbehebung: letzte Position anstreben wenn Spieler out of LoS
+23:25 - 23:58	weiter
+--- 8h 7m + 1h 42m + 38m + 21m + 17m + 54m + 47m + 33m = 13h 19m
+Gesamt: ~ 116h 11m
+---
+22.08.2013
+12:05 - 13:22	Hinfahrt Meeting (Bus 10m Verspätung)
+13:22 - 14:47	Meeting mit Bent, Tanja und Flo (Dennis fehlt)
+14:47 - 15:56	Rückfahrt Meeting
+--- 1h 17m +  1h 25m + 1h 9m = 3h 51m
+Gesamt: ~ 120h 2m
+---
+24.08.2013
+22:21 - 22:40	Fallende Blöcke werden erst rot nachdem sie vom Spieler betreten wurden
+--- 19m
+Gesamt: ~ 120h 21m
+---
+29.08.2013
+06:48 - 08:20	von Bent neu hinzugefügte Sounds einbauen
+08:20 - 08:40	Gegner Geschwindigkeiten anpassen
+08:40 - 09:43	Soldat: begrenzen der Bewegung fürs Klettern
+10:16 - 11:23	weiter
+12:05 - 13:12	Meeting Hinfahrt
+13:12 - 14:41	Meeting mit Bent und Tanja, Dennis verspätet
+14:41 -	16:14	Meeting Rückfahrt (davon ~20m Umweg zum Berliner Tor Chipkarte neu bedrucken)
+--- 1h 32m + 20m + 1h 3m + 1h 7m + 1h 7m + 1h 29m + 1h 33m - 20m = 7h 51m
+Gesamt: ~ 128h 12m
+---
+30.08.2013
+15:15 - 16:09	zusammen mit Bent über Skype einen Bug behoben der beim neu laden des 
+		Levels in Kombination mit Verzögerten Nachrichten des MessageDispatchers 
+		auftrat.
+--- 54m
+Gesamt: ~ 129h 06m
+---
+03.09.2013
+04:46 - 05:40	Collider vom RPG-Geschütz an Textur anpassen, positionierung in Levels verändern.
+05:40 - 05:48	Bug bei den fallenden Blöcken behoben, wodurch der Spieler mehrfach gleichzeitig das verschwinden auslöste.
+05:48 - 07:13	am Soldaten weiterarbeiten (Leiter hoch/runter gehen können)
+07:21 - 07:48	weiter (Sprites / Blickrichtung auf Leiter)
+07:54 - 08:31	weiter (Whiteboard Leiter genauer)
+08:38 - 09:04	Autom. Geschütz dreht sich wenn der Spieler rechts von ihm ist
+09:04 - 10:48	weiter am Soldaten (kann nun die Leiter verlassen)
+10:55 - 11:17	Unity von 4.1.5f1 auf 4.2.1f4 Updaten für simplere 2D-Objekte: 
+		Quad (4 Vertexe, 2 Triangles) statt Plane (121 Vertexe, 200 Triangles)
+11:17 - 13:35	Planes durch Quads ersetzen
+--- 54m + 8m + 1h 25m + 27m + 37m + 26m + 1h 44m + 22m + 2h 18m = 8h 21m
+Gesamt: ~ 137h 27m
+---
+04.09.2013
+10:25 - 12:24	weiter am Soldaten und Leitern arbeiten
+12:32 - 17:13	weiter, Leiter funktioniert sehr gut. 
+17:13 - 17:27	Tags und Layer beim Wechsel von Plane auf Quad ausversehen zurückgesetzt gehabt. wieder korrigieren.
+17:27 - 17:41	Bugfixing Soldat (betritt die Leiter wieder neu wenn er abrutscht)
+22:27 - 22:48	Boss-Level an WhiteBoard gestalten, StoryBoard
+22:59 - 23:42	Spinnen-Zustände
