@@ -68,7 +68,7 @@ void startScrolling(){
           if(textIsScrolling && currentLine == startLine){
           displayText += talkLines[currentLine][i];
           talkTextGUI.text = displayText;
-          //talkLines[currentLine][i] = GUI.TextField (Rect (10, 10, 200, 20), talkLines[currentLine][i], 25);
+         // talkLines[currentLine][i] = GUI.TextField (Rect (10, 10, 200, 20), talkLines[currentLine][i], 25);
 				
           }
          else{
