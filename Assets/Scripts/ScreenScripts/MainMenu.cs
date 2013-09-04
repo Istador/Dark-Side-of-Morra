@@ -7,6 +7,11 @@ public class MainMenu: MonoBehaviour {
 	public int buttonHeight = 50;
 	public Texture2D button;
 	public Texture2D hintergrund;
+
+	void Start ()
+	{
+		SaveLoad.Load();
+	}
 	
 	void OnGUI ()
 	{
