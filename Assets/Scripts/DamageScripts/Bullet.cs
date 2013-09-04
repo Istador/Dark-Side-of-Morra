@@ -7,8 +7,17 @@ public class Bullet : MonoBehaviour
 	public float lifetime = 10;
 	public Transform explosion; // explosion
 	public AudioClip fxSound;	// sound on explosion
+	bool lookRight;
 
 	PlayerController playerController;
+
+	// animation
+	public int columnSize		= 10;
+	public int rowSize			= 15;
+	public int colFrameStart	=  0;
+	// public int rowFrameStart	=  0; wurde ersetzt durch den Übergabewert animType vom enum
+	public int totalFrames		= 10;
+	public int framesPerSecond	= 12;
 
 	void Start ()
 	{
@@ -17,12 +26,42 @@ public class Bullet : MonoBehaviour
 
 	void  Update ()
 	{
+		//lookRight = playerController.lookRight;
 		Destroy(gameObject, lifetime);
 		// TODO auf lookRight von playerController prüfen
 		// TODO dementsprechend nach links oder rechts bewegen
+
+		Move();
+		Animate();
+
+
 	}
 
-	void  OnCollisionEnter ( Collision hit  )
+	void Move()
+	{
+
+	}
+
+	void Animate()
+	{
+		anim((int)AnimationTypes.shootRight);
+	}
+
+	enum AnimationTypes
+	{
+		shootRight = 0,
+		shootLeft  = 1
+	}
+
+	void anim (int animType)
+	{
+		SpriteController spritePlay;
+		spritePlay = GetComponent<SpriteController>();
+		// enum an spritePlay.animate übergeben an gegebener Stelle
+		spritePlay.animate(columnSize, rowSize, colFrameStart, animType, totalFrames, framesPerSecond);
+	}
+
+	void  OnTriggerEnter ( Collider hit  )
 	{
 		// beim Treffen auf den Spieler wird beim Player die Funktion ApplyDamage aufgerufen und die Bullet zerstört
 		if (hit.gameObject.CompareTag("Enemy"))
