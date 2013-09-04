@@ -4,11 +4,13 @@ using System.Collections;
 public class Bullet : MonoBehaviour
 {
 	public int damage;
+	public float bulletSpeed = 10;
 	public float lifetime = 10;
 	public Transform explosion; // explosion
 	public AudioClip fxSound;	// sound on explosion
-	bool lookRight;
+	private bool lookRight;
 
+	public GameObject player;
 	PlayerController playerController;
 
 	// animation
@@ -21,25 +23,24 @@ public class Bullet : MonoBehaviour
 
 	void Start ()
 	{
-		playerController = GetComponent<PlayerController>();
+		playerController = player.GetComponent<PlayerController>();
+		lookRight = playerController.lookRight;
 	}
 
 	void  Update ()
 	{
-		//lookRight = playerController.lookRight;
 		Destroy(gameObject, lifetime);
-		// TODO auf lookRight von playerController prüfen
-		// TODO dementsprechend nach links oder rechts bewegen
-
 		Move();
 		Animate();
-
-
 	}
 
 	void Move()
 	{
-
+		// TODO dementsprechend nach links oder rechts bewegen
+		if (lookRight)
+		{
+			transform.Translate(Vector3.right * bulletSpeed * Time.deltaTime);
+		}
 	}
 
 	void Animate()

@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviour
 	private Vector2 moveDirection = Vector2.zero;
 	private bool  InputJump		= false;
 	private bool  isOnLadder	= false;
-	public  bool  lookRight		= true;
+	
+	public bool  lookRight		= true;
 
 	// animation
 	public int columnSize		= 10;
