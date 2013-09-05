@@ -6,6 +6,8 @@ public class LevelSelect : MonoBehaviour {
 	public int buttonWidth = 200;
 	public int buttonHeight = 50;
 	public Texture2D hintergrundLevel;
+	public int width;
+	public int height;
 	
 	void Start ()
 	{
@@ -14,7 +16,7 @@ public class LevelSelect : MonoBehaviour {
 
 	void OnGUI ()
 	{
-		GUI.BeginGroup(new Rect( 300, 200, 800, 600), new GUIContent(hintergrundLevel));
+		GUI.BeginGroup(new Rect( width, height, 800, 600), new GUIContent(hintergrundLevel));
 
 	
 
