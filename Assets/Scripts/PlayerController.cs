@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
 	public int currentHealth;
 
 	// shoot
-	public Transform bullet;
+	public GameObject bullet;
 	public Transform bulletSpawn;
 	private bool	  InputShoot = false;
 

@@ -61,25 +61,23 @@ public class Bullet : MonoBehaviour
 		// enum an spritePlay.animate übergeben an gegebener Stelle
 		spritePlay.animate(columnSize, rowSize, colFrameStart, animType, totalFrames, framesPerSecond);
 	}
-
+	
+	
 	void  OnTriggerEnter ( Collider hit  )
 	{
+		Debug.Log("TriggerEnter");
+		
 		// beim Treffen auf den Spieler wird beim Player die Funktion ApplyDamage aufgerufen und die Bullet zerstört
 		if (hit.gameObject.CompareTag("Enemy"))
 		{
-			GameObject target = hit.gameObject;
+			//GameObject target = hit.gameObject;
 			// Apply damage to target object
-			target.collider.SendMessage("ApplyDamage", (hit.collider.bounds.center - this.collider.bounds.center).normalized * damage , SendMessageOptions.DontRequireReceiver);
-			Destroy(gameObject);
+			hit.gameObject.SendMessage("ApplyDamage", (hit.collider.bounds.center - this.collider.bounds.center).normalized * damage , SendMessageOptions.DontRequireReceiver);
 		}
 		
-		// beim Treffen auf ein Levelelement wird die Bullet zerstört
-		if (hit.gameObject.CompareTag("Ground"))
-		{
-			Destroy(gameObject);
-		}
+		Destroy(gameObject);
 		
-		if (explosion)
+		if(explosion)
 		{
 			Instantiate(explosion, transform.position, transform.rotation);
 			// TODO Fehler beseitigen
