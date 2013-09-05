@@ -17,6 +17,11 @@ public class healthBar : MonoBehaviour {
 	public Texture2D healthBar9;
 	public Texture2D healthBar10;
 	public Texture2D healthBar11;
+	
+	public int positionHealthbarWeidth;
+	public int positionHealthbarHight;
+	public int breiteSpritze;
+	public int höheSpritze;
 	/*void OnGUI () {
 		GUI.Label (new Rect (25, 25, 100, 30), new GUIContent("healthbar1"));
 	}
@@ -54,7 +59,7 @@ public class healthBar : MonoBehaviour {
 			
 		}
 		
-		GUI.Label(new Rect(100, 100, 100, 30), txt);
+		GUI.Label(new Rect(positionHealthbarWeidth, positionHealthbarHight, breiteSpritze, höheSpritze), txt);
 		
 		/*
 		if (MAX_HEALTH <= hp && hp>=90){
