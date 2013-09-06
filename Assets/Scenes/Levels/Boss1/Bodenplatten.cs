@@ -15,7 +15,8 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 	//Bossreferenz
 	private GameObject boss;
 	
-	
+	//Texturen für die Bodenplatten
+	public Material[] mats;
 	
 	void Start () {
 		//alle Bodenplatten abrufen
@@ -23,9 +24,6 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 		
 		//Boss abrufen
 		boss = GameObject.Find("Boss");
-		
-		//TODO: nur zum testen
-		MessageDispatcher.Instance.Dispatch(this, this, "begin", 1.0f, null);
 	}
 	
 	
@@ -64,6 +62,7 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 				MessageDispatcher.Instance.Dispatch(this, p, "normal", 0.0f, null);
 			
 			//TODO: Boss eine Nachricht schicken damit er wieder auftaucht
+			Debug.Log(boss);
 			}
 	}
 	

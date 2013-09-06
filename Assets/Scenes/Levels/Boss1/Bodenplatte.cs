@@ -10,7 +10,8 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 	private static Material[] normal;
 	private static Material[] red;
 	private static Material[] green;
-	public Material[] mats;
+	
+	private static Material[] mats;
 	
 	
 	void Start(){
@@ -20,6 +21,7 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 		trigger.enabled = false;
 		
 		//Texturen laden
+		if(mats == null) mats = GameObject.Find("Bodenplatten").GetComponent<Bodenplatten>().mats;
 		if(normal == null) normal = new Material[]{mats[0]};
 		if(red == null) red = new Material[]{mats[1]};
 		if(green == null) green = new Material[]{mats[2]};
