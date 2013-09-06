@@ -146,7 +146,9 @@ public class Telegram : IComparable<Telegram> {
 	/// die andere Nachricht mit der Verglichen wird
 	/// </param>
 	public int CompareTo(Telegram other){
-		return this.dispatchTime.CompareTo(other.dispatchTime);
+		int r = this.dispatchTime.CompareTo(other.dispatchTime);
+		if(r != 0) return r;
+		return this.GetHashCode().CompareTo(other.GetHashCode());
 	}
 	
 	
