@@ -190,6 +190,13 @@ public class PlayerController : MonoBehaviour
 				anim((int)AnimationTypes.jumpLeft);
 			}
 		}
+		
+		if(!lookRight){
+			//Textur vertikal spiegeln
+			Vector2 tmp = renderer.material.mainTextureScale;
+			tmp = new Vector2(-tmp.x, tmp.y);
+			renderer.material.mainTextureScale = tmp;
+		}
 	}
 
 	enum AnimationTypes

@@ -6,12 +6,12 @@ public class Bullet : MonoBehaviour
 	public int damage;
 	public float bulletSpeed = 10;
 	public float lifetime = 10;
-	public Transform explosion; // explosion
+	public GameObject explosion; // explosion
 	public AudioClip fxSound;	// sound on explosion
-	private bool lookRight;
+	private bool lookRight = false;
 
-	public GameObject player;
-	PlayerController playerController;
+	private GameObject player;
+	private PlayerController playerController;
 
 	// animation
 	public int columnSize		= 10;
@@ -21,13 +21,18 @@ public class Bullet : MonoBehaviour
 	public int totalFrames		= 10;
 	public int framesPerSecond	= 12;
 
-	void Start ()
-	{
+	void Start()
+	{		
+		player = GameObject.FindWithTag("Player");
 		playerController = player.GetComponent<PlayerController>();
 		lookRight = playerController.lookRight;
+	
+		//nicht mit dem Spieler kollidieren
+		Physics.IgnoreCollision(collider, player.collider);
+		Physics.IgnoreCollision(player.collider, collider);
 	}
 
-	void  Update ()
+	void  Update()
 	{
 		Destroy(gameObject, lifetime);
 		Move();
@@ -37,9 +42,10 @@ public class Bullet : MonoBehaviour
 	void Move()
 	{
 		// TODO dementsprechend nach links oder rechts bewegen
-		if (lookRight)
-		{
+		if (lookRight){
 			transform.Translate(Vector3.right * bulletSpeed * Time.deltaTime);
+		} else {
+			transform.Translate(Vector3.left * bulletSpeed * Time.deltaTime);
 		}
 	}
 
@@ -62,27 +68,33 @@ public class Bullet : MonoBehaviour
 		spritePlay.animate(columnSize, rowSize, colFrameStart, animType, totalFrames, framesPerSecond);
 	}
 	
+	void OnTriggerEnter(Collider hit){
+		OnTrigger(hit);
+	}
 	
-	void  OnTriggerEnter ( Collider hit  )
-	{
-		Debug.Log("TriggerEnter");
+	void OnTriggerStay(Collider hit){
+		OnTrigger(hit);
+	}
+	
+	void OnTriggerExit(Collider hit){
+		OnTrigger(hit);
+	}
+	
+	void OnTrigger(Collider hit){
+		// beim Treffen von Gegner wird die Funktion ApplyDamage aufgerufen
+		hit.gameObject.SendMessage("ApplyDamage", (hit.collider.bounds.center - this.collider.bounds.center).normalized * damage , SendMessageOptions.DontRequireReceiver);
 		
-		// beim Treffen auf den Spieler wird beim Player die Funktion ApplyDamage aufgerufen und die Bullet zerstört
-		if (hit.gameObject.CompareTag("Enemy"))
-		{
-			//GameObject target = hit.gameObject;
-			// Apply damage to target object
-			hit.gameObject.SendMessage("ApplyDamage", (hit.collider.bounds.center - this.collider.bounds.center).normalized * damage , SendMessageOptions.DontRequireReceiver);
-		}
-		
+		//Bullet zerstören
 		Destroy(gameObject);
 		
-		if(explosion)
-		{
-			Instantiate(explosion, transform.position, transform.rotation);
-			// TODO Fehler beseitigen
+		//kurz eine kleine Explosion anzeigen
+		if(explosion){
+			Object e = Instantiate(explosion, transform.position, transform.rotation);
+			Destroy(e, 0.2f); //nach 0,2 Sekunden Explosion weg
+			// TODO Sound abspielen beseitigen
 			//audio.PlayClipAtPoint(fxSound, transform.position);
 		}
 	}	
+	
 
 }
