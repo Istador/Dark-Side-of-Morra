@@ -18,7 +18,7 @@ public class healthBar : MonoBehaviour {
 	public Texture2D healthBar10;
 	public Texture2D healthBar11;
 	
-	private int positionHealthbarWidth = 50;
+	private int positionHealthbarWidth = 30;
 	private int positionHealthbarHight = 30;
 	private int breiteSpritze = 50;
 	private int höheSpritze = 200;
