@@ -4,7 +4,8 @@ using System.Collections;
 public class Bodenplatte : MonoBehaviour, MessageReceiver {
 	
 	//Trigger-Collider des Child-Objektes
-	private BoxCollider trigger;
+	private BodenplattenTrigger child;
+	private Collider trigger;
 	
 	private static Material[] normal;
 	private static Material[] red;
@@ -14,7 +15,8 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 	
 	void Start(){
 		//Collider des Spielertriggers
-		trigger = transform.FindChild("Spielertrigger").GetComponent<BoxCollider>();
+		child = transform.FindChild("Spielertrigger").GetComponent<BodenplattenTrigger>();
+		trigger = child.collider;
 		trigger.enabled = false;
 		
 		//Texturen laden
@@ -50,6 +52,7 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 			case "normal":
 				renderer.materials = normal;
 				trigger.enabled = false;
+				
 				return true;
 			default:
 				//Nachrichtentyp unbekannt, konnte nicht verarbeitet werden

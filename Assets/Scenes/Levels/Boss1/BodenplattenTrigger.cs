@@ -26,7 +26,7 @@ public class BodenplattenTrigger : MonoBehaviour {
 		}
 	}
 	
-	void OnTriggerLeave(Collider hit){
+	void OnTriggerExit(Collider hit){
 		if(entered && hit.gameObject.tag == "Player"){
 			entered = false;
 			MessageDispatcher.Instance.Dispatch(null, plattenController, "leave", 0.0f, null);
