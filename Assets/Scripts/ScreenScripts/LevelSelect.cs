@@ -35,7 +35,13 @@ public class LevelSelect : MonoBehaviour {
 				Application.LoadLevel(4);
 			}
 		}
-			
+		if (SaveData.levelReached >= 5)
+		{
+			if (GUI.Button(new Rect(Screen.width/2 +100,Screen.height/2 - 30,buttonWidth,buttonHeight),"Level 2"))
+			{
+				Application.LoadLevel(5);
+			}
+		}
 		
 
 		GUI.EndGroup();
