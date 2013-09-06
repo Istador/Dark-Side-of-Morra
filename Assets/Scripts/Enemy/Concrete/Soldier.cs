@@ -74,9 +74,9 @@ public class Soldier : MLeftRightClimb<Soldier> {
 		
 		base.Update();
 		
-		Debug.DrawLine(collider.bounds.center, LastKnownPosition(), Color.yellow);
+		//Debug.DrawLine(collider.bounds.center, LastKnownPosition(), Color.yellow);
+		//Debug.DrawLine(collider.bounds.center, collider.bounds.center + rigidbody.velocity, Color.green);
 		
-		Debug.DrawLine(collider.bounds.center, collider.bounds.center + rigidbody.velocity, Color.green);
 		//Debug.Log(MoveFSM.GetCurrentState());
 	}
 	

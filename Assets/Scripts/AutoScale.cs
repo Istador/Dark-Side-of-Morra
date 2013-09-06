@@ -9,13 +9,11 @@ public class AutoScale : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		scale = transform.localScale;
-		renderer.material.mainTextureScale = new Vector2( scale.x, scale.y );
+		Rescale();
 	}
 	
-	// Update is called once per frame
-	void Update ()
-	{
-	
+	public void Rescale(){
+		Vector3 s = transform.localScale;
+		renderer.material.mainTextureScale = new Vector2( s.x, s.y );
 	}
 }

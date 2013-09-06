@@ -146,7 +146,17 @@ public class PlayerController : MonoBehaviour
 		{
 			if (bullet)
 			{
-				Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);	
+				//Spawnpunkt für Bullet, im Lokalem Koordinatensystem des Spielers
+				Vector3 pos = bulletSpawn.localPosition * 2; // *2, weil scale vom player = 2
+				
+				//Spiegel entlang der X-Achse wenn Spieler nach links guckt
+				if(!lookRight) pos.x = -pos.x;
+				
+				//zu globalen Koordinatensystem
+				pos = transform.position + pos; //Spieler position
+				
+				//Bullet erstellen
+				Instantiate(bullet, pos, bulletSpawn.rotation);	
 			}
 			else
 			{

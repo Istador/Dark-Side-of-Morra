@@ -6,6 +6,7 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 	public float zeitBisFall = 1.0f;
 	
 	public GameObject owner; //Block zu dem dieser Collider gehört
+	private AutoScale scale;
 	
 	private bool touched = false; //damit der Spieler nicht mehrfach OnTriggerEnter ausführt
 	
@@ -27,16 +28,22 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 		
 		//Normale Textur benutzen
 		owner.renderer.materials = normal;
+		
+		scale = owner.GetComponent<AutoScale>();
 	}
 	
 	
 	void OnTriggerEnter(Collider other) {
 		if(!touched && other.gameObject.tag == "Player"){
 			touched = true;
+			
 			//Nachricht an sich selbst für später
 			MessageDispatcher.Instance.Dispatch(this,this,"verschwinden",zeitBisFall,null);
+			
 			//Rote Textur benutzen
 			owner.renderer.materials = red;
+			scale.Rescale(); //Textur neu skalieren
+			
 			//Sound abspielen
 			AudioSource.PlayClipAtPoint(ac_disapear, owner.collider.bounds.center);
 		}
@@ -56,6 +63,7 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 			case "auftauchen":
 				touched = false;
 				owner.renderer.materials = normal; //Normale Textur benutzen
+				scale.Rescale(); //Textur neu skalieren
 				owner.renderer.enabled = true; //Sichtbar werden
 				owner.collider.enabled = true; //Kollisionen einschalten
 				return true;
