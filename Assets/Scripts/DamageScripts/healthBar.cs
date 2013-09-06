@@ -18,10 +18,10 @@ public class healthBar : MonoBehaviour {
 	public Texture2D healthBar10;
 	public Texture2D healthBar11;
 	
-	public int positionHealthbarWidth;
-	public int positionHealthbarHight;
-	public int breiteSpritze;
-	public int höheSpritze;
+	private int positionHealthbarWidth = 50;
+	private int positionHealthbarHight = 30;
+	private int breiteSpritze = 50;
+	private int höheSpritze = 200;
 	/*void OnGUI () {
 		GUI.Label (new Rect (25, 25, 100, 30), new GUIContent("healthbar1"));
 	}
