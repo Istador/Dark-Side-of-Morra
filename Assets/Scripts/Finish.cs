@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class Finish : MonoBehaviour {
+public class Finish : MonoBehaviour
+{
 
 	void OnTriggerEnter ( Collider characterController )
 	{
@@ -18,5 +19,4 @@ public class Finish : MonoBehaviour {
 			Debug.Log("Level zu Ende");
 		}
 	}
-
 }

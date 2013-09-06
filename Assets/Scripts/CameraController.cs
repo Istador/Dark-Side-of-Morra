@@ -3,68 +3,71 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour
 {
-	public GameObject cameraTarget; 			// object to look at / follow
-	public float smoothTime		= 0.1f;			// time for camera dampen
-	bool  cameraFollowX	 		= true;			// camera follows on horizontal
-	bool  cameraFollowY	 		= false;			// camera follows on vertical
-	Vector2 velocity;							// speed of camera movement
-	float orthoSize;
+	
+	public float smoothTimeX		= 0.1f;			// time for camera dampen
+	public float smoothTimeY		= 0.3f;			// time for camera dampen
+	public float cameraHeightOffset	= 3.0f;			// height offset of camera
+	public int tier0 = 0;
+	public int tier1 = 10;
+	public int tier2 = 20;
+	
 
-	Transform thisTransform; 					// cameras transform
-	public float cameraHeightOffset	= 3.0f;		// height offset of camera
-	public float playerHeight;
+	private GameObject player;						// object to look at / follow
+	private Vector2 velocity;						// speed of camera movement
+	private Transform thisTransform;	 			// cameras transform
+
+	
 
 	void  Start ()
 	{
 		thisTransform = transform;
-		orthoSize	  = camera.orthographicSize;
-		
-		cameraTarget = GameObject.FindWithTag("Player");
+		player = GameObject.FindWithTag("Player");
 
-		StartCoroutine(WaitAndSetPlayerHeight(0.5f));
-		
 	}
 
 
 	void  Update ()
 	{
-		if (cameraFollowX)
+		smoothMoveX();
+
+		if (player.transform.position.y > tier0 && player.transform.position.y < tier0 + 5)
 		{
-			Vector3 temp = thisTransform.position;
-			temp.x = Mathf.SmoothDamp(thisTransform.position.x, cameraTarget.transform.position.x, ref velocity.x, smoothTime);
-			thisTransform.position = temp;
+			setCameraHeight(Mathf.SmoothDamp(thisTransform.position.y, tier0 + 2, ref velocity.y, smoothTimeY));	
 		}
-		
-		if (cameraFollowY) // only use for vertical levels
+		else
+		if (player.transform.position.y > tier1 && player.transform.position.y < tier1 + 5)
+		{
+			setCameraHeight(Mathf.SmoothDamp(thisTransform.position.y, tier1 + 2, ref velocity.y, smoothTimeY));	
+		}
+		else
+		if (player.transform.position.y > tier2 && player.transform.position.y < tier2 + 5)
+		{
+			setCameraHeight(Mathf.SmoothDamp(thisTransform.position.y, tier2 + 2, ref velocity.y, smoothTimeY));	
+		}
+		else
 		{
 			smoothMoveY();
 		}
-		else		// normal camera follow, based on initial player height and some math
-		{
-			if (cameraTarget.transform.position.y - playerHeight > 5) // if player moves 5 higher, camera follows
-			{
-				StartCoroutine(WaitAndSetPlayerHeight(0.5f));
-				smoothMoveY();
-			}
-			if (cameraTarget.transform.position.y - playerHeight < -0.9) // if player moves 1 lower, camera follows
-			{
-				StartCoroutine(WaitAndSetPlayerHeight(0.5f));
-				smoothMoveY();				
-			}
-		}
-
 	}
 
-	IEnumerator WaitAndSetPlayerHeight(float waitTime)
+	void smoothMoveX()
 	{
-		yield return new WaitForSeconds(waitTime);
-		playerHeight = cameraTarget.transform.position.y; // stores initial player height for else of cameraFollowY in Update function
+		Vector3 temp = thisTransform.position;
+		temp.x = Mathf.SmoothDamp(thisTransform.position.x, player.transform.position.x, ref velocity.x, smoothTimeX);
+		thisTransform.position = temp;
 	}
 
 	void smoothMoveY()
 	{
 		Vector3 temp = thisTransform.position;
-		temp.y = Mathf.SmoothDamp(thisTransform.position.y, cameraTarget.transform.position.y + cameraHeightOffset, ref velocity.y, smoothTime);
+		temp.y = Mathf.SmoothDamp(thisTransform.position.y, player.transform.position.y + cameraHeightOffset, ref velocity.y, smoothTimeY);
+		thisTransform.position = temp;
+	}
+
+	void setCameraHeight(float height)
+	{
+		Vector3 temp = thisTransform.position;
+		temp.y = height;
 		thisTransform.position = temp;
 	}
 

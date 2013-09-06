@@ -41,10 +41,11 @@ public class Bullet : MonoBehaviour
 
 	void Move()
 	{
-		// TODO dementsprechend nach links oder rechts bewegen
-		if (lookRight){
+		if (lookRight)
+		{
 			transform.Translate(Vector3.right * bulletSpeed * Time.deltaTime);
-		} else {
+		} else
+		{
 			transform.Translate(Vector3.left * bulletSpeed * Time.deltaTime);
 		}
 	}
