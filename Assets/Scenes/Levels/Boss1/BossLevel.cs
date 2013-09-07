@@ -9,6 +9,8 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 	public GameObject keyPrefab;
 	public GameObject boss;
 	
+	public AudioClip ac_door;
+	
 	void Start(){
 		door1 = GameObject.Find("door1");
 		door2 = GameObject.Find("door2");
@@ -19,32 +21,42 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 	public bool HandleMessage(Telegram msg){
 		//Nachrichteneingang, je nach Nachricht etwas anderes tun
 		switch(msg.message){
-			//1. Gespräch mit blauem Einhorn vorrüber
+			//Das 1. Gespräch, mit dem blauen Einhorn, ist vorrüber
 			case "dialog1":
+				//Tür 1 öffnen
 				door1.collider.enabled = false;
 				door1.renderer.enabled = false;
-				//TODO Soundgeräusch für öffnende Tür
+				//Geräusch
+				AudioSource.PlayClipAtPoint(ac_door, door1.collider.bounds.center);
 				return true;
+			//Spieler hat den Raum betreten
 			case "roomEntered":
+				//Tür 1 schließen
 				door1.collider.enabled = true;
 				door1.renderer.enabled = true;
-				
-				//TODO Soundgeräusch für schließende Tür
+				//Geräusch
+				AudioSource.PlayClipAtPoint(ac_door, door1.collider.bounds.center);
 				return true;
+			//Das 2. Gespräch, mit dem pinken Einhorn, ist vorrüber
 			case "dialog2":
+				//Boss kann nun engaged werden
 				boss.collider.enabled = true;
 				return true;
+			//Der Spieler hat den Schlüssel aufgehoben
 			case "keyPickup":
+				//Tür von Gefängniszelle öffnet sich wenn der Spieler näher kommt
 				cellTrigger.collider.enabled = true;
 				return true;
+			//Der Spieler erreicht mit dem Schlüssel die Zellentür
 			case "cellOpened":
+				//Tür 2 öffnen
 				door2.renderer.enabled = false;
 				door2.collider.enabled = false;
-				//TODO Soundgeräusch für öffnende Tür
+				AudioSource.PlayClipAtPoint(ac_door, door2.collider.bounds.center);
 				//TODO Ende-Dialog und Spiel beenden
 				return true;
+			//Nachrichtentyp unbekannt, konnte nicht verarbeitet werden
 			default:
-				//Nachrichtentyp unbekannt, konnte nicht verarbeitet werden
 				return false;
 		}
 	}
