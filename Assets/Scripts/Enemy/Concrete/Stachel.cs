@@ -10,9 +10,9 @@ public class Stachel : MLeftRight<Stachel> {
 	
 	
 	
-	protected override int txtCols { get{return 8;} } //Anzahl Spalten (Frames)
+	protected override int txtCols { get{return 10;} } //Anzahl Spalten (Frames)
 	protected override int txtRows { get{return 2;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 4;} }  //Frames per Second
+	protected override int txtFPS { get{return 6;} }  //Frames per Second
 	
 	
 	
