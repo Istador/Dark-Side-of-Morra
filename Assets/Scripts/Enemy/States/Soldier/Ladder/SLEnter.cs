@@ -11,7 +11,6 @@ public class SLEnter : State<Enemy<Soldier>> {
 	
 	
 	public override void Enter(Enemy<Soldier> owner){
-		Debug.Log("SLEnter");
 		
 		((Soldier)owner).IsOnLadder = true;
 		
