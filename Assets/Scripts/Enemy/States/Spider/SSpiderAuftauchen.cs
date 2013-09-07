@@ -14,7 +14,7 @@ public class SSpiderAuftauchen : State<Enemy<Spider>> {
 	
 	public override void Execute(Enemy<Spider> owner){
 		//Texturrichtung
-		bool right = owner.IsRight(owner.player.collider.bounds.center);
+		bool right = owner.IsRight(owner.player);
 		if(right)
 			owner.SetSprite(1);
 		else owner.SetSprite(0);
@@ -38,7 +38,8 @@ public class SSpiderAuftauchen : State<Enemy<Spider>> {
 	
 	
 	public override void Exit(Enemy<Spider> owner){
-		owner.rigidbody.useGravity = true;
+		//wieder angreifbar werden
+		((Spider)owner).invincible = false;
 	}
 	
 	

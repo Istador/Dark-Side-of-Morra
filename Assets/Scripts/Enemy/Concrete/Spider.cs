@@ -9,26 +9,46 @@ public class Spider : MovableEnemy<Spider> {
 	public Bodenplatten platten  {get; private set;}
 	
 	/// <summary>Boss erleidet keinen Schaden</summary>
-	public bool invincible = true;
+	public bool invincible {
+		get{return this._invincible;}
+		set{
+			this._invincible = value;
+			pc.collider.enabled = !value;
+		}
+	}
+	private bool _invincible;
+	private PlayerCollider pc;
+	
+	/// <summary>Angriffsrichtung, je nachdem ob der Spieler links oder rechts von der Spinne ist</summary>
+	public Vector3 v_attackVector = Vector3.right;
+	/// <summary>Angriffsradius</summary>
+	public static readonly float f_attackRange = 1.8f;
+	
+	
 	
 	/// <summary>Wie oft bereits die Platten eingesetzt wurden</summary>
 	public int stage = 0;
 	
-	public override float maxSpeed { get{return 3.0f;} }
+	public override float maxSpeed { get{return 3.5f;} }
 	public override float maxForce { get{return 8.0f;} }
 	
 	
 	
 	protected override int txtCols { get{return 10;} } //Anzahl Spalten (Frames)
 	protected override int txtRows { get{return 6;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 5;} }  //Frames per Second
+	protected override int txtFPS { get{return 8;} }  //Frames per Second
 	
 	
 	
-	/// <summary>Geschwindigkeit mit der die Spinne verschwindet und wieder auftaucht</summary>
+	/// <summary>
+	/// Schaden den die Spinne pro Schlag macht
+	/// </summary>
+	public static readonly int i_damage = 30;
+	
+	/// <summary>
+	/// Geschwindigkeit mit der die Spinne verschwindet und wieder auftaucht
+	/// </summary>
 	public static readonly float f_seilSpeed = 2.0f;
-	
-	
 	
 	/// <summary>
 	/// Entfernung bei welcher der Spieler zu weit entfernt ist zum Angreifen
@@ -62,6 +82,9 @@ public class Spider : MovableEnemy<Spider> {
 		steering.Seek(false);
 		level = GameObject.Find("Level").GetComponent<BossLevel>();
 		platten = GameObject.Find("Bodenplatten").GetComponent<Bodenplatten>();
+		SetSprite(1);
+		pc = GetComponentInChildren<PlayerCollider>();
+		invincible = true;
 	}
 	
 	
@@ -92,4 +115,39 @@ public class Spider : MovableEnemy<Spider> {
 	public override void ApplyDamage(Vector3 damage){
 		if(!invincible) base.ApplyDamage(damage);
 	}
+	
+	
+	
+	/// <summary>
+	/// Führt die Attack-Animation aus
+	/// </summary>
+	/// <returns>
+	/// ob dies der letzte Frame ist
+	/// </returns>
+	public bool AttackFrame(){
+		//Jetzige Zeit merken
+		if(!attackStarted){
+			attackStartTime = Time.time;
+			attackStarted = true;
+		}
+		
+		//Frame berechnen
+		double time = Time.time - attackStartTime;
+		int attackFrame = System.Math.Min((int) (time * attackFPS), txtCols);
+		
+		//Textur ändern
+		Vector2 offset = renderer.material.mainTextureOffset;
+		offset.x = ((float) attackFrame) * (1.0f / txtCols);
+		renderer.material.mainTextureOffset = offset;
+		
+		//war dies der letzte Frame?
+		if( time > ( (double)txtCols / attackFPS ) ){
+			attackStarted = false;
+			return true;
+		}
+		return false;
+	}
+	private bool attackStarted = false;
+	private double attackStartTime = 0.0;
+	private static double attackFPS = 12.0;
 }

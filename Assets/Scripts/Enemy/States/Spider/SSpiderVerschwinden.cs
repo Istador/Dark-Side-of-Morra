@@ -6,7 +6,11 @@ public class SSpiderVerschwinden : State<Enemy<Spider>> {
 	
 		
 	public override void Enter(Enemy<Spider> owner){
-		owner.rigidbody.useGravity = false;
+		//Gravitation ausschalten
+		owner.constantForce.enabled = false;
+		
+		//Unbesiegbar werden
+		((Spider)owner).invincible = true;
 		
 		//Platten-Event starten
 		MessageDispatcher.Instance.Dispatch(owner, ((Spider)owner).platten, "begin", 0.5f, null);
@@ -19,7 +23,7 @@ public class SSpiderVerschwinden : State<Enemy<Spider>> {
 	
 	public override void Execute(Enemy<Spider> owner){
 		//Texturrichtung
-		bool right = owner.IsRight(owner.player.collider.bounds.center);
+		bool right = owner.IsRight(owner.player);
 		if(right)
 			owner.SetSprite(1);
 		else owner.SetSprite(0);

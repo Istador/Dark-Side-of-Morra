@@ -41,6 +41,8 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	protected abstract int txtRows { get; }
 	/// <summary>Frames per Second</summary>
 	protected abstract int txtFPS { get; }
+	/// <summary>Ob für den aktuellen Frame der SpriteController verwendet werden soll</summary>(
+	private bool animate = true;
 	
 	
 	
@@ -127,7 +129,9 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 		MoveFSM.Update();
 		AttackFSM.Update();
 		//Animation des Sprite-Controllers
-		spriteCntrl.animate(txtCols, txtRows, 0, txtState, txtCols, txtFPS);
+		if(animate)
+			spriteCntrl.animate(txtCols, txtRows, 0, txtState, txtCols, txtFPS);
+		animate = true;
 	}
 	
 	
@@ -221,6 +225,13 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/// Die Zeile in der Textur die für die Animation verwendet werden soll
 	/// </param>
 	public void SetSprite(int row){txtState = row;}
+	
+	
+	
+	/// <summary>
+	/// Überspringt die Animation des SpriteControllers für den aktuellen Frame
+	/// </summary>
+	public void SkipAnimation(){animate = false;}
 	
 	
 	
@@ -338,10 +349,30 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	
 	
 	/// <summary>
+	/// Ob das Object rechts vom Gegner ist.
+	/// </summary>
+	public bool IsRight(GameObject obj){
+		return IsRight(obj.collider.bounds.center);
+	}
+	
+	
+	
+	/// <summary>
 	/// Ob die Position über den Gegner ist.
 	/// </summary>
 	public bool IsOver(Vector3 pos){
 		return Vector3.Dot((pos - collider.bounds.center), Vector3.up) > 0.0f;
 	}
+	
+	
+	
+	/// <summary>
+	/// Ob das Object über den Gegner ist.
+	/// </summary>
+	public bool IsOver(GameObject obj){
+		return IsOver(obj.collider.bounds.center);
+	}
+	
+	
 	
 }

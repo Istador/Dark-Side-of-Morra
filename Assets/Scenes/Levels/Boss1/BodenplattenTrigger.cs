@@ -5,7 +5,7 @@ public class BodenplattenTrigger : MonoBehaviour {
 	
 	private static Bodenplatten plattenController;
 	
-	private bool entered = false;
+	public bool entered = false;
 	
 	void Start(){
 		if(plattenController == null)

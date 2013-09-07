@@ -9,14 +9,14 @@ public class SSpiderStehen : State<Enemy<Spider>> {
 		//anhalten
 		owner.rigidbody.velocity = Vector3.zero;
 		owner.rigidbody.angularVelocity = Vector3.zero;
-		owner.rigidbody.useGravity = false;
+		owner.constantForce.enabled = false; //Gravitation ausschalten
 		((Spider)owner).steering.Seek(false);
 	}
 	
 	
 	public override void Execute(Enemy<Spider> owner){
 		//Texturrichtung
-		if(owner.IsRight(owner.player.collider.bounds.center))
+		if(owner.IsRight(owner.player))
 			owner.SetSprite(1);
 		else owner.SetSprite(0);
 		
@@ -43,9 +43,8 @@ public class SSpiderStehen : State<Enemy<Spider>> {
 		float distance = owner.DistanceToPlayer();
 		//nahkampfreichweite
 		
-		if(distance < Spider.f_outOfRange)
-			//owner.MoveFSM.ChangeState(null); //angreifen
-			;
+		if(distance <= Spider.f_outOfRange)
+			owner.MoveFSM.ChangeState(SSpiderAngreifen.Instance); //angreifen
 		//zu weit weg
 		else
 			owner.MoveFSM.ChangeState(SSpiderSeek.Instance); //annähern
@@ -54,7 +53,8 @@ public class SSpiderStehen : State<Enemy<Spider>> {
 	
 	
 	public override void Exit(Enemy<Spider> owner){
-		owner.rigidbody.useGravity = true;
+		//Gravitation einschalten
+		owner.constantForce.enabled = true;
 	}
 	
 	

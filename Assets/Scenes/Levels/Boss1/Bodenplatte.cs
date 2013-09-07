@@ -4,8 +4,7 @@ using System.Collections;
 public class Bodenplatte : MonoBehaviour, MessageReceiver {
 	
 	//Trigger-Collider des Child-Objektes
-	private BodenplattenTrigger child;
-	private Collider trigger;
+	private BodenplattenTrigger trigger;
 	
 	private static Material[] normal;
 	private static Material[] red;
@@ -16,9 +15,8 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 	
 	void Start(){
 		//Collider des Spielertriggers
-		child = transform.FindChild("Spielertrigger").GetComponent<BodenplattenTrigger>();
-		trigger = child.collider;
-		trigger.enabled = false;
+		trigger = transform.FindChild("Spielertrigger").GetComponent<BodenplattenTrigger>();
+		trigger.collider.enabled = false;
 		
 		//Texturen laden
 		if(mats == null) mats = GameObject.Find("Bodenplatten").GetComponent<Bodenplatten>().mats;
@@ -35,9 +33,10 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 	public bool HandleMessage(Telegram msg){
 		//Nachrichteneingang, je nach Nachricht etwas anderes tun
 		switch(msg.message){
+			//dies soll eine grüne Bodenplatte sein
 			case "green":
 				renderer.materials = green;
-				trigger.enabled = true;
+				trigger.collider.enabled = true;
 				
 				//Health Globe laden
 				UnityEngine.Object res = Resources.Load("bigHP");
@@ -47,14 +46,15 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 				obj.rigidbody.AddForce(Vector3.up * 4.0f, ForceMode.Impulse);
 			
 				return true;
+			//dies soll eine rote Bodenplatte sein
 			case "red":
 				renderer.materials = red;
-				trigger.enabled = false;
 				return true;
+			//Bodenplatte zurücksetzen
 			case "normal":
 				renderer.materials = normal;
-				trigger.enabled = false;
-				
+				trigger.collider.enabled = false;
+				trigger.entered = false;
 				return true;
 			default:
 				//Nachrichtentyp unbekannt, konnte nicht verarbeitet werden

@@ -16,9 +16,6 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 		door2 = GameObject.Find("door2");
 		cellTrigger = GameObject.Find("cellTrigger");
 		boss = GameObject.Find("Boss");
-		
-		//geringere Gravitation, damit Boss leichter die Schräge hoch kann
-		Physics.gravity = new Vector3(0.0f, -4.0f, 0.0f);
 	}
 	
 	public bool HandleMessage(Telegram msg){
@@ -56,7 +53,18 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 				door2.renderer.enabled = false;
 				door2.collider.enabled = false;
 				AudioSource.PlayClipAtPoint(ac_door, door2.collider.bounds.center);
-				//TODO Ende-Dialog und Spiel beenden
+				
+				//TODO Ende-Dialog
+				
+				//Spiel speichern
+				if(SaveData.levelReached == Application.loadedLevel){
+					SaveData.levelReached++;
+				}
+				SaveLoad.Save();
+			
+				//Credits laden
+				Application.LoadLevel(2);
+			
 				return true;
 			//Nachrichtentyp unbekannt, konnte nicht verarbeitet werden
 			default:
