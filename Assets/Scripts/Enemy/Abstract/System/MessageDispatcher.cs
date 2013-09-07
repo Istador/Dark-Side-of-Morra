@@ -54,7 +54,7 @@ public class MessageDispatcher {
 	/// <param name='msg'>
 	/// Die Nachricht die ausgeliefert werden soll
 	/// </param>
-	public void Dispatch(MessageReceiver sender, MessageReceiver receiver, string msg, float delay, Object extraInfo){
+	public void Dispatch(MessageReceiver sender, MessageReceiver receiver, string msg, float delay, object extraInfo){
 		Dispatch(new Telegram(sender, receiver, msg, Time.time+delay, extraInfo));
 	}
 	

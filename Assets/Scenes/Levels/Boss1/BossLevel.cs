@@ -7,11 +7,13 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 	private GameObject door2;
 	private GameObject cellTrigger;
 	public GameObject keyPrefab;
+	public GameObject boss;
 	
 	void Start(){
 		door1 = GameObject.Find("door1");
 		door2 = GameObject.Find("door2");
 		cellTrigger = GameObject.Find("cellTrigger");
+		boss = GameObject.Find("Boss");
 	}
 	
 	public bool HandleMessage(Telegram msg){
@@ -26,10 +28,11 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 			case "roomEntered":
 				door1.collider.enabled = true;
 				door1.renderer.enabled = true;
+				
 				//TODO Soundgeräusch für schließende Tür
 				return true;
 			case "dialog2":
-				//TODO Boss benachrichtigen
+				boss.collider.enabled = true;
 				return true;
 			case "keyPickup":
 				cellTrigger.collider.enabled = true;
