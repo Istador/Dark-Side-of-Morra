@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour
 	public GameObject bullet;
 	public Transform bulletSpawn;
 	private bool	  InputShoot = false;
+	private bool shootingAllowed = true;
+	public float shootingDelay = 0.5f;
 
 	void  Start ()
 	{
@@ -142,7 +144,7 @@ public class PlayerController : MonoBehaviour
 
 	void Shoot ()
 	{
-		if (InputShoot)
+		if (InputShoot && shootingAllowed)
 		{
 			if (bullet)
 			{
@@ -157,6 +159,8 @@ public class PlayerController : MonoBehaviour
 				
 				//Bullet erstellen
 				Instantiate(bullet, pos, bulletSpawn.rotation);	
+				shootingAllowed = false;
+				StartCoroutine(DelayShooting(shootingDelay));
 			}
 			else
 			{
@@ -165,6 +169,12 @@ public class PlayerController : MonoBehaviour
 			
 			audio.PlayOneShot(shootSound, 1); 
 		}
+	}
+
+	IEnumerator DelayShooting(float delay)
+	{
+		yield return new WaitForSeconds(delay);
+		shootingAllowed = true;
 	}
 
 	void  Animate ()
