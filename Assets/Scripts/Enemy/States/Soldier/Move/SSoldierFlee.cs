@@ -5,12 +5,6 @@ public class SSoldierFlee : State<Enemy<Soldier>> {
 	
 	
 	
-	public override void Enter(Enemy<Soldier> owner){
-		Debug.Log("SSoldierFlee");
-	}
-	
-	
-	
 	public override void Execute(Enemy<Soldier> owner){
 		if(!owner.LineOfSight(owner.player)){
 			owner.MoveFSM.ChangeState(SSoldierSeekPosition.Instance);

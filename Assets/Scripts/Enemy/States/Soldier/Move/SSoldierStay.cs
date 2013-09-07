@@ -6,7 +6,6 @@ public class SSoldierStay : State<Enemy<Soldier>> {
 	
 	
 	public override void Enter(Enemy<Soldier> owner){
-		Debug.Log("SSoldierStay");
 		((Soldier)owner).steering.Seek(false);
 		((Soldier)owner).steering.Flee(false);
 		((Soldier)owner).steering.SetTarget(null);
@@ -38,10 +37,6 @@ public class SSoldierStay : State<Enemy<Soldier>> {
 		else if(distance > Soldier.f_optimum_max)
 			owner.MoveFSM.ChangeState(SSoldierSeek.Instance); //annähern
 	}
-	
-	
-	
-	public override void Exit(Enemy<Soldier> owner){}
 	
 	
 	

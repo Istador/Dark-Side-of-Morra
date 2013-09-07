@@ -5,12 +5,6 @@ public class SSoldierSeekPosition : State<Enemy<Soldier>> {
 	
 	
 	
-	public override void Enter(Enemy<Soldier> owner){
-		Debug.Log("SSoldierSeekPosition");
-	}
-	
-	
-	
 	public override void Execute(Enemy<Soldier> owner){
 		Vector3 pos = ((Soldier)owner).LastKnownPosition();
 		

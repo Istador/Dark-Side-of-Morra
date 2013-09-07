@@ -52,7 +52,7 @@ public class SteeringBehaviors<T> {
 	/// </param>
 	private Vector3 Seek(Vector3 targetPos){
 		Vector3 desiredVelocity = 
-			(targetPos - owner.collider.bounds.center).normalized * owner.maxSpeed;
+			(targetPos - owner.collider.bounds.center).normalized * owner.maxForce;
 		return desiredVelocity - owner.rigidbody.velocity;
 	}
 	
@@ -66,7 +66,7 @@ public class SteeringBehaviors<T> {
 	/// </param>
 	private Vector3 Flee(Vector3 targetPos){
 		Vector3 desiredVelocity = 
-			(owner.collider.bounds.center - targetPos).normalized * owner.maxSpeed;
+			(owner.collider.bounds.center - targetPos).normalized * owner.maxForce;
 		
 		return desiredVelocity - owner.rigidbody.velocity;
 	}
@@ -92,7 +92,7 @@ public class SteeringBehaviors<T> {
 		}
 		*/
 						
-		float LAT = toEvader.magnitude / ( owner.maxSpeed + evader.rigidbody.velocity.magnitude );
+		float LAT = toEvader.magnitude / ( owner.maxForce + evader.rigidbody.velocity.magnitude );
 		return Seek(evader.collider.bounds.center + evader.rigidbody.velocity * LAT);
 	}
 	
@@ -106,7 +106,7 @@ public class SteeringBehaviors<T> {
 	/// </param>
 	private Vector3 Evade(MovableEnemy<T> persuer){
 		Vector3 toPersuer = persuer.collider.bounds.center - owner.collider.bounds.center;
-		float LAT = toPersuer.magnitude / ( owner.maxSpeed + persuer.rigidbody.velocity.magnitude );
+		float LAT = toPersuer.magnitude / ( owner.maxForce + persuer.rigidbody.velocity.magnitude );
 		return Flee(persuer.collider.bounds.center + persuer.rigidbody.velocity * LAT);
 	}
 	

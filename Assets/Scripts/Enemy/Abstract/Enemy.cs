@@ -47,8 +47,10 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/*
 	 * Health
 	*/
-	private int health; //aktuell
-	private int maxHealth; //maximal
+	public int health {get; private set;} //aktuell
+	public readonly int maxHealth; //maximal
+	public float healthFactor { get; private set; } //zwischen 0.0 und 1.0
+	
 	private static AudioClip ac_healthdrop; //Health Globe Drop Sound
 	
 	
@@ -95,6 +97,7 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/// </param>
 	public Enemy(int maxHealth){
 		this.maxHealth = maxHealth;
+		healthFactor = 1.0f;
 		//Zustandsautomaten erstellen
 		MoveFSM = new StateMachine<Enemy<T>>(this);
 		AttackFSM = new StateMachine<Enemy<T>>(this);
@@ -154,6 +157,7 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	public virtual void ApplyDamage(Vector3 damage){
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage.magnitude+" dmg received");
 		health -= (int)damage.magnitude;
+		healthFactor = ((float)health) / ((float)maxHealth);
 		if(health <= 0) Death();
 	}
 	
@@ -168,6 +172,7 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	public virtual void ApplyHeal(int hp){
 		health += hp;
 		if(health > maxHealth) health = maxHealth;
+		healthFactor = ((float)health) / ((float)maxHealth);
 	}
 	
 	

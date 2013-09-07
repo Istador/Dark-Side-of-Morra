@@ -16,6 +16,9 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 		door2 = GameObject.Find("door2");
 		cellTrigger = GameObject.Find("cellTrigger");
 		boss = GameObject.Find("Boss");
+		
+		//geringere Gravitation, damit Boss leichter die Schräge hoch kann
+		Physics.gravity = new Vector3(0.0f, -4.0f, 0.0f);
 	}
 	
 	public bool HandleMessage(Telegram msg){

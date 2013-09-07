@@ -8,8 +8,7 @@ public class SSpiderAusschluepfen : State<Enemy<Spider>> {
 	public override bool OnMessage(Enemy<Spider> owner, Telegram msg){
 		switch(msg.message){
 			case "kokon_offen":
-				//TODO: zu State stehen
-				owner.MoveFSM.ChangeState(null);
+				owner.MoveFSM.ChangeState(SSpiderStehen.Instance);
 				return true;
 			default:
 				return false;

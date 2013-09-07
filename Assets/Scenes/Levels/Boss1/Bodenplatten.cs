@@ -13,7 +13,7 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 	private Bodenplatte[] platten;
 	
 	//Bossreferenz
-	private GameObject boss;
+	private MessageReceiver spinne;
 	
 	//Texturen für die Bodenplatten
 	public Material[] mats;
@@ -23,7 +23,7 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 		platten = gameObject.GetComponentsInChildren<Bodenplatte>();
 		
 		//Boss abrufen
-		boss = GameObject.Find("Boss");
+		spinne = GameObject.Find("Spider").GetComponent<Spider>();
 	}
 	
 	
@@ -61,9 +61,9 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 			foreach(Bodenplatte p in platten)
 				MessageDispatcher.Instance.Dispatch(this, p, "normal", 0.0f, null);
 			
-			//TODO: Boss eine Nachricht schicken damit er wieder auftaucht
-			Debug.Log(boss);
-			}
+			//Boss eine Nachricht schicken damit er wieder auftaucht
+			MessageDispatcher.Instance.Dispatch(this, spinne, "auftauchen", 1.0f, null);
+		}
 	}
 	
 	
