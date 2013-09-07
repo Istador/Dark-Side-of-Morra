@@ -52,7 +52,15 @@ public class Bullet : MonoBehaviour
 
 	void Animate()
 	{
-		anim((int)AnimationTypes.shootRight);
+		if (lookRight)
+		{
+			anim((int)AnimationTypes.shootRight);	
+		}
+		else
+		{
+			anim((int)AnimationTypes.shootLeft);
+		}
+		
 	}
 
 	enum AnimationTypes
