@@ -14,11 +14,11 @@ public class Bullet : MonoBehaviour
 	private PlayerController playerController;
 
 	// animation
-	public int columnSize		= 10;
-	public int rowSize			= 15;
+	public int columnSize		= 5;
+	public int rowSize			= 1;
 	public int colFrameStart	=  0;
 	// public int rowFrameStart	=  0; wurde ersetzt durch den Übergabewert animType vom enum
-	public int totalFrames		= 10;
+	public int totalFrames		= 5;
 	public int framesPerSecond	= 12;
 
 	void Start()
