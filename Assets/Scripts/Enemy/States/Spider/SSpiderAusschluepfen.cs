@@ -5,6 +5,15 @@ public class SSpiderAusschluepfen : State<Enemy<Spider>> {
 	
 	
 	
+	public override void Execute(Enemy<Spider> owner){
+		//Texturrichtung
+		if(owner.IsRight(owner.player))
+			owner.SetSprite(1);
+		else owner.SetSprite(0);
+	}
+	
+	
+	
 	public override bool OnMessage(Enemy<Spider> owner, Telegram msg){
 		switch(msg.message){
 			case "kokon_offen":
