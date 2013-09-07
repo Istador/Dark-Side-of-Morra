@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
 	private Vector2 moveDirection = Vector2.zero;
 	private bool  InputJump		= false;
 	private bool  isOnLadder	= false;
-	
+	private bool movementAllowed = true;
 	public bool  lookRight		= true;
 
 	// animation
@@ -121,7 +121,10 @@ public class PlayerController : MonoBehaviour
 
 		moveDirection.x = velocity.x;
 
-		characterController.Move(moveDirection * Time.deltaTime);	
+		if (movementAllowed)
+		{
+			characterController.Move(moveDirection * Time.deltaTime);
+		}
 	}
 
 	void  OnTriggerEnter ( Collider characterController  )
@@ -273,13 +276,17 @@ public class PlayerController : MonoBehaviour
 
 			// Blinken
 			StartCoroutine(DamageEffect());
+
+
 		}
 	}
 	
 	IEnumerator DamageEffect()
 	{
 		renderer.enabled = false;
+		movementAllowed = false;
 		yield return new WaitForSeconds(damageEffectPause);
+		movementAllowed = true;
 		renderer.enabled = true;
 		yield return new WaitForSeconds(damageEffectPause);
 		renderer.enabled = false;
