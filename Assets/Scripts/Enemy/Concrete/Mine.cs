@@ -25,9 +25,9 @@ public class Mine : ImmovableEnemy<Mine> {
 	public bool ticked = false; //für den roten zustand, ob bereits getickt wurde
 	
 	
-	protected override int txtCols { get{return 2;} } //Anzahl Spalten (Frames)
+	protected override int txtCols { get{return 10;} } //Anzahl Spalten (Frames)
 	protected override int txtRows { get{return 3;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 5;} }  //Frames per Second
+	protected override int txtFPS { get{return 20;} }  //Frames per Second
 	
 	
 	
