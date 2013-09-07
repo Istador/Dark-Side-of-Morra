@@ -14,9 +14,9 @@ public class Spider : MLeftRight<Spider> {
 	
 	
 	
-	protected override int txtCols { get{return 1;} } //Anzahl Spalten (Frames)
-	protected override int txtRows { get{return 1;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 1;} }  //Frames per Second
+	protected override int txtCols { get{return 10;} } //Anzahl Spalten (Frames)
+	protected override int txtRows { get{return 6;} } //Anzahl Zeilen (Zustände)
+	protected override int txtFPS { get{return 5;} }  //Frames per Second
 	
 	
 	
@@ -44,9 +44,16 @@ public class Spider : MLeftRight<Spider> {
 	
 	protected override void Start(){
 		base.Start();
-		
+		steering.Seek(false);
 		level = GameObject.Find("Level").GetComponent<BossLevel>();
 	}
+	
+	
+	
+	protected override void Update(){
+		base.Update();
+	}
+	
 	
 	
 	//Überschreiben um beim Tod den Schlüssel fallen zu lassen

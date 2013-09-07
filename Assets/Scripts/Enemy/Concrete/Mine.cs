@@ -57,7 +57,7 @@ public class Mine : ImmovableEnemy<Mine> {
 		//Kollision nur mit Spieler
 		if(other.tag == "Player"){
 			Explode();
-			GetComponent<BoxCollider>().enabled = false;
+			GetComponent<SphereCollider>().enabled = false;
 		}
 	}
 	
