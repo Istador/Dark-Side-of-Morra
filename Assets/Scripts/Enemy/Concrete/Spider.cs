@@ -6,6 +6,7 @@ public class Spider : MLeftRight<Spider> {
 	
 	
 	private BossLevel level;
+	public bool invincible = true;
 	
 	
 	public override float maxSpeed { get{return 3.0f;} }
@@ -56,5 +57,14 @@ public class Spider : MLeftRight<Spider> {
 		key.rigidbody.AddForce(Vector3.up * 6.0f, ForceMode.Impulse);
 		
 		base.Death();
+	}
+	
+	
+	
+	/// <summary>
+	/// überschrieben für unbesiegbarkeit
+	/// </summary>
+	public virtual void ApplyDamage(Vector3 damage){
+		if(!invincible) base.ApplyDamage(damage);
 	}
 }

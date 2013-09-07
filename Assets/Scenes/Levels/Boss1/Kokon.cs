@@ -22,7 +22,7 @@ public class Kokon : MonoBehaviour, MessageReceiver {
 				renderer.material.mainTextureOffset = offset;
 				
 				//nächste Textur
-				if(frame >= max_frame){
+				if(frame >= max_frame-1){
 					MessageDispatcher.Instance.Dispatch(this, this, "over", 0.25f, null);
 				} else {
 					MessageDispatcher.Instance.Dispatch(this, this, "frame", 0.25f, (object)(frame+1));
