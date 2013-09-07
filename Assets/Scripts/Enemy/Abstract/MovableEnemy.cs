@@ -67,7 +67,8 @@ public abstract class MovableEnemy<T> : Enemy<T> {
 		
 		if(f != Vector3.zero){
 			//Kraft auf die Unity-Physik-Engine übertragen, um Bewegung zu erzeugen
-			rigidbody.AddRelativeForce(f);
+			//rigidbody.AddRelativeForce(f);
+			rigidbody.AddForce(f);
 				
 			//Bewegungsgeschwindigkeit limitieren
 			if(rigidbody.velocity.magnitude > maxSpeed)
