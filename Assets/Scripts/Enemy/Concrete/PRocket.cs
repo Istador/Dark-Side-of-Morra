@@ -20,8 +20,8 @@ public class PRocket : Projektile<PRocket> {
 	
 	
 	
-	public override float maxSpeed { get{return 0.8f;} }
-	public override float maxForce { get{return 0.8f;} }
+	public override float maxSpeed { get{return 1.6f;} }
+	public override float maxForce { get{return 1.6f;} }
 	
 	
 	
