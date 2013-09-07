@@ -4,7 +4,12 @@ using System.Collections;
 public class keyTrigger : MonoBehaviour {
 
 	void OnTriggerEnter(Collider hit){
-		if(hit.gameObject.tag == "Player"){
+		if(hit.gameObject.layer == 8){ //fällt auf Level
+			//Gravitation ausschalten
+			rigidbody.isKinematic = true;
+			rigidbody.useGravity = false;
+		}
+		else if(hit.gameObject.tag == "Player"){
 		
 			MessageDispatcher.Instance.Dispatch(
 				null,
