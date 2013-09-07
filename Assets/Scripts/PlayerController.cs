@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
 	// public int rowFrameStart	=  0; wurde ersetzt durch den Übergabewert animType vom enum
 	public int totalFrames		= 10;
 	public int framesPerSecond	= 12;
+	public float damageEffectPause = 0.1f;
 	
 	private CharacterController characterController;
 
@@ -256,23 +257,39 @@ public class PlayerController : MonoBehaviour
 	/// <param name='damage'>
 	/// Schaden der dem Spieler zugefügt wird
 	/// </param>
-	void ApplyDamage(Vector3 damage){
-		int dmg = Mathf.RoundToInt(damage.magnitude);
-		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
-		
-		// HP verringern
+	void ApplyDamage(Vector3 damage)
+	{
 		if (!godMode)
 		{
-			currentHealth -= dmg;	
-		}
-				
-		//Geräusch
-		float volume = 0.2f + 0.8f * ((float)dmg)/30.0f; //ab 30 dmg volle lautstärke, dadrunter abhängig vom schaden
-		audio.PlayOneShot(hitSound, volume); 
+			int dmg = Mathf.RoundToInt(damage.magnitude);
+			Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
 		
+			// HP verringern
+			currentHealth -= dmg;
+				
+			// Geräusch
+			float volume = 0.2f + 0.8f * ((float)dmg)/30.0f; //ab 30 dmg volle lautstärke, dadrunter abhängig vom schaden
+			audio.PlayOneShot(hitSound, volume); 
+
+			// Blinken
+			StartCoroutine(DamageEffect());
+		}
 	}
 	
-	
+	IEnumerator DamageEffect()
+	{
+		renderer.enabled = false;
+		yield return new WaitForSeconds(damageEffectPause);
+		renderer.enabled = true;
+		yield return new WaitForSeconds(damageEffectPause);
+		renderer.enabled = false;
+		yield return new WaitForSeconds(damageEffectPause);
+		renderer.enabled = true;
+		yield return new WaitForSeconds(damageEffectPause);
+		renderer.enabled = false;
+		yield return new WaitForSeconds(damageEffectPause);
+		renderer.enabled = true;
+	}
 	
 	/// <summary>
 	/// Health erhalten. Heilt den Spieler.
