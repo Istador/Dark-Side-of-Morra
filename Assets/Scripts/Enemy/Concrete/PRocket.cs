@@ -25,9 +25,9 @@ public class PRocket : Projektile<PRocket> {
 	
 	
 	
-	protected override int txtCols { get{return 1;} } //Anzahl Spalten (Frames)
+	protected override int txtCols { get{return 4;} } //Anzahl Spalten (Frames)
 	protected override int txtRows { get{return 1;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 1;} }  //Frames per Second
+	protected override int txtFPS { get{return 6;} }  //Frames per Second
 	
 	
 	
