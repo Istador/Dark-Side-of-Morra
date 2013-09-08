@@ -59,9 +59,6 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 				door2.collider.enabled = false;
 				AudioSource.PlayClipAtPoint(ac_door, door2.collider.bounds.center);
 				
-				//TODO: Dialog3 starten
-				MessageDispatcher.Instance.Dispatch(this, this, "dialog3", 2.0f, null);
-			
 				return true;
 			//Das 3. Gespräch, mit dem pinken Einhorn, ist vorrüber
 			case "dialog3":
@@ -72,6 +69,7 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 				SaveLoad.Save();
 			
 				//Credits laden
+				MessageDispatcher.Instance.EmptyQueue();
 				Application.LoadLevel(2);	
 			
 				return true;

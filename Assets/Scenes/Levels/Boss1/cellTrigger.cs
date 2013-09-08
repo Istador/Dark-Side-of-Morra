@@ -2,16 +2,21 @@
 using System.Collections;
 
 public class cellTrigger : MonoBehaviour {
-
-	void OnTriggerEnter(Collider hit){
-		if(hit.gameObject.tag == "Player"){
+	
+	void Start(){
+		Dialog d = GetComponent<Dialog>();
 		
-			MessageReceiver level = (MessageReceiver)GameObject.Find("Level").GetComponent<BossLevel>();
+		//Code der ausgeführt wird vor dem Dialog
+		d.preDialog = (GameObject obj) => {
+			MessageReceiver level = (MessageReceiver) GameObject.Find("Level").GetComponent<BossLevel>();
 			MessageDispatcher.Instance.Dispatch(null, level, "cellOpened", 0.0f, null);
+		};
 		
-			collider.enabled = false;
-			Destroy(gameObject);
-		}
+		//Code der ausgeführt wird nach dem Dialog
+		d.postDialog = (GameObject obj) => {
+			MessageReceiver level = (MessageReceiver) GameObject.Find("Level").GetComponent<BossLevel>();
+			MessageDispatcher.Instance.Dispatch(null, level, "dialog3", 0.0f, null);
+		};
 	}
 	
 }

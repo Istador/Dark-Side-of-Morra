@@ -7,10 +7,7 @@ public class BossHealthBar : MonoBehaviour {
 	
 	private static int height = 34;
 	private static int top = 20;
-	
-	private Rect rBox;
-	private Rect rBar;
-	
+		
 	private static Color cTransp = new Color(0.0f, 0.0f, 0.0f, 0.0f);
 	private static Color cBox = Color.grey;
 	private static Color cBar = Color.Lerp(Color.white, Color.black, 0.3f);
