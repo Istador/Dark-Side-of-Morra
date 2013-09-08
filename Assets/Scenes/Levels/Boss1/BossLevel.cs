@@ -49,13 +49,22 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 				return true;
 			//Der Spieler erreicht mit dem Schlüssel die Zellentür
 			case "cellOpened":
+				//Tür 1 öffnen
+				door1.renderer.enabled = false;
+				door1.collider.enabled = false;
+				AudioSource.PlayClipAtPoint(ac_door, door1.collider.bounds.center);
+			
 				//Tür 2 öffnen
 				door2.renderer.enabled = false;
 				door2.collider.enabled = false;
 				AudioSource.PlayClipAtPoint(ac_door, door2.collider.bounds.center);
 				
-				//TODO Ende-Dialog
-				
+				//TODO: Dialog3 starten
+				MessageDispatcher.Instance.Dispatch(this, this, "dialog3", 2.0f, null);
+			
+				return true;
+			//Das 3. Gespräch, mit dem pinken Einhorn, ist vorrüber
+			case "dialog3":
 				//Spiel speichern
 				if(SaveData.levelReached == Application.loadedLevel){
 					SaveData.levelReached++;
@@ -63,7 +72,7 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 				SaveLoad.Save();
 			
 				//Credits laden
-				Application.LoadLevel(2);
+				Application.LoadLevel(2);	
 			
 				return true;
 			//Nachrichtentyp unbekannt, konnte nicht verarbeitet werden

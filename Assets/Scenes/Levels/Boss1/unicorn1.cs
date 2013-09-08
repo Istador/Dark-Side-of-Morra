@@ -8,12 +8,8 @@ public class unicorn1 : MonoBehaviour {
 		
 			//TODO: Dialog starten, und erst nach dem Dialog die Nachricht verschicken.
 			
-			MessageDispatcher.Instance.Dispatch(
-				null,
-				(MessageReceiver)GameObject.Find("Level").GetComponent<BossLevel>(),
-				"dialog1",
-				0.0f,
-				null);
+			MessageReceiver level = (MessageReceiver)GameObject.Find("Level").GetComponent<BossLevel>();
+			MessageDispatcher.Instance.Dispatch(null, level, "dialog1", 0.0f, null);
 		
 			collider.enabled = false;
 		}

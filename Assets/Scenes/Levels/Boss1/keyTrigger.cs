@@ -26,12 +26,8 @@ public class keyTrigger : MonoBehaviour {
 		}
 		else if(hit.gameObject.tag == "Player"){
 		
-			MessageDispatcher.Instance.Dispatch(
-				null,
-				(MessageReceiver)GameObject.Find("Level").GetComponent<BossLevel>(),
-				"keyPickup",
-				0.0f,
-				null);
+			MessageReceiver level = (MessageReceiver)GameObject.Find("Level").GetComponent<BossLevel>();
+			MessageDispatcher.Instance.Dispatch(null, level, "keyPickup", 0.0f, null);
 		
 			collider.enabled = false;
 			
