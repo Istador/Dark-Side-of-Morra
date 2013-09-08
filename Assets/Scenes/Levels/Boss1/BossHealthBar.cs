@@ -5,18 +5,20 @@ public class BossHealthBar : MonoBehaviour {
 	
 	public Entity boss {get; private set;}
 	
-	private int height = 34;
-	private int top = 20;
+	private static int height = 34;
+	private static int top = 20;
 	
 	private Rect rBox;
 	private Rect rBar;
 	
-	private Color cTransp = new Color(0.0f, 0.0f, 0.0f, 0.0f);
-	private Color cBox = Color.grey;
-	private Color cBar = Color.Lerp(Color.white, Color.black, 0.3f);
-	private Color cHP = Color.Lerp(Color.red, Color.black, 0.3f);
+	private static Color cTransp = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+	private static Color cBox = Color.grey;
+	private static Color cBar = Color.Lerp(Color.white, Color.black, 0.3f);
 	
+	private static Color cGreen = Color.Lerp(Color.green, Color.black, 0.3f);
+	private static Color cRed = Color.Lerp(Color.red, Color.black, 0.3f);
 	
+	public bool GreenToRed = false;
 	
 	
 	void Start() {
@@ -78,6 +80,8 @@ public class BossHealthBar : MonoBehaviour {
 		//Smooth ein/ausblenden
 		Color ca = Color.Lerp(cTransp, cBox, lerp);
 		Color cb = Color.Lerp(cTransp, cBar, lerp);
+		//Übergang von Grün zu Rot
+		Color cHP = Color.Lerp(cRed, cGreen, GreenToRed ? boss.healthFactor : 0.0f);
 		Color cc = Color.Lerp(cTransp, cHP, lerp);
 		
 		//Zeichnen
