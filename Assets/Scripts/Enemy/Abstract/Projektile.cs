@@ -24,6 +24,12 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	
 	
 	/// <summary>
+	/// GameObject, dass dieses Projektil abgeschossen hat.
+	/// </summary>
+	public GameObject owner;
+	
+	
+	/// <summary>
 	/// Position die das Projektil anstrebt
 	/// </summary>
 	/// <value>
@@ -52,12 +58,19 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	/// Objekt mit dem die Kollision stattfindet
 	/// </param>
 	void OnTriggerEnter(Collider other) {
-		//Kollision mit Spieler?
-		if(other.gameObject.tag == "Player")
-			//Schaden verursachen
-			DoDamageTo(other.gameObject, damage);
-		//auch bei Kollisionen die nicht mit dem Spieler sind sterben
-		Death();
+		//nicht null, wenn Projektil von selben Typ
+		Projektile<T> p = other.gameObject.GetComponent<Projektile<T>>();
+		
+		//Nicht mit dem Besitzer dieses Projektils oder eines seiner Projektile kollidieren
+		if(other.gameObject != owner && (p==null || p.owner != owner ) ){
+		
+			//Kollision mit Spieler?
+			if(other.gameObject.tag == "Player")
+				//Schaden verursachen
+				DoDamageTo(other.gameObject, damage);
+			//auch bei Kollisionen die nicht mit dem Spieler sind sterben
+			Death();
+		}
 	}
 	
 	

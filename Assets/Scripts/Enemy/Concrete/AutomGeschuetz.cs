@@ -34,6 +34,16 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	
 	
 	
+	public Vector3 bulletSpawn { get{
+			return collider.bounds.center 
+				+ Heading() * collider.bounds.size.x/4.0f
+				+ Vector3.up * collider.bounds.size.y/8.0f
+			;
+		}
+	}
+	
+	
+	
 	public AutomGeschuetz() : base(250) { //250 HP
 		AttackFSM.SetCurrentState(SAGHoldFire.Instance);
 		
@@ -77,6 +87,15 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 		AudioSource.PlayClipAtPoint(ac_explosion, collider.bounds.center);
 		
 		base.Death();
+	}
+	
+	
+	
+	public Vector3 Heading(){
+		if(IsRight(player))
+			return Vector3.right;
+		else
+			return Vector3.left;
 	}
 	
 	

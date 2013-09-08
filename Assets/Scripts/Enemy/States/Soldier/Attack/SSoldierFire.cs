@@ -18,6 +18,7 @@ public class SSoldierFire : State<Enemy<Soldier>> {
 		//Kollisionen zwischen diesem Gegner und dieser Rakete ignorieren
 		Physics.IgnoreCollision(owner.collider, bullet.collider);
 		Physics.IgnoreCollision(bullet.collider, owner.collider);
+		bullet.GetComponent<PBullet>().owner = owner.gameObject;
 		
 		//zum Nachlade Zustand wechseln
 		owner.AttackFSM.ChangeState(SSoldierReload.Instance);

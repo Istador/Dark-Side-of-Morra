@@ -12,6 +12,7 @@ public class SRPGSFire : State<Enemy<RPGSoldier>> {
 		//Kollisionen zwischen diesem Gegner und dieser Rakete ignorieren
 		Physics.IgnoreCollision(owner.collider, rocket.collider);
 		Physics.IgnoreCollision(rocket.collider, owner.collider);
+		rocket.GetComponent<PRocket>().owner = owner.gameObject;
 		
 		//zum Nachlade Zustand wechseln
 		owner.AttackFSM.ChangeState(SRPGSReload.Instance);
