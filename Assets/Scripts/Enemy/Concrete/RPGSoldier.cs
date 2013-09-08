@@ -10,9 +10,20 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	
 	
-	protected override int txtCols { get{return 8;} } //Anzahl Spalten (Frames)
+	protected override int txtCols { get{return 10;} } //Anzahl Spalten (Frames)
 	protected override int txtRows { get{return 6;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 4;} }  //Frames per Second
+	protected override int txtFPS { get{return 6;} }  //Frames per Second
+	
+	
+	
+	public Vector3 bulletSpawn { get{
+			return collider.bounds.center 
+				+ Heading() * collider.bounds.size.x/4.0f
+				+ Vector3.up * collider.bounds.size.y/8.0f
+			;
+		}
+	}
+	
 	
 	
 	
@@ -206,8 +217,8 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 			if(h == Vector3.left) return 0;
 			else return 1;
 		} else {
-			if(h == Vector3.left) return 4;
-			else return 5;
+			if(h == Vector3.left) return 5;
+			else return 4;
 		}
 	}
 	

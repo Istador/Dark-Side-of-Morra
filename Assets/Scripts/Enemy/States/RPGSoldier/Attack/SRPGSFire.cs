@@ -7,7 +7,7 @@ public class SRPGSFire : State<Enemy<RPGSoldier>> {
 	
 	public override void Enter(Enemy<RPGSoldier> owner){
 		//Rakete vom Prefab erstellen
-		GameObject rocket = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("pRocket"), owner.transform.position, owner.transform.rotation);
+		GameObject rocket = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("pRocket"), ((RPGSoldier)owner).bulletSpawn, owner.transform.rotation);
 		
 		//Kollisionen zwischen diesem Gegner und dieser Rakete ignorieren
 		Physics.IgnoreCollision(owner.collider, rocket.collider);
