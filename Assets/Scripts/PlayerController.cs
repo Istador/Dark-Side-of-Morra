@@ -16,9 +16,13 @@ public class PlayerController : MonoBehaviour
 	private Vector2 moveDirection = Vector2.zero;
 	private bool  InputJump		= false;
 	private bool  isOnLadder	= false;
-	public bool movementAllowed = true;
+	private bool movementAllowed = true;
 	public bool  lookRight		= true;
-
+	
+	//steuerung von außen
+	public bool CanShoot = true;
+	public bool CanMove = true;
+	
 	// animation
 	public int columnSize		= 10;
 	public int rowSize			= 15;
@@ -55,8 +59,8 @@ public class PlayerController : MonoBehaviour
 	void  Update ()
 	{
 		InputCheck();
-		Move();
-		Shoot();
+		if(CanMove) Move();
+		if(CanShoot) Shoot();
 		Animate();
 		CheckForDeath();
 	}
