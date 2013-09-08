@@ -60,6 +60,12 @@ public class MessageDispatcher {
 	
 	
 	
+	public void Dispatch(MessageReceiver receiver, string msg, float delay = 0.0f){
+		Dispatch(new Telegram(null, receiver, msg, Time.time+delay, null));
+	}
+	
+	
+	
 	/// <summary>
 	/// Methode die kontinuierlich aufgerufen wird um verzögerte Nachrichten 
 	/// auszuliefern

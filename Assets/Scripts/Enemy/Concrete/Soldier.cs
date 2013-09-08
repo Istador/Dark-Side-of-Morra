@@ -9,8 +9,8 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	
 	
-	public override float maxSpeed { get{return 8.0f;} }
-	public override float maxForce { get{return 8.0f;} }
+	public override float maxSpeed { get{return 7.0f;} }
+	public override float maxForce { get{return 7.0f;} }
 	
 	
 	
@@ -23,29 +23,29 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	/// <summary>
 	/// Optimale Entfernung in der stehen geblieben wird. Untere Grenze
 	/// </summary>
-	public static readonly float f_optimum_min = 2.5f;
+	public readonly float f_optimum_min =  1.5f + (float)rnd.NextDouble() * 2.0f;
 	
 	/// <summary>
 	/// Optimale Entfernung in der stehen geblieben wird. Obere Grenze
 	/// </summary>
-	public static readonly float f_optimum_max = 6.5f;
+	public readonly float f_optimum_max = 5.5f + (float)rnd.NextDouble() * 2.0f;
 	
 	/// <summary>
 	/// Entfernung bei welcher der Spieler zu weit entfernt ist zum Starten von Raketen
 	/// </summary>
-	public static readonly float f_outOfRange = 8.0f;
+	public readonly float f_outOfRange = 7.5f + (float)rnd.NextDouble();
 	
 	/// <summary>
 	/// Nachladezeit:
 	/// Die Zeit zwischen zwei Raketen die zum Nachladen veranschlagt wird.
 	/// </summary>
-	public static readonly double d_reloadTime = 0.8; // 0,5 sekunden nachladen
+	public readonly float f_reloadTime = 0.7f + (float)rnd.NextDouble() * 0.4f; // ~0,8 sekunden nachladen
 	
 	/// <summary>
 	/// Gedächtnis:
 	/// Die Zeit die der Gegner sich noch an den Spieler erinnert.
 	/// </summary>
-	public static readonly double d_memoryTime = 10.0; // 5 sekunden
+	public static readonly double d_memoryTime = 7.0; // 7 sekunden
 	
 	/// <summary>
 	/// Sichtweite des Gegners. Bis zu dieser Distanz kann der Gegner sehen.

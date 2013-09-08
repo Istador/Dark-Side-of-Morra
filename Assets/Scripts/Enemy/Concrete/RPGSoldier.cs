@@ -5,8 +5,8 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	
 	
-	public override float maxSpeed { get{return 3.0f;} }
-	public override float maxForce { get{return 3.0f;} }
+	public override float maxSpeed { get{return 5.0f;} }
+	public override float maxForce { get{return 5.0f;} }
 	
 	
 	

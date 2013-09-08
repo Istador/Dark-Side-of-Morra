@@ -31,10 +31,10 @@ public class SSoldierStay : State<Enemy<Soldier>> {
 		//Distanz zum Spieler ermitteln
 		float distance = owner.DistanceTo(pos);
 		//zu nah
-		if(distance < Soldier.f_optimum_min)
+		if(distance < ((Soldier)owner).f_optimum_min)
 			owner.MoveFSM.ChangeState(SSoldierFlee.Instance); //zurückgehen
 		//zu weit weg
-		else if(distance > Soldier.f_optimum_max)
+		else if(distance > ((Soldier)owner).f_optimum_max)
 			owner.MoveFSM.ChangeState(SSoldierSeek.Instance); //annähern
 	}
 	

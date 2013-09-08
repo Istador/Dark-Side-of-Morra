@@ -57,7 +57,7 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	/// <param name='other'>
 	/// Objekt mit dem die Kollision stattfindet
 	/// </param>
-	void OnTriggerEnter(Collider other) {
+	protected virtual void OnTriggerEnter(Collider other) {
 		//nicht null, wenn Projektil von selben Typ
 		Projektile<T> p = other.gameObject.GetComponent<Projektile<T>>();
 		

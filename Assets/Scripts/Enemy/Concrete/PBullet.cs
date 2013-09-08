@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class PBullet : Projektile<PRocket> {
+public class PBullet : Projektile<PBullet> {
 	
 	
 	
@@ -55,6 +55,17 @@ public class PBullet : Projektile<PRocket> {
 			Death();
 	}
 	
+	
+	//PBullets können nicht mit anderen PBullets kollidieren
+	protected override void OnTriggerEnter(Collider other) {
+		PBullet bul = other.gameObject.GetComponent<PBullet>();
+		Soldier sol = other.gameObject.GetComponent<Soldier>();
+		//wenn kein bullet und kein Soldat
+		if(bul==null && sol==null){
+			//normales kollidieren
+			base.OnTriggerEnter(other);
+		}
+	}
 	
 	
 }

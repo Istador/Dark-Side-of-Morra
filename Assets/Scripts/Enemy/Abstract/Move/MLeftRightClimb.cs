@@ -33,13 +33,13 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 			
 			
 			if( (a >= -45.0f && a < 45.0f) || a >= 315.0f || a < -315.0f)
-				return Vector3.left * vIn.magnitude * 0.5f;
+				return Vector3.left * vIn.magnitude * 0.25f;
 			if( (a >=45.0f && a < 135.0f) || (a >= -135.0f && a < -45.0f) )
-				return Vector3.up * vIn.magnitude * 0.5f;
+				return Vector3.up * vIn.magnitude * 0.25f;
 			if( (a >= 135.0f && a < 225.0f) || (a >= -225.0f && a < -135.0f) )
-				return Vector3.right * vIn.magnitude * 0.5f;
+				return Vector3.right * vIn.magnitude * 0.25f;
 			if( (a >= 225.0f && a < 315.0f) || (a >= -315.0f && a < -225.0f) )
-				return Vector3.down * vIn.magnitude * 0.5f;
+				return Vector3.down * vIn.magnitude * 0.25f;
 			return Vector3.zero;
 		} else {
 			return base.FilterForce(vIn);

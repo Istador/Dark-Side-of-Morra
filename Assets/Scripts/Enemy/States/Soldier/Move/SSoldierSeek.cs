@@ -16,7 +16,7 @@ public class SSoldierSeek : State<Enemy<Soldier>> {
 		float distance = owner.DistanceTo(pos);
 		
 		//optimale position erreicht
-		if(distance <= (Soldier.f_optimum_min + Soldier.f_optimum_max)/2.0f ){
+		if(distance <= (((Soldier)owner).f_optimum_min + ((Soldier)owner).f_optimum_max)/2.0f ){
 			owner.MoveFSM.ChangeState(SSoldierStay.Instance);
 			return;
 		}

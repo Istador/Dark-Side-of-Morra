@@ -18,17 +18,30 @@ public class SLLeaveD : State<Enemy<Soldier>> {
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
+		// Rechts ist eine Platform sowie der Spieler
+		if( owner.IsRight(((Soldier)owner).LastKnownPosition()) && ((Soldier)owner).IsPlatformRight() ){
+			owner.MoveFSM.ChangeState(SLLeaveR.Instance);
+			return;
+		}
+		
+		//Links ist eine Platform sowie der Spieler
+		if( !owner.IsRight(((Soldier)owner).LastKnownPosition()) &&  ((Soldier)owner).IsPlatformLeft() ){
+			owner.MoveFSM.ChangeState(SLLeaveL.Instance);
+			return;
+		}
+		
 		// Rechts ist eine Platform
 		if( ((Soldier)owner).IsPlatformRight() ){
 			owner.MoveFSM.ChangeState(SLLeaveR.Instance);
 			return;
 		}
 		
-		//Links ist eine Platform
+		//Links ist eine Platform sowie der Spieler
 		if( ((Soldier)owner).IsPlatformLeft() ){
 			owner.MoveFSM.ChangeState(SLLeaveL.Instance);
 			return;
 		}
+		
 		
 		//kann nicht weiter nach unten
 		if( ! ((Soldier)owner).CanClimbDown()){
