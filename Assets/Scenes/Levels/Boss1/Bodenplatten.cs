@@ -11,12 +11,15 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 	
 	//Array aller Bodenplatten
 	private Bodenplatte[] platten;
+	private AutoScale[] boden;
 	
 	//Bossreferenz
 	private MessageReceiver spinne;
 	
 	//Texturen für die Bodenplatten
 	public Material[] mats;
+	private Material[] normal;
+	private Material[] red;
 	
 	void Start () {
 		//alle Bodenplatten abrufen
@@ -24,6 +27,13 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 		
 		//Boss abrufen
 		spinne = GameObject.Find("Spider").GetComponent<Spider>();
+		
+		//Texturen laden
+		normal = new Material[]{mats[0]};
+		red = new Material[]{mats[1]};
+		
+		//Rampen abrufen
+		boden = (AutoScale[])GameObject.FindObjectsOfType(typeof(AutoScale));
 	}
 	
 	
@@ -44,6 +54,13 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 				MessageDispatcher.Instance.Dispatch(this, platten[i], "red", 0.0f, null);
 		}
 		
+		//den restlichen Boden rot machen
+		foreach(AutoScale o in boden){
+			//Rot machen
+			o.renderer.materials = red;
+			o.Rescale();
+		}
+		
 		//in 5 Sekunden muss der Spieler auf der Platform sein
 		MessageDispatcher.Instance.Dispatch(this, this, "fire", 5.0f, null);
 	}
@@ -60,6 +77,11 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 			//alle Bodenplatten normalisieren
 			foreach(Bodenplatte p in platten)
 				MessageDispatcher.Instance.Dispatch(this, p, "normal", 0.0f, null);
+			//den ganzen Boden normalisieren
+			foreach(AutoScale o in boden){
+				o.renderer.materials = normal;
+				o.Rescale();
+			}
 			
 			//Boss eine Nachricht schicken damit er wieder auftaucht
 			MessageDispatcher.Instance.Dispatch(this, spinne, "auftauchen", 1.0f, null);
