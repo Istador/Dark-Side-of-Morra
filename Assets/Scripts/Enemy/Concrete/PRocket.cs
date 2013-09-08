@@ -53,7 +53,7 @@ public class PRocket : Projektile<PRocket> {
 		base.Update();
 		
 		//Ziel erreicht, wenn Spieler z.B. nicht mehr sichtbar
-		if(DistanceTo(_targetPos) < 0.01){
+		if(DistanceTo(_targetPos) < 0.1){
 			Death();
 		}
 	}

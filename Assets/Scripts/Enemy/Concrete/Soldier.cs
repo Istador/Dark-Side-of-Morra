@@ -9,14 +9,14 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	
 	
-	public override float maxSpeed { get{return 6.0f;} }
-	public override float maxForce { get{return 6.0f;} }
+	public override float maxSpeed { get{return 8.0f;} }
+	public override float maxForce { get{return 8.0f;} }
 	
 	
 	
-	protected override int txtCols { get{return 8;} } //Anzahl Spalten (Frames)
+	protected override int txtCols { get{return 10;} } //Anzahl Spalten (Frames)
 	protected override int txtRows { get{return 10;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 4;} }  //Frames per Second
+	protected override int txtFPS { get{return 12;} }  //Frames per Second
 	
 	
 		

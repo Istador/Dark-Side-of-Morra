@@ -19,8 +19,8 @@ public class PBullet : Projektile<PRocket> {
 	
 	
 	
-	public override float maxSpeed { get{return 5.0f;} }
-	public override float maxForce { get{return 5.0f;} }
+	public override float maxSpeed { get{return 7.0f;} }
+	public override float maxForce { get{return 7.0f;} }
 	
 	
 	
