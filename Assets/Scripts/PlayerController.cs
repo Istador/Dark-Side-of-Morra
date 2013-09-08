@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
 	private Vector2 moveDirection = Vector2.zero;
 	private bool  InputJump		= false;
 	private bool  isOnLadder	= false;
-	private bool movementAllowed = true;
+	public bool movementAllowed = true;
 	public bool  lookRight		= true;
 
 	// animation
