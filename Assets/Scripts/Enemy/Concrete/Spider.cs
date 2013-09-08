@@ -6,6 +6,7 @@ public class Spider : MovableEnemy<Spider> {
 	
 	
 	public BossLevel level {get; private set;}
+	public BossHealthBar healthbar {get; private set;}
 	public Bodenplatten platten  {get; private set;}
 	
 	/// <summary>Boss erleidet keinen Schaden</summary>
@@ -82,6 +83,7 @@ public class Spider : MovableEnemy<Spider> {
 		steering.Seek(false);
 		level = GameObject.Find("Level").GetComponent<BossLevel>();
 		platten = GameObject.Find("Bodenplatten").GetComponent<Bodenplatten>();
+		healthbar = (BossHealthBar) GameObject.FindObjectOfType(typeof(BossHealthBar));
 		SetSprite(1);
 		pc = GetComponentInChildren<PlayerCollider>();
 		invincible = true;
@@ -99,6 +101,10 @@ public class Spider : MovableEnemy<Spider> {
 	
 	//Überschreiben um beim Tod den Schlüssel fallen zu lassen
 	public override void Death(){
+		//Health Bar ausblenden
+		healthbar.Hide();
+		
+		//Schlüssel erstellen
 		GameObject key = (GameObject)Instantiate(level.keyPrefab, transform.position + Vector3.left, transform.rotation);
 		
 		//Schlüssel kurz nach oben bewegen lassen

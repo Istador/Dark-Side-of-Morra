@@ -10,6 +10,9 @@ public class SSpiderAusschluepfen : State<Enemy<Spider>> {
 		if(owner.IsRight(owner.player))
 			owner.SetSprite(1);
 		else owner.SetSprite(0);
+		
+		//Health Bar einblenden
+		((Spider)owner).healthbar.Show();
 	}
 	
 	

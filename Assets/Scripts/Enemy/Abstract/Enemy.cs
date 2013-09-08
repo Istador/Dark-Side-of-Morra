@@ -13,7 +13,7 @@ using System.Collections;
 /// Generisches T, um die konkrete Klasse des Gegners referenzieren zu können
 /// (für die Zustandsautomaten)
 /// 
-public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
+public abstract class Enemy<T> : Entity, MessageReceiver {
 	
 	
 	/*
@@ -49,9 +49,9 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/*
 	 * Health
 	*/
-	public int health {get; private set;} //aktuell
-	public readonly int maxHealth; //maximal
-	public float healthFactor { get; private set; } //zwischen 0.0 und 1.0
+	public override int health {get; protected set;} //aktuell
+	public override int maxHealth {get; protected set;} //maximal
+	public override float healthFactor { get; protected set; } //zwischen 0.0 und 1.0
 	
 	private static AudioClip ac_healthdrop; //Health Globe Drop Sound
 	
@@ -160,7 +160,7 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/// </param>
 	public virtual void ApplyDamage(Vector3 damage){
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage.magnitude+" dmg received");
-		health -= (int)damage.magnitude;
+		health = System.Math.Max(health - (int)damage.magnitude, 0);
 		healthFactor = ((float)health) / ((float)maxHealth);
 		if(health <= 0) Death();
 	}
@@ -174,8 +174,7 @@ public abstract class Enemy<T> : MonoBehaviour, MessageReceiver {
 	/// Trefferpunkte die geheilt werden
 	/// </param>
 	public virtual void ApplyHeal(int hp){
-		health += hp;
-		if(health > maxHealth) health = maxHealth;
+		health = System.Math.Min(health + hp, maxHealth);
 		healthFactor = ((float)health) / ((float)maxHealth);
 	}
 	
