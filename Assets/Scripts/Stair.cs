@@ -16,7 +16,6 @@ public class Stair : MonoBehaviour
 			temp.w = quaternionAngleW;
 			temp.z = -quaternionAngleZ;
 			transform.rotation = temp;
-			Debug.Log(transform.rotation);
 
 			Vector3 tempPos = transform.position;
 			tempPos.x += 0.750939f;
