@@ -28,7 +28,7 @@ public class Pause : Menu {
 		pc = GetComponent<PlayerController>();
 		
 		_buttons = new object[,] {
-			{1, "Spiel Fortsetzen", null, null, (Action<int>)((int id)=>{ResumeGame();}) },
+			{1, "Spiel fortsetzen", null, null, (Action<int>)((int id)=>{ResumeGame();}) },
 			{2, "Zum Hauptmenü",    null, null, (Action<int>)((int id)=>{
 					MessageDispatcher.Instance.EmptyQueue();
 					Application.LoadLevel(0);
