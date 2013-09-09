@@ -1,41 +1,61 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// 
+/// Trigger auf dem Schlüssel prefab, der ausgeführt wird, wenn der
+/// Spieler nach dem Tod der Spinne den Schlüssel aufhebt
+/// 
 public class keyTrigger : MonoBehaviour {
 	
 	
 	
-	//Schlüssel aufheben
+	/// <summary>
+	/// Geräusch: Schlüssel aufheben
+	/// </summary>
 	public AudioClip ac_pickup;
-	//Schlüssel fallenlassen
+	
+	
+	
+	/// <summary>
+	/// Geräusch: Schlüssel fallenlassen
+	/// </summary>
 	public AudioClip ac_drop;
 	
 	
 	
 	void Start(){
-		//Drop-Geräusch
+		//Drop-Geräusch abspielen
 		AudioSource.PlayClipAtPoint(ac_drop, collider.bounds.center);
 	}
 	
 	
+	
 	void OnTriggerEnter(Collider hit){
-		if(hit.gameObject.layer == 8){ //fällt auf Level
-			//Gravitation ausschalten
+		//Wenn der Schlüssel das Level berührt
+		if(hit.gameObject.layer == 8){
+			//Gravitation und Bewegung ausschalten
 			rigidbody.isKinematic = true;
 			rigidbody.useGravity = false;
 		}
-		else if(hit.gameObject.tag == "Player"){
-		
-			MessageReceiver level = (MessageReceiver)GameObject.Find("Level").GetComponent<BossLevel>();
-			MessageDispatcher.Instance.Dispatch(null, level, "keyPickup", 0.0f, null);
-		
-			collider.enabled = false;
+		//Wenn der Schlüssel den Spieler berührt
+		if(hit.gameObject.tag == "Player"){
 			
-			//PickUp-Geräusch
+			//Referenz aufs Level
+			MessageReceiver level = (MessageReceiver)GameObject.Find("Level").GetComponent<BossLevel>();
+			//Nachricht ans Level, dass der Schlüssel aufgehoben wurde
+			MessageDispatcher.I.Dispatch(level, "keyPickup");
+			
+			//PickUp-Geräusch abspielen
 			AudioSource.PlayClipAtPoint(ac_pickup, collider.bounds.center);
 			
+			//Trigger ausschalten
+			collider.enabled = false;
+			
+			//sich selbst löschen
 			Destroy(gameObject);
 		}
 	}
+	
+	
 	
 }

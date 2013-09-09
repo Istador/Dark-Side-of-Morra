@@ -54,14 +54,14 @@ public class MessageDispatcher {
 	/// <param name='msg'>
 	/// Die Nachricht die ausgeliefert werden soll
 	/// </param>
-	public void Dispatch(MessageReceiver sender, MessageReceiver receiver, string msg, float delay, object extraInfo){
+	public void Dispatch(MessageReceiver sender, MessageReceiver receiver, string msg, float delay = 0.0f, object extraInfo = null){
 		Dispatch(new Telegram(sender, receiver, msg, Time.time+delay, extraInfo));
 	}
 	
 	
 	
-	public void Dispatch(MessageReceiver receiver, string msg, float delay = 0.0f){
-		Dispatch(new Telegram(null, receiver, msg, Time.time+delay, null));
+	public void Dispatch(MessageReceiver receiver, string msg, float delay = 0.0f, object extraInfo = null){
+		Dispatch(new Telegram(null, receiver, msg, Time.time+delay, extraInfo));
 	}
 	
 	
