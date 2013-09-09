@@ -40,6 +40,10 @@ public abstract class Menu : MonoBehaviour {
 	
 	protected virtual void OnGUI()
 	{
+		//Bild schwarz ausfüllen
+		this.DrawRectangle(new Rect(0,0,Screen.width, Screen.height), Color.black);
+		
+		
 		//Berechnung der Button höhe und breite abhängig von der Bildschirmgröße, und dem Aspektratio
 		
 		float factor1 = (float)hintergrund.width / (float)hintergrund.height;
@@ -81,4 +85,17 @@ public abstract class Menu : MonoBehaviour {
 		GUI.EndGroup();
 	}
 	
+	
+	
+	private void DrawRectangle(Rect position, Color c){
+		Texture2D t = new Texture2D(1,1);
+		t.SetPixel(0,0, c);
+		t.wrapMode = TextureWrapMode.Repeat;
+		t.Apply();
+		
+		Texture2D tmp = GUI.skin.box.normal.background;
+		GUI.skin.box.normal.background = t;
+		GUI.Box(position, GUIContent.none);
+		GUI.skin.box.normal.background = tmp;
+	}
 }
