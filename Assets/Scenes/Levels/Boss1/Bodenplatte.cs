@@ -1,24 +1,55 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// 
+/// Dieses Skript ist für eine einzelne Bodenplatte bestimmt.
+/// 
+/// Die Bodenplatte kann rot oder grün werden.
+/// Dieses Skript empfangt Nachrichten vom Bodenplatten Skript, 
+/// und aktiviert den Trigger für den sicheren Standort wenn es eine Grüne 
+/// Platte ist.
+/// 
 public class Bodenplatte : MonoBehaviour, MessageReceiver {
 	
-	//Trigger-Collider des Child-Objektes
+	
+	
+	/// <summary>
+	/// Trigger-Collider des Child-Objektes, das im Falle einer grünen Platte
+	/// die Sicherheit des Spielers signalisiert.
+	/// </summary>
 	private BodenplattenTrigger trigger;
 	
-	private static Material[] normal;
-	private static Material[] red;
-	private static Material[] green;
 	
+	
+	/// <summary>
+	/// Die normale Textur die außerhalb des Platten-Events angezeigt wird.
+	/// Fertig zum Anwenden auf den Renderer.
+	/// </summary>
+	private static Material[] normal;
+	/// <summary>
+	/// Die rote Textur die wärend des Platten-Events angezeigt wird für Platten auf denen der Spieler sterben würde.
+	/// Fertig zum Anwenden auf den Renderer.
+	/// </summary>
+	private static Material[] red;
+	/// <summary>
+	/// Die grüne Textur die wärend des Platten-Events angezeigt wird, auf der der Spieler sicher ist.
+	/// Fertig zum Anwenden auf den Renderer.
+	/// </summary>
+	private static Material[] green;
+	/// <summary>
+	/// Ein Array der drei zu verwendenen Texturen.
+	/// </summary>
 	private static Material[] mats;
 	
 	
+	
 	void Start(){
-		//Collider des Spielertriggers
+		//Triggers holen
 		trigger = transform.FindChild("Spielertrigger").GetComponent<BodenplattenTrigger>();
+		//Trigger ausschalten
 		trigger.collider.enabled = false;
 		
-		//Texturen laden
+		//Texturen laden falls noch nicht geschehen
 		if(mats == null) mats = GameObject.Find("Bodenplatten").GetComponent<Bodenplatten>().mats;
 		if(normal == null) normal = new Material[]{mats[0]};
 		if(red == null) red = new Material[]{mats[1]};
@@ -30,12 +61,16 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 	
 	
 	
+	// Methode um eingehende Nachrichten zu verarbeiten
 	public bool HandleMessage(Telegram msg){
 		//Nachrichteneingang, je nach Nachricht etwas anderes tun
 		switch(msg.message){
+			
 			//dies soll eine grüne Bodenplatte sein
 			case "green":
+				//Grüne Textur benutzen
 				renderer.materials = green;
+				//Trigger einschalten
 				trigger.collider.enabled = true;
 				
 				//Health Globe laden
@@ -46,18 +81,25 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 				obj.rigidbody.AddForce(Vector3.up * 4.0f, ForceMode.Impulse);
 			
 				return true;
+			
 			//dies soll eine rote Bodenplatte sein
 			case "red":
+				//Rote Textur benutzen
 				renderer.materials = red;
 				return true;
+			
 			//Bodenplatte zurücksetzen
 			case "normal":
+				//Normale Textur benutzen
 				renderer.materials = normal;
+				//Trigger ausschalten
 				trigger.collider.enabled = false;
+				//Trigger-Zustand zurücksetzen
 				trigger.entered = false;
 				return true;
+			
+			//Nachrichtentyp unbekannt, konnte nicht verarbeitet werden
 			default:
-				//Nachrichtentyp unbekannt, konnte nicht verarbeitet werden
 				return false;
 		}
 	}

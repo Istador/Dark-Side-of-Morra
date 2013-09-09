@@ -1,25 +1,69 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// 
+/// Dieses Skript ist der Zentrale Ansprechpartner für andere Komponenten
+/// um das Bodenplatten-Event auszulösen. Es steuert die einzelnen Bodenplatten an,
+/// und meldet sich nach Beendigung wieder bei dem Bossgegner zurück.
+/// 
 public class Bodenplatten : MonoBehaviour, MessageReceiver {
 	
-	//Zufallsgenerator
-	private System.Random rnd = new System.Random();
 	
-	//Ist der Spieler auf der sicheren Bodenplatte?
+	
+	/// <summary>
+	/// Zufallsgenerator um zufällig eine Bodenplatte auswählen zu können die grün wird.
+	/// </summary>
+	private static System.Random rnd = new System.Random();
+	
+	/// <summary>
+	/// Ist der Spieler auf der sicheren grünen Bodenplatte?
+	/// </summary>
 	private bool playerSafe = false;
 	
-	//Array aller Bodenplatten
+	/// <summary>
+	/// Array aller Bodenplatten, um über alle iterieren zu können.
+	/// </summary>
 	private Bodenplatte[] platten;
+	
+	/// <summary>
+	/// Nicht-Bodenplatten, die ebenfalls rot werden sollen, damit der
+	/// Spieler erkennt das er überall sterben wird, außer auf der grünen
+	/// Bodenplatte.
+	/// 
+	/// Z.B die schrägen Rampen
+	/// </summary>
 	private AutoScale[] boden;
 	
-	//Bossreferenz
+	/// <summary>
+	/// Referenz auf den Spinnenboss, um ihm Nachrichten schicken zu können.
+	/// </summary>
 	private MessageReceiver spinne;
 	
+	/// <summary>
+	/// Zeit die der Spieler hat um auf die richtige Bodenplatte zu kommen.
+	/// </summary>
+	public static readonly float f_duration = 5.0f;
+	
+	
+	
 	//Texturen für die Bodenplatten
+	
+	/// <summary>
+	/// Ein Array der drei zu verwendenen Texturen.
+	/// </summary>
 	public Material[] mats;
+	/// <summary>
+	/// Die normale Textur die außerhalb des Platten-Events angezeigt wird.
+	/// Fertig zum Anwenden auf den Renderer.
+	/// </summary>
 	private Material[] normal;
+	/// <summary>
+	/// Die rote Textur die wärend des Platten-Events angezeigt wird für nicht-Bodenplatten.
+	/// Fertig zum Anwenden auf den Renderer.
+	/// </summary>
 	private Material[] red;
+	
+	
 	
 	void Start () {
 		//alle Bodenplatten abrufen
@@ -32,13 +76,17 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 		normal = new Material[]{mats[0]};
 		red = new Material[]{mats[1]};
 		
-		//Rampen abrufen
+		//Rampen und Boden abrufen um auch rot zu werden
 		boden = (AutoScale[])GameObject.FindObjectsOfType(typeof(AutoScale));
 	}
 	
 	
 	
+	/// <summary>
+	/// Platten-Event starten
+	/// </summary>
 	private void Begin(){
+		//variable ob der Spieler sicher ist zurücksetzen
 		playerSafe = false;
 		
 		//zufällig eine Platte auswählen
@@ -46,69 +94,87 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 		
 		//für alle Platten
 		for(int i=0; i < platten.Length; i++){
-			//grüne Platte
+			//für die eine grüne Platte
 			if(i==good)
-				MessageDispatcher.Instance.Dispatch(this, platten[i], "green", 0.0f, null);
-			//rote Platten
+				MessageDispatcher.I.Dispatch(platten[i], "green");
+			//für die anderen, roten Platten
 			else
-				MessageDispatcher.Instance.Dispatch(this, platten[i], "red", 0.0f, null);
+				MessageDispatcher.Instance.Dispatch(platten[i], "red");
 		}
 		
-		//den restlichen Boden rot machen
+		//den restlichen Boden
 		foreach(AutoScale o in boden){
-			//Rot machen
+			//ebenfalls Rot machen
 			o.renderer.materials = red;
+			//Textur Neu skalieren
 			o.Rescale();
 		}
 		
 		//in 5 Sekunden muss der Spieler auf der Platform sein
-		MessageDispatcher.Instance.Dispatch(this, this, "fire", 5.0f, null);
+		MessageDispatcher.I.Dispatch(this, "fire", f_duration);
 	}
 	
 	
 	
+	/// <summary>
+	/// Die Zeit für den Spieler ist um, jetzt wird geguckt ob er auf der
+	/// grünen Platte ist und weiterleben darf, oder nicht.
+	/// </summary>
 	private void Fire(){
 		//Spieler töten wenn nicht auf grüner Platte
-		if(!playerSafe)
+		if(!playerSafe){
+			// 1000 HP Schaden zum Spieler
 			GameObject.FindGameObjectWithTag("Player").SendMessage("ApplyDamage", Vector3.down * 1000.0f, SendMessageOptions.DontRequireReceiver);
+		}
+		//Spieler befand sich auf der grünen Platte
 		else {
+			//variable ob der Spieler sicher ist zurücksetzen
 			playerSafe = false;
 		
 			//alle Bodenplatten normalisieren
 			foreach(Bodenplatte p in platten)
-				MessageDispatcher.Instance.Dispatch(this, p, "normal", 0.0f, null);
-			//den ganzen Boden normalisieren
+				MessageDispatcher.I.Dispatch(p, "normal");
+			//den restlichen Boden normalisieren
 			foreach(AutoScale o in boden){
+				//Textur normalisieren
 				o.renderer.materials = normal;
+				//Textur neu skalieren
 				o.Rescale();
 			}
 			
-			//Boss eine Nachricht schicken damit er wieder auftaucht
-			MessageDispatcher.Instance.Dispatch(this, spinne, "auftauchen", 1.0f, null);
+			//Dem Boss eine Nachricht schicken, damit er weiß dass das Event 
+			//vorbei ist und er wieder auftauchen kann.
+			MessageDispatcher.I.Dispatch(spinne, "auftauchen", 1.0f);
 		}
 	}
 	
 	
 	
+	// Methode um eingehende Nachrichten zu verarbeiten
 	public bool HandleMessage(Telegram msg){
 		//Nachrichteneingang, je nach Nachricht etwas anderes tun
 		switch(msg.message){
+			
 			//Neue Platten Runde
 			case "begin":
 				Begin();
 				return true;
-			//Spieler betritt sichere Platte
+			
+			//Spieler betritt die sichere grüne Platte
 			case "enter":
 				playerSafe = true;
 				return true;
-			//Spieler verlässt die sichere Platte
+			
+			//Spieler verlässt die sichere grüne Platte
 			case "leave":
 				playerSafe = false;
 				return true;
+			
 			//die Zeit für den Spieler ist um
 			case "fire":
 				Fire();
 				return true;
+			
 			//Nachrichtentyp unbekannt, konnte nicht verarbeitet werden	
 			default:
 				return false;
