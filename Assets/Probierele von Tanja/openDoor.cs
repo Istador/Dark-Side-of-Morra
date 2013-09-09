@@ -6,7 +6,7 @@ public class openDoor : MonoBehaviour {
 	
 	// dabei muss man die Game Objects noch von Hand zuweißen 	!! Wichtig !!
 	private int key = 0;
-	private CharacterController characterController;
+	//private CharacterController characterController; //unused
 	public GameObject magicDoor;
 	public GameObject magicKey1;
 	public GameObject magicSparcle1;
@@ -14,7 +14,7 @@ public class openDoor : MonoBehaviour {
 	public GameObject magicSparcle2;
 	public GameObject magicFalle;
 	void Start () {
-		characterController = GetComponent<CharacterController>();
+		//characterController = GetComponent<CharacterController>();
 	}
 	
 
@@ -22,9 +22,9 @@ public class openDoor : MonoBehaviour {
 	
 	}
 	
-		void  OnTriggerEnter ( Collider characterController  )
+		void  OnTriggerEnter ( Collider other  )
 	{
-		if (characterController.gameObject.CompareTag ("Key1"))
+		if (other.gameObject.CompareTag ("Key1"))
 		{
 		
 			key++;
@@ -33,20 +33,20 @@ public class openDoor : MonoBehaviour {
 			Destroy(magicSparcle1);
 		
 		}
-		if (characterController.gameObject.CompareTag ("Key2")){
+		if (other.gameObject.CompareTag ("Key2")){
 			key ++;
 			Debug.Log("Juhuu, du hast einen Schlüssel gefunden");
 			Destroy(magicKey2);
 			Destroy(magicSparcle2);
 		}
-		if (characterController.gameObject.CompareTag ("Lock")){
+		if (other.gameObject.CompareTag ("Lock")){
 			Debug.Log ("Rainbowsparkle beinhaltet die Antwort");
 		}
-		if (characterController.gameObject.CompareTag ("Lock") && key == 1){
+		if (other.gameObject.CompareTag ("Lock") && key == 1){
 			
 			Debug.Log ("Da fehlt noch was");	
 		}
-		if (characterController.gameObject.CompareTag ("Lock") && key == 2){
+		if (other.gameObject.CompareTag ("Lock") && key == 2){
 			
 			Destroy(magicDoor);	
 		}

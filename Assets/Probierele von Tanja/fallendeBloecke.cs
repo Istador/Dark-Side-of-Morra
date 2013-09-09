@@ -1,22 +1,62 @@
 using UnityEngine;
 using System.Collections;
 
+/// 
+/// Fallende Blöcke, die zunächst unscheinbar sind,
+/// aber so bald der Spieler sie betritt werden sie Rot, 
+/// und verschwinden nach kurzer Zeit.
+/// 
+/// Dieses Script wird auf den Trigger des Kindes vom eigtl. Block gezogen
+/// 
 public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 	
+	
+	
+	/// <summary>
+	/// Zeit in Sekunden, bis der Block verschwindet.
+	/// </summary>
 	public float zeitBisFall = 1.0f;
 	
-	public GameObject owner; //Block zu dem dieser Collider gehört
+	/// <summary>
+	/// Zeit in Sekunden, doe der Block verschwunden bleibt.
+	/// </summary>
+	public float zeitVerschwunden = 2.0f;
+	
+	/// <summary>
+	/// Der Block der verschwinden soll, zu dem dierer Trigger gehört
+	/// </summary>
+	public GameObject owner;
+	
+	/// <summary>
+	/// Automatisch die Textur skalieren, so wie bei den normalen Blöcken.
+	/// Ansonsten fallen zu große Fallen offensichtlich auf.
+	/// </summary>
 	private AutoScale scale;
 	
-	private bool touched = false; //damit der Spieler nicht mehrfach OnTriggerEnter ausführt
-	
-	//Sound fürs bröckeln des Blocks
+	/// <summary>
+	/// Der AudiClip der abgespielt werden soll, wenn der Spieler den Block betritt.
+	/// </summary>
 	private static AudioClip ac_disapear; 
 	
+	
+	
 	//Texturen
+	
+	/// <summary>
+	/// Die Textur vor dem Verschwinden fertig zum Anwenden auf den Renderer.
+	/// </summary>
 	private static Material[] red;
+	/// <summary>
+	/// Die normale Textur fertig zum Anwenden auf den Renderer.
+	/// </summary>
 	private static Material[] normal;
+	/// <summary>
+	/// Die Textur, welche die Falle im normalfall darstellen soll.
+	/// Die Textur die vor dem verschwinden angezeigt werden soll liegt auf owner.
+	/// </summary>
 	public Material normalBox;
+	
+	
 	
 	void Start(){
 		//Sound laden
@@ -29,17 +69,21 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 		//Normale Textur benutzen
 		owner.renderer.materials = normal;
 		
+		//Textur skalieren
 		scale = owner.GetComponent<AutoScale>();
 		scale.Rescale();
 	}
 	
 	
+	
 	void OnTriggerEnter(Collider other) {
-		if(!touched && other.gameObject.tag == "Player"){
-			touched = true;
+		//wenn der Spieler die Falle betritt
+		if(other.gameObject.tag == "Player"){
+			//nicht erneut mit dem Spieler kollidieren
+			collider.enabled = false;
 			
 			//Nachricht an sich selbst für später
-			MessageDispatcher.Instance.Dispatch(this,this,"verschwinden",zeitBisFall,null);
+			MessageDispatcher.I.Dispatch(this,"verschwinden",zeitBisFall);
 			
 			//Rote Textur benutzen
 			owner.renderer.materials = red;
@@ -48,10 +92,11 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 			//Sound abspielen
 			AudioSource.PlayClipAtPoint(ac_disapear, owner.collider.bounds.center);
 		}
-		
 	}
 	
 	
+	
+	// Methode um eingehende Nachrichten zu verarbeiten
 	public bool HandleMessage(Telegram msg){
 		//Nachrichteneingang, je nach Nachricht etwas anderes tun
 		switch(msg.message){
@@ -59,10 +104,10 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 				owner.renderer.enabled = false; //Unsichtbar werden
 				owner.collider.enabled = false; //Kollisionen ausschalten
 				//Nachricht an sich selbst für später
-				MessageDispatcher.Instance.Dispatch(this,this,"auftauchen",3.0f,null);
+				MessageDispatcher.I.Dispatch(this, "auftauchen", zeitVerschwunden);
 				return true;
 			case "auftauchen":
-				touched = false;
+				collider.enabled = true; //Collisionen wieder zulassen
 				owner.renderer.materials = normal; //Normale Textur benutzen
 				scale.Rescale(); //Textur neu skalieren
 				owner.renderer.enabled = true; //Sichtbar werden
@@ -73,6 +118,7 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 				return false;
 		}
 	}
+	
 	
 	
 }

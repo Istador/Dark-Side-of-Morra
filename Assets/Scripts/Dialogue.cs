@@ -8,21 +8,21 @@ public class Dialogue : MonoBehaviour {
 	
 		private bool talking;
 		private bool textIsScrolling;
-		private CharacterController characterController;
+		//private CharacterController characterController; //unused
 		private int currentLine;
 
 	
 	void Start () {
-		characterController = GetComponent<CharacterController>();
+		//characterController = GetComponent<CharacterController>();
 	}
 	void 	Update () {
    		Speek();
 	}
 	
-		void  OnTriggerEnter ( Collider characterController  )
+		void  OnTriggerEnter ( Collider hit  )
 		{
 				// Ist der Spieler beim Einhorn ?
-			if (characterController.gameObject.CompareTag ("Unicorn"))
+			if (hit.gameObject.CompareTag ("Unicorn"))
 			{
 				
 			    // nun kann der Text abgespielt werden

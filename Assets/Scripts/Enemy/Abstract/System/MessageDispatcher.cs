@@ -106,5 +106,6 @@ public class MessageDispatcher {
 			if(instance==null) instance = new MessageDispatcher();
 			return instance;
 	}}
+	public static MessageDispatcher I{get{return Instance;}}
 	
 }
