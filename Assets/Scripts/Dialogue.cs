@@ -79,4 +79,6 @@ void startScrolling(){
 
      textIsScrolling = false;
 }
+	
+
 }
