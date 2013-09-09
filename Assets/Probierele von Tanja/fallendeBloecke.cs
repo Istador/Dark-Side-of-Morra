@@ -30,6 +30,7 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 		owner.renderer.materials = normal;
 		
 		scale = owner.GetComponent<AutoScale>();
+		scale.Rescale();
 	}
 	
 	

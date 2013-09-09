@@ -4,18 +4,26 @@ using System.Collections;
 public class Finish : MonoBehaviour
 {
 
-	void OnTriggerEnter ( Collider characterController )
+	void OnTriggerEnter ( Collider hit )
 	{
-		if (characterController.gameObject.CompareTag("Player"))
+		if (hit.gameObject.tag == "Player")
 		{
-			if ( SaveData.levelReached == Application.loadedLevel)
+			//wenn das erste mal dieses Level bestanden wurde
+			if( SaveData.levelReached == Application.loadedLevel )
 			{
+				//Verändere den Wert
 				SaveData.levelReached++;
 			}
-
+			
+			//Speichern
 			SaveLoad.Save();
-
+			
+			//Nachrichtensystem zurücksetzen
+			MessageDispatcher.Instance.EmptyQueue();
+			
+			//zur Level-Auswahl
 			Application.LoadLevel(1);
+			
 			Debug.Log("Level zu Ende");
 		}
 	}

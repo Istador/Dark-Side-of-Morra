@@ -1,49 +1,16 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
-public class LevelSelect : MonoBehaviour {
-
-	public int buttonWidth = 200;
-	public int buttonHeight = 50;
-	public Texture2D hintergrundLevel;
-	public int width;
-	public int height;
+public class LevelSelect : SceneMenu {
 	
-	void Start ()
-	{
-		SaveLoad.Load();
-	}
-
-	void OnGUI ()
-	{
-		GUI.BeginGroup(new Rect( width, height, Screen.width, Screen.height), new GUIContent(hintergrundLevel));
-
+	//Array aller Buttons
+	private object[,] _scenes = new object[,] {
+		{3, "Level 1"},
+		{4, "Level 2"},
+		{5, "Boss"},
+		{0, "Zum Hauptmenü"}
+	};
 	
-
-		if (GUI.Button(new Rect( Screen.width/2 ,Screen.height/2 -100,buttonWidth,buttonHeight),"Level 1"))
-		{
-			Application.LoadLevel(3);
-		}
-		if (GUI.Button(new Rect (Screen.width/2 , Screen.height/2, buttonWidth,buttonHeight),"Main menu"))
-		{
-			Application.LoadLevel("MainMenu");
-		}
-		if (SaveData.levelReached >= 4)
-		{
-			if (GUI.Button(new Rect(Screen.width/2,Screen.height/2 - 65,buttonWidth,buttonHeight),"Level 2"))
-			{
-				Application.LoadLevel(4);
-			}
-		}
-		if (SaveData.levelReached >= 5)
-		{
-			if (GUI.Button(new Rect(Screen.width/2 +100,Screen.height/2 - 30,buttonWidth,buttonHeight),"Level 2"))
-			{
-				Application.LoadLevel(5);
-			}
-		}
-		
-
-		GUI.EndGroup();
-	}
+	protected override object[,] scenes {get{return _scenes;}}
+	
 }

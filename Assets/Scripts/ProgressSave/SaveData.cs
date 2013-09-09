@@ -21,10 +21,7 @@ public class SaveData : ISerializable
 	// === /Values ===
 	
 	// The default constructor. Included for when we call it during Save() and Load()
-	public SaveData ()
-	{
-
-	}
+	public SaveData (){}
 
 	// This constructor is called automatically by the parent class, ISerializable
 	// We get to custom-implement the serialization process here
@@ -32,7 +29,10 @@ public class SaveData : ISerializable
 	{
 		// Get the values from info and assign them to the appropriate properties. Make sure to cast each variable.
 		// Do this for each var defined in the Values section above
-		levelReached = (int)info.GetValue("levelReached", typeof(int));
+		try{
+			//stürzt ab wenn levelReached in der Datei noch nicht vorhanden ist
+			levelReached = (int)info.GetValue("levelReached", typeof(int));
+		} catch(SerializationException){}
 	}
 
 	// Required by the ISerializable class to be properly serialized. This is called automatically
@@ -46,17 +46,24 @@ public class SaveData : ISerializable
 // === This is the class that will be accessed from scripts ===
 public class SaveLoad
 {
+	
+	private static bool loaded = false;
+	
 
 	public static string currentFilePath = "PlayerProgress.game";    // Edit this for different save files
-
+	
+	
+	
 	// Call this to write data
-	public static void Save ()  // Overloaded
-	{
+	public static void Save () { // Overloaded
 		Save (currentFilePath);
 	}
-	public static void Save (string filePath)
+	
+	
+	
+	private static void Save (string filePath)
 	{
-		SaveData data = new SaveData ();
+		SaveData data = new SaveData();
 
 		Stream stream = File.Open(filePath, FileMode.Create);
 		BinaryFormatter bformatter = new BinaryFormatter();
@@ -65,18 +72,34 @@ public class SaveLoad
 		stream.Close();
 	}
  
+	
+	
 	// Call this to load from a file into "data"
-	public static void Load ()  { Load(currentFilePath);  }   // Overloaded
-	public static void Load (string filePath) 
+	public static void Load ()  {  // Overloaded
+		Load(currentFilePath); 
+	}
+	
+	
+	
+	private static void Load (string filePath) 
 	{
-		SaveData data = new SaveData ();
-		Stream stream = File.Open(filePath, FileMode.Open);
-		BinaryFormatter bformatter = new BinaryFormatter();
-		bformatter.Binder = new VersionDeserializationBinder(); 
-		data = (SaveData)bformatter.Deserialize(stream);
-		stream.Close();
-
-		// Now use "data" to access your Values
+		//nur ein einziges mal laden können
+		if(!loaded){
+			loaded = true;
+			 
+			try{
+				/*SaveData data = new SaveData();*/
+				//stürzt ab wenn die Datei noch nicht vorhanden ist
+				Stream stream = File.Open(filePath, FileMode.Open);
+				BinaryFormatter bformatter = new BinaryFormatter();
+				bformatter.Binder = new VersionDeserializationBinder(); 
+				/*data = (SaveData)*/bformatter.Deserialize(stream);
+				stream.Close();
+			} catch(FileNotFoundException){
+				//Datei erstellen
+				Save(filePath);
+			}
+		}
 	}
 
 }

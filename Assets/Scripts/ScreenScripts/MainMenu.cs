@@ -1,34 +1,20 @@
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 using System.Collections;
 
-public class MainMenu: MonoBehaviour {
-
-	public int buttonWidth = 200;
-	public int buttonHeight = 50;
-	public Texture2D button;
-	public Texture2D hintergrund;
-	public int a;
-	public int b;
-	void Start ()
-	{
-		SaveLoad.Load();
-	}
+public class MainMenu: SceneMenu {
 	
-	void OnGUI ()
-	{
-		GUI.BeginGroup(new Rect(a, b, Screen.width, Screen.height), new GUIContent(hintergrund));
-
-		//GUI.Box(new Rect(0, 0, 800, 600), "Main Menu ");
-
-		if (GUI.Button(new Rect( Screen.width/2-100,Screen.height/2 -50,buttonWidth,buttonHeight),new GUIContent("Level Select", button)))
-		{
-			Application.LoadLevel("LevelSelect");
-		}
-		if (GUI.Button(new Rect( Screen.width/2 -100,Screen.height/2,buttonWidth,buttonHeight),"Credits"))
-		{
-			Application.LoadLevel("Credits");
-		}
+	//Array aller Buttons
+	private object[,] _scenes = new object[,] {
+		{1, "Level auswählen", null},
+		{2, "Credits", null},
+		{0, "Spiel Beenden", (Action<int>)((int id)=>{
+			Application.Quit(); //nicht innerhalb des Unity-Editors möglich
+			UnityEditor.EditorApplication.isPlaying = false; //beendet das Spielen des Editors
+			//UnityEditor.EditorApplication.Exit(0); //Beendet dem Editor ohne speichern !!!
+		}) }
+	};
 	
-		GUI.EndGroup();
-	}
+	protected override object[,] scenes {get{return _scenes;}}
+	
 }
