@@ -65,7 +65,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	public static readonly float f_visibleRange = 8.0f;
 	
 	
-	public RPGSoldier() : base(100) {
+	public RPGSoldier() : base(150) {
 		MoveFSM.SetGlobalState(SRPGSPatrol.Instance);
 		AttackFSM.SetCurrentState(SRPGSHoldFire.Instance);
 		

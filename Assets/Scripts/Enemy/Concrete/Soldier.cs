@@ -53,7 +53,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	public static readonly float f_visibleRange = 10.0f;
 	
 	
-	public Soldier() : base(150) {
+	public Soldier() : base(200) {
 		MoveFSM.SetGlobalState(SSoldierPatrol.Instance);
 		AttackFSM.SetCurrentState(SSoldierHoldFire.Instance);
 	}
