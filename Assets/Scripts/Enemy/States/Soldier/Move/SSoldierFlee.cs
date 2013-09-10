@@ -6,13 +6,21 @@ public class SSoldierFlee : State<Enemy<Soldier>> {
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
+		Vector3 pos = owner.PlayerPos;
+		
+		//Spieler nicht sichtbar
 		if(!owner.LineOfSight(owner.Player)){
 			owner.MoveFSM.ChangeState(SSoldierSeekPosition.Instance);
 			return;
 		}
 		
+		//Höhe nicht in Ordnung
+		if(!((Soldier)owner).IsHeightOk(pos)){
+			owner.MoveFSM.ChangeState(SSoldierSeekPosition.Instance);
+			return;
+		}
+		
 		//Distanz zum Spieler ermitteln
-		Vector3 pos = owner.PlayerPos;
 		float distance = owner.DistanceTo(pos);
 		
 		//optimale position erreicht
@@ -24,7 +32,7 @@ public class SSoldierFlee : State<Enemy<Soldier>> {
 		if( ((Soldier)owner).CanMoveTo(pos, true)   ){
 			((Soldier)owner).Steering.DoFlee(pos);
 		} else {
-			((Soldier)owner).Steering.Fleeing = false;
+			((Soldier)owner).StopMoving();
 		}
 		
 	}
@@ -32,7 +40,7 @@ public class SSoldierFlee : State<Enemy<Soldier>> {
 	
 	
 	public override void Exit(Enemy<Soldier> owner){
-		((Soldier)owner).Steering.Fleeing = false;
+		((Soldier)owner).StopMoving();
 	}
 	
 	

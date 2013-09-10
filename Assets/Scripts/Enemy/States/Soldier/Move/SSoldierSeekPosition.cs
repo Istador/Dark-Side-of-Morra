@@ -19,11 +19,11 @@ public class SSoldierSeekPosition : State<Enemy<Soldier>> {
 			//auf Leiter
 			if( 
 				(
-					((Soldier)owner).CanClimbUp() && ((Soldier)owner).IsOver(pos)  
+					((Soldier)owner).CanClimbUp && ((Soldier)owner).IsOver(pos)  
 				)
 				||
 				(
-					((Soldier)owner).CanClimbDown() && ! ((Soldier)owner).IsOver(pos)
+					((Soldier)owner).CanClimbDown && ! ((Soldier)owner).IsOver(pos)
 				)
 			){
 				owner.MoveFSM.ChangeState(SLEnter.Instance);
@@ -58,14 +58,14 @@ public class SSoldierSeekPosition : State<Enemy<Soldier>> {
 		}
 		//keine Bewegung möglich
 		else {
-			((Soldier)owner).Steering.Seeking = false;
+			((Soldier)owner).StopMoving();
 		}
 	}
 	
 	
 	
 	public override void Exit(Enemy<Soldier> owner){
-		((Soldier)owner).Steering.Seeking = false;
+		((Soldier)owner).StopMoving();
 	}
 	
 	

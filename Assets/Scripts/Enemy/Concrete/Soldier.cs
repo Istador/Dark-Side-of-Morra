@@ -77,10 +77,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 		
 		base.Update();
 		
-		//Debug.DrawLine(collider.bounds.center, LastKnownPosition(), Color.yellow);
-		//Debug.DrawLine(collider.bounds.center, collider.bounds.center + rigidbody.velocity, Color.green);
-		
-		//Debug.Log(MoveFSM.GetCurrentState());
+		Debug.Log(MoveFSM.CurrentState);
 	}
 	
 	
@@ -271,17 +268,5 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	
 	
-	public bool CanMoveTo(Vector3 pos, bool invertDirection = false){
-		if(IsRight(pos) ^ invertDirection) //ist das Ziel rechts vom Gegner?
-			return CanMoveRight();
-		else 
-			return CanMoveLeft();
-	}
 	
-	public bool CanClimbTo(Vector3 pos, bool invertDirection = false){
-		if(IsRight(pos) ^ invertDirection) //ist das Ziel rechts vom Gegner?
-			return CanClimbRight();
-		else 
-			return CanClimbLeft();
-	}
 }

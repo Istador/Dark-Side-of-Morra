@@ -106,7 +106,7 @@ public abstract class MovableEnemy<T> : Enemy<T> {
 	
 	public void Move(Vector3 heading){
 		_Heading = heading;
-		Steering.DoSeek(Pos + Heading * MaxSpeed);
+		Steering.DoSeek(Pos + heading * MaxSpeed);
 	}
 	
 	public void MoveUp(){ Move(Vector3.up); }

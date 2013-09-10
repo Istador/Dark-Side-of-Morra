@@ -17,13 +17,13 @@ public class SLEnterR : State<Enemy<Soldier>> {
 	
 	public override void Execute(Enemy<Soldier> owner){
 		//kann nach oben oder unten klettern -> mitte erreicht
-		if(   ((Soldier)owner).CanClimbUp() || ((Soldier)owner).CanClimbDown()   ){
+		if(   ((Soldier)owner).CanClimbUp || ((Soldier)owner).CanClimbDown   ){
 			owner.MoveFSM.ChangeState(SLClimb.Instance);
 			return;
 		}
 		
 		//kann nach rechts gehen oder klettern
-		if(   ((Soldier)owner).CanClimbRight()   ){
+		if(   ((Soldier)owner).CanClimbRight   ){
 			//Bewegung nach rechts
 			((Soldier)owner).MoveRight();
 		}

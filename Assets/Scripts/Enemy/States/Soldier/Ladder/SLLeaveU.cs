@@ -17,33 +17,33 @@ public class SLLeaveU : State<Enemy<Soldier>> {
 	
 	public override void Execute(Enemy<Soldier> owner){
 		// Rechts ist eine Platform sowie der Spieler
-		if( owner.IsRight(((Soldier)owner).LastKnownPosition()) && ((Soldier)owner).IsPlatformRight() ){
+		if( owner.IsRight(((Soldier)owner).LastKnownPosition()) && ((Soldier)owner).IsPlatformRight ){
 			owner.MoveFSM.ChangeState(SLLeaveR.Instance);
 			return;
 		}
 		
 		//Links ist eine Platform sowie der Spieler
-		if( !owner.IsRight(((Soldier)owner).LastKnownPosition()) &&  ((Soldier)owner).IsPlatformLeft() ){
+		if( !owner.IsRight(((Soldier)owner).LastKnownPosition()) &&  ((Soldier)owner).IsPlatformLeft ){
 			owner.MoveFSM.ChangeState(SLLeaveL.Instance);
 			return;
 		}
 		
 		// Rechts ist eine Platform
-		if( ((Soldier)owner).IsPlatformRight() ){
+		if( ((Soldier)owner).IsPlatformRight ){
 			owner.MoveFSM.ChangeState(SLLeaveR.Instance);
 			return;
 		}
 		
 		//Links ist eine Platform sowie der Spieler
-		if( ((Soldier)owner).IsPlatformLeft() ){
+		if( ((Soldier)owner).IsPlatformLeft ){
 			owner.MoveFSM.ChangeState(SLLeaveL.Instance);
 			return;
 		}
 		
 		//kann nicht weiter nach oben
-		if( ! ((Soldier)owner).CanClimbUp()){
+		if( ! ((Soldier)owner).CanClimbUp ){
 			//kann auch nicht weiter nach unten
-			if( ! ((Soldier)owner).CanClimbDown() ){
+			if( ! ((Soldier)owner).CanClimbDown ){
 				//Betrete die Leiter neu
 				owner.MoveFSM.ChangeState(SLEnter.Instance);
 				return;

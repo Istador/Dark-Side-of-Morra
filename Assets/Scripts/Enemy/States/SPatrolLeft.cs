@@ -13,7 +13,7 @@ public class SPatrolLeft<T> : State<Enemy<T>> {
 	
 	public override void Execute(Enemy<T> owner){
 		if(
-			((MLeftRight<T>)owner).CanMoveLeft()
+			((MLeftRight<T>)owner).CanMoveLeft
 		){
 			((MovableEnemy<T>)owner).MoveLeft();
 		} else {

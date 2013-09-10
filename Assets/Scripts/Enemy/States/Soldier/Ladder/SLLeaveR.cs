@@ -17,13 +17,13 @@ public class SLLeaveR : State<Enemy<Soldier>> {
 	
 	public override void Execute(Enemy<Soldier> owner){
 		//kann gehen statt klettern
-		if(((Soldier)owner).CanMoveRight()){
+		if( ((Soldier)owner).CanMoveRight ){
 			owner.MoveFSM.ChangeState(SLLeave.Instance);
 		}
 		
 		//kann nur klettern
 		else if(
-			((Soldier)owner).CanClimbRight()
+			((Soldier)owner).CanClimbRight
 		){
 			((Soldier)owner).MoveRight();
 		}

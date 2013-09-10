@@ -22,7 +22,7 @@ public class SLEnter : State<Enemy<Soldier>> {
 		
 		//Herausfinden ob die Leiter links oder rechts ist.
 		//Richtung zur Leitermitte
-		Vector3 heading = ((Soldier)owner).DirectionToLadder();
+		Vector3 heading = ((Soldier)owner).DirectionToLadder;
 		
 		//von rechts kommend nach links
 		if(heading == Vector3.left){

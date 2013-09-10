@@ -261,6 +261,17 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// </summary>
 	public Vector3 Pos { get{return collider.bounds.center;} }
 	
+	/// <summary>
+	/// Breite des Objektes in der Spielwelt basierend auf dem Collider
+	/// </summary>
+	public float Width { get{return collider.bounds.size.x;} }
+	
+	/// <summary>
+	/// Höhe des Objektes in der Spielwelt basierend auf dem Collider
+	/// </summary>
+	public float Height { get{return collider.bounds.size.y;} }
+	
+	
 	
 	
 	// Positionsbezogene Methoden

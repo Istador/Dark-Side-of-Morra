@@ -226,10 +226,5 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	
 	
-	public bool CanMoveTo(Vector3 pos, bool invertDirection = false){
-		if(IsRight(pos) ^ invertDirection) //ist das Ziel rechts vom Gegner?
-			return CanMoveRight();
-		else 
-			return CanMoveLeft();
-	}
+	
 }
