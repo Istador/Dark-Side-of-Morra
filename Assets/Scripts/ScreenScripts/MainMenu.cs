@@ -4,17 +4,35 @@ using System.Collections;
 
 public class MainMenu: SceneMenu {
 	
-	//Array aller Buttons
+	
+	
+	/// <summary>
+	/// Array aller Buttons die angezeigt werden sollen
+	/// </summary>
 	private object[,] _scenes = new object[,] {
 		{1, "Level auswählen", null},
 		{2, "Credits", null},
-		{0, "Spiel beenden", (Action<int>)((int id)=>{
-			Application.Quit(); //nicht innerhalb des Unity-Editors möglich
-			UnityEditor.EditorApplication.isPlaying = false; //beendet das Spielen des Editors
-			//UnityEditor.EditorApplication.Exit(0); //Beendet dem Editor ohne speichern !!!
-		}) }
+		{0, "Spiel beenden", (Action<int>)(
+			(int id) => {
+				
+				//Beendet das Spiel
+				//innerhalb des Unity-Editors ohne Wirkung
+				Application.Quit();
+				
+				//beendet das Spielen innerhalb des Unity-Editors
+				//TODO: Auskommentieren für Release-Build !
+				UnityEditor.EditorApplication.isPlaying = false;
+			}
+		)}
 	};
 	
+	
+	
+	/// <summary>
+	/// Methode der Oberklasse um auf die Szenen zuzugreifen
+	/// </summary>
 	protected override object[,] scenes {get{return _scenes;}}
+	
+	
 	
 }

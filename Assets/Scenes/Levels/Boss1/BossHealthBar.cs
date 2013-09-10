@@ -98,7 +98,7 @@ public class BossHealthBar : MonoBehaviour {
 		else if(sinking) lerp -= 0.01f;
 		
 		//Beschränken auf Wertebereich
-		MinMax(ref lerp, 0.0f, 1.0f);
+		Utility.MinMax(ref lerp, 0.0f, 1.0f);
 		
 		//ein-/ausblenden wieder ausschalten wenn fertig
 		if(lerp >= 1.0f) rising = false;
@@ -161,7 +161,7 @@ public class BossHealthBar : MonoBehaviour {
 		//HP hat sich verändert
 		else{
 			hp_lerp -= 0.025f;
-			MinMax(ref hp_lerp, 0.0f, 1.0f);
+			Utility.MinMax(ref hp_lerp, 0.0f, 1.0f);
 			rc.width = Mathf.Lerp(new_width, last_width, hp_lerp);
 			if(hp_lerp <= 0.0f) last_width = new_width;
 		}
@@ -176,70 +176,11 @@ public class BossHealthBar : MonoBehaviour {
 		
 		
 		//Zeichnen
-		DrawRectangle(ra, ca);
-		DrawRectangle(rb, cb);
+		Utility.DrawRectangle(ra, ca);
+		Utility.DrawRectangle(rb, cb);
 		if(boss.healthFactor > 0.0f)
-			DrawRectangle(rc, cc);
+			Utility.DrawRectangle(rc, cc);
 		
-	}
-	
-	
-	
-	/// <summary>
-	/// Zeichnet ein farbiges Rechteck auf die GUI
-	/// </summary>
-	/// <param name='position'>
-	/// Position und Ausmaße des Rechteckes
-	/// </param>
-	/// <param name='c'>
-	/// Füll-Farbe des Rechteckes
-	/// </param>
-	private void DrawRectangle(Rect position, Color c){
-		Texture2D t = new Texture2D(1,1);
-		t.SetPixel(0,0, c);
-		t.wrapMode = TextureWrapMode.Repeat;
-		t.Apply();
-		
-		Texture2D tmp = GUI.skin.box.normal.background;
-		GUI.skin.box.normal.background = t;
-		GUI.Box(position, GUIContent.none);
-		GUI.skin.box.normal.background = tmp;
-	}
-	
-	
-	
-	/// <summary>
-	/// Beschränkt einen Wert auf einen bestimmten Wertebereich
-	/// </summary>
-	/// <param name='val'>
-	/// Wert der eingegrenzt wird
-	/// </param>
-	/// <param name='min'>
-	/// Minimaler Wert
-	/// </param>
-	/// <param name='max'>
-	/// Maximaler Wert
-	/// </param>
-	private void MinMax(ref int val, int min, int max){
-		val = System.Math.Max(System.Math.Min(val, max), min);
-	}
-	
-	
-	
-	/// <summary>
-	/// Beschränkt einen Wert auf einen bestimmten Wertebereich
-	/// </summary>
-	/// <param name='val'>
-	/// Wert der eingegrenzt wird
-	/// </param>
-	/// <param name='min'>
-	/// Minimaler Wert
-	/// </param>
-	/// <param name='max'>
-	/// Maximaler Wert
-	/// </param>
-	private void MinMax(ref float val, float min, float max){
-		val = System.Math.Max(System.Math.Min(val, max), min);
 	}
 	
 	

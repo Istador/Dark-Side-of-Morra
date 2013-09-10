@@ -5,7 +5,7 @@ using System.Collections;
 /// Einfach wiederverwendbarer Dialog
 /// 
 /// Dialogsfortsetzung durch:
-/// - Schießen
+/// - Tastaturdruck auf Enter
 /// - Klick mit der Maus auf den Weiter-Button
 /// - (optional) nach einer bestimmten Zeit
 /// 
@@ -93,10 +93,11 @@ public class Dialog : MonoBehaviour {
 		//Dialog gestartet und noch nicht beendet
 		if(started && !finished){
 			//der aktueller Text wurde lange genug angezeigt
-			//oder der Spieler überspringt mittels Schießen
+			//oder der Spieler drückt Enter
 			if(
 				   ( autoSkip &&( (Time.time - startTime) > displayTime ) )
-				|| Input.GetButtonDown("Fire1")
+				|| Input.GetKeyDown(KeyCode.Return)
+				|| Input.GetKeyDown(KeyCode.KeypadEnter)
 			){
 				//Nächster Text
 				NextText();
@@ -153,9 +154,9 @@ public class Dialog : MonoBehaviour {
 			Rect weiter = new Rect(left+width-4-50, top+4, 50, height-8);
 			
 			//Zeichnen
-			DrawRectangle(border, Color.grey);
-			DrawRectangle(box, Color.black);
-			DrawText(content, text[i], Color.white);
+			Utility.DrawRectangle(border, Color.grey);
+			Utility.DrawRectangle(box, Color.black);
+			Utility.DrawText(content, text[i], Color.white);
 			
 			//Buttonbeschriftung "Weiter", oder beim letztem Text "Ende".
 			string s = ( i == text.Length-1 ? "Ende" : "Weiter" );
@@ -208,86 +209,6 @@ public class Dialog : MonoBehaviour {
 		//Falls eine post-Dialog-Aktion vorhanden ist
 		if(postDialog != null)
 			postDialog(gameObject); //führe sie aus
-	}
-	
-	
-	
-	/// <summary>
-	/// Zeichnet einen farbigen Text auf die GUI
-	/// </summary>
-	/// <param name='pos'>
-	/// Position des Textes.
-	/// </param>
-	/// <param name='text'>
-	/// Der Text der gezeichnet werden soll.
-	/// </param>
-	/// <param name='c'>
-	/// Die Farbe des Textes.
-	/// </param>
-	private void DrawText(Rect pos, string text, Color c){
-		Color tmp = GUI.skin.label.normal.textColor;
-		GUI.skin.label.normal.textColor = c;
-		GUI.Label(pos, text);
-		GUI.skin.label.normal.textColor = tmp;
-	}
-	
-	
-	
-	/// <summary>
-	/// Zeichnet ein farbiges Rechteck auf die GUI
-	/// </summary>
-	/// <param name='position'>
-	/// Position und Ausmaße des Rechteckes
-	/// </param>
-	/// <param name='c'>
-	/// Füll-Farbe des Rechteckes
-	/// </param>
-	private void DrawRectangle(Rect pos, Color c){
-		Texture2D t = new Texture2D(1,1);
-		t.SetPixel(0,0, c);
-		t.wrapMode = TextureWrapMode.Repeat;
-		t.Apply();
-		
-		Texture2D tmp = GUI.skin.box.normal.background;
-		GUI.skin.box.normal.background = t;
-		GUI.Box(pos, GUIContent.none);
-		GUI.skin.box.normal.background = tmp;
-	}
-	
-	
-	
-	/// <summary>
-	/// Beschränkt einen Wert auf einen bestimmten Wertebereich
-	/// </summary>
-	/// <param name='val'>
-	/// Wert der eingegrenzt wird
-	/// </param>
-	/// <param name='min'>
-	/// Minimaler Wert
-	/// </param>
-	/// <param name='max'>
-	/// Maximaler Wert
-	/// </param>
-	private void MinMax(ref int val, int min, int max){
-		val = System.Math.Max(System.Math.Min(val, max), min);
-	}
-	
-	
-	
-	/// <summary>
-	/// Beschränkt einen Wert auf einen bestimmten Wertebereich
-	/// </summary>
-	/// <param name='val'>
-	/// Wert der eingegrenzt wird
-	/// </param>
-	/// <param name='min'>
-	/// Minimaler Wert
-	/// </param>
-	/// <param name='max'>
-	/// Maximaler Wert
-	/// </param>
-	private void MinMax(ref float val, float min, float max){
-		val = System.Math.Max(System.Math.Min(val, max), min);
 	}
 	
 	
