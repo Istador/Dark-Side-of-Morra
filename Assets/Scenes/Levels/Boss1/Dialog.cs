@@ -82,14 +82,14 @@ public class Dialog : MonoBehaviour {
 	
 	
 	
-	void Start(){
+	protected virtual void Start(){
 		//Player referenz holen
 		pc = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 	}
 	
 	
 	
-	void Update(){
+	protected virtual void Update(){
 		//Dialog gestartet und noch nicht beendet
 		if(started && !finished){
 			//der aktueller Text wurde lange genug angezeigt
@@ -106,7 +106,7 @@ public class Dialog : MonoBehaviour {
 	
 	
 	
-	void OnTriggerEnter(Collider hit){
+	protected virtual void OnTriggerEnter(Collider hit){
 		//Der Dialog wurde bisher noch nicht abgespielt 
 		//und der Spieler betritt den Trigger
 		if(!started && hit.gameObject.tag == "Player"){
@@ -136,7 +136,7 @@ public class Dialog : MonoBehaviour {
 	
 	
 	//GUI-Zeichnen
-	void OnGUI(){
+	protected virtual void OnGUI(){
 		//wenn der Dialog gestartet und noch nicht beendet wurde
 		if(started && !finished){
 			

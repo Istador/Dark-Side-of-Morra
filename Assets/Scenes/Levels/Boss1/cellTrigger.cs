@@ -8,15 +8,14 @@ using System.Collections;
 ///   Vor dem Dialog wird die Zelle geöffnet, 
 ///   und danach wird dieses Level beendet.
 /// 
-public class cellTrigger : MonoBehaviour {
+public class cellTrigger : Dialog {
 	
-	void Start(){
-		//Referenz auf Dialog laden
-		Dialog d = GetComponent<Dialog>();
+	protected override void Start(){
+		base.Start();
 		
 		
 		//Code der ausgeführt wird vor dem Dialog
-		d.preDialog = (GameObject obj) => {
+		preDialog = (GameObject obj) => {
 			//Referenz aufs Level
 			MessageReceiver level = (MessageReceiver) GameObject.Find("Level").GetComponent<BossLevel>();
 			//Nachricht ans Level, dass die Zelle geöffnet werden soll
@@ -25,7 +24,7 @@ public class cellTrigger : MonoBehaviour {
 		
 		
 		//Code der ausgeführt wird nach dem Dialog
-		d.postDialog = (GameObject obj) => {
+		postDialog = (GameObject obj) => {
 			//Referenz aufs Level
 			MessageReceiver level = (MessageReceiver) GameObject.Find("Level").GetComponent<BossLevel>();
 			//Nachricht ans Level, dass der Dialog vorbei ist
@@ -33,6 +32,8 @@ public class cellTrigger : MonoBehaviour {
 			//sich selbst löschen
 			Destroy(obj);
 		};
+		
+		
 	}
 	
 }
