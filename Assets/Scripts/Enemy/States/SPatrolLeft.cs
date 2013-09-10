@@ -6,7 +6,7 @@ public class SPatrolLeft<T> : State<Enemy<T>> {
 	
 	
 	public override void Enter(Enemy<T> owner){
-		owner.SetSprite(0);
+		owner.Sprite = 0;
 		((MovableEnemy<T>)owner).steering.Seek(true);
 	}
 	

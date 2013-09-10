@@ -82,8 +82,8 @@ public abstract class MovableEnemy<T> : Enemy<T> {
 		base.Start();
 		
 		//ignoriere Kollision mit Spieler, wird woanders geprüft
-		Physics.IgnoreCollision(collider, player.collider);
-		Physics.IgnoreCollision(player.collider, collider);
+		Physics.IgnoreCollision(collider, Player.collider);
+		Physics.IgnoreCollision(Player.collider, collider);
 		
 	}
 	

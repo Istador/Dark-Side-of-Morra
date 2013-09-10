@@ -23,13 +23,7 @@ public class PBullet : Projektile<PBullet> {
 	public override float maxForce { get{return 7.0f;} }
 	
 	
-	
-	protected override int txtCols { get{return 8;} } //Anzahl Spalten (Frames)
-	protected override int txtRows { get{return 1;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 8;} }  //Frames per Second
-	
-	
-	
+		
 	private double startTime;
 	/// <summary>
 	/// Zeit in Sekunden nach der die Kugel automatisch stirbt
@@ -40,6 +34,15 @@ public class PBullet : Projektile<PBullet> {
 	
 	protected override void Start() {
 		base.Start();
+		
+		//Sprite-Eigenschaften
+		txtCols = 8;
+		txtRows = 1;
+		txtFPS = 8;
+		
+		//SpriteController einschalten
+		Animated = true;
+		
 		startTime = Time.time;
 	}
 	

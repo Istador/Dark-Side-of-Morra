@@ -15,10 +15,9 @@ public class SSpiderSeek : State<Enemy<Spider>> {
 	
 	public override void Execute(Enemy<Spider> owner){
 		//Texturrichtung
-		bool right = owner.IsRight(owner.player.collider.bounds.center);
-		if(right)
-			owner.SetSprite(3);
-		else owner.SetSprite(2);
+		if( owner.IsRight(owner.Player) )
+			owner.Sprite = 3;
+		else owner.Sprite = 2;
 		
 		//Distanz zum Spieler ermitteln
 		float distance = owner.DistanceToPlayer();
@@ -29,7 +28,7 @@ public class SSpiderSeek : State<Enemy<Spider>> {
 		}
 		
 		//immer noch zu weit weg -> annähern
-		((Spider)owner).steering.SetTarget(owner.player.collider.bounds.center);
+		((Spider)owner).steering.SetTarget(owner.PlayerPos);
 		((Spider)owner).steering.Seek(true);
 	}
 	

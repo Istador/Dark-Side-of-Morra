@@ -10,13 +10,13 @@ public class SRPGSFlee : State<Enemy<RPGSoldier>> {
 	
 	
 	public override void Execute(Enemy<RPGSoldier> owner){
-		if(!owner.LineOfSight(owner.player)){
+		if(!owner.LineOfSight(owner.Player)){
 			owner.MoveFSM.ChangeState(SRPGSSeekPosition.Instance);
 			return;
 		}
 		
 		//Distanz zum Spieler ermitteln
-		Vector3 pos = owner.player.collider.bounds.center;
+		Vector3 pos = owner.PlayerPos;
 		float distance = owner.DistanceTo(pos);
 		
 		//optimale position erreicht

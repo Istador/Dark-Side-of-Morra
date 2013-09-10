@@ -9,7 +9,7 @@ using System.Collections;
 /// 
 /// Werden sie aufgehoben verursachen sie zusätzlich ein Geräusch zur Bestätigung
 /// 
-public class HealthGlobe : MonoBehaviour {
+public class HealthGlobe : GeneralObject {
 	
 	
 	
@@ -41,53 +41,28 @@ public class HealthGlobe : MonoBehaviour {
 	
 	
 	
+	// Start
 	
-	// Textur / Animation
-
-	/// <summary>
-	/// Referenz auf den Sprite-Controller um das Herz zu Animieren
-	/// </summary>
-	private SpriteController spriteCntrl;
-	/// <summary>
-	/// Zeile der Animation
-	/// </summary>
-	private int txtState = 0;
-	/// <summary>
-	/// Anzahl Spalten (Frames)
-	/// </summary>
-	private int txtCols = 10;
-	/// <summary>
-	/// Anzahl Zeilen (Zustände)
-	/// </summary>
-	private int txtRows = 2;
-	/// <summary>
-	/// Frames per Second
-	/// </summary>
-	private int txtFPS = 10;
-	
-	
-	
-	void Start () {
-		//SpriteController zum Objekt hinzufügen und Referenz merken
-		spriteCntrl = gameObject.AddComponent<SpriteController>();
+	void Start() {
+		//Sprite-Eigenschaften
+		txtCols = 10;
+		txtRows = 2;
+		txtFPS = 10;
+		
+		//SpriteController einschalten
+		Animated = true;
 		
 		//Referenz auf das Aufhebe-Geräusch laden, falls noch nicht geschehen
 		if(ac_pickupsound == null) ac_pickupsound = (AudioClip) Resources.Load("Sounds/healthpickup");
 		
 		//bei großen Health-Globes den anderen Sprite-Zustand verwenden
-		if(big) txtState = 1;
-	}
-	
-	
-	
-	void Update () {
-		//Animation mittels Sprite-Controllers
-		spriteCntrl.animate(txtCols, txtRows, 0, txtState, txtCols, txtFPS);
+		if(big) Sprite = 1;
 	}
 	
 	
 	
 	void OnTriggerEnter(Collider other){
+		
 		//Das Health-Globe fällt auf das Level
 		if(other.gameObject.layer == 8){
 			//Gravitation ausschalten
@@ -95,39 +70,25 @@ public class HealthGlobe : MonoBehaviour {
 			//Bewegung ausschalten
 			rigidbody.isKinematic = true;
 		}
+		
 		//Der Spieler löst den Trigger aus
 		else if(other.gameObject.tag == "Player"){
 			
 			//bei großem Health-Globe
 			if(big)
 				//viel HP zum Spieler schicken
-				SendHealthTo(other.gameObject, i_bigHP);
+				DoHeal(other, i_bigHP);
 			//bei kleinem Health-Globe
 			else 
 				//wenig HP zum Spieler schicken
-				SendHealthTo(other.gameObject, i_smallHP);
+				DoHeal(other, i_smallHP);
 			
 			//PickUp-Geräusch abspielen
-			AudioSource.PlayClipAtPoint(ac_pickupsound, collider.bounds.center);
+			PlaySound(ac_pickupsound);
 			
 			//Diesen Health-Globe zerstören
 			Destroy(gameObject);
 		}
-	}
-	
-	
-	
-	/// <summary>
-	/// Einem Spiel-Objekt Lebenspunkte schicken
-	/// </summary>
-	/// <param name='other'>
-	/// Das Spielobjekt das Lebenspunkte bekommen soll
-	/// </param>
-	/// <param name='hp'>
-	/// Wieviele Lebenspunkte
-	/// </param>
-	void SendHealthTo(GameObject other, int hp){
-		other.SendMessage("ApplyHealth", hp, SendMessageOptions.DontRequireReceiver);
 	}
 	
 	

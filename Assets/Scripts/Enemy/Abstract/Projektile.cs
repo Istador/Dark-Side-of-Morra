@@ -67,7 +67,7 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 			//Kollision mit Spieler?
 			if(other.gameObject.tag == "Player")
 				//Schaden verursachen
-				DoDamageTo(other.gameObject, damage);
+				DoDamage(other, damage);
 			//auch bei Kollisionen die nicht mit dem Spieler sind sterben
 			Death();
 		}
@@ -78,11 +78,11 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	protected override void Start() {
 		base.Start();
 		steering.Seek(true); //Zielposition anstreben
-		SetInvisible();
+		Visible = false;
 		
 		//Kollision mit Spieler einschalten
-		Physics.IgnoreCollision(collider, player.collider, false);
-		Physics.IgnoreCollision(player.collider, collider, false);
+		Physics.IgnoreCollision(collider, Player.collider, false);
+		Physics.IgnoreCollision(Player.collider, collider, false);
 		
 		transform.Rotate(-90.0f, 0.0f, -90.0f);
 	}
@@ -97,7 +97,7 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 		
 		rotate();
 		
-		SetVisible();
+		Visible = true;
 		base.Update();
 	}
 	

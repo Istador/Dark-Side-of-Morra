@@ -14,10 +14,10 @@ public class SSoldierStay : State<Enemy<Soldier>> {
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
-		Vector3 pos = owner.player.collider.bounds.center;
+		Vector3 pos = owner.PlayerPos;
 		
 		//Spieler nicht sichtbar
-		if(!owner.LineOfSight(owner.player)){
+		if(!owner.LineOfSight(owner.Player)){
 			owner.MoveFSM.ChangeState(SSoldierSeekPosition.Instance);
 			return;
 		}

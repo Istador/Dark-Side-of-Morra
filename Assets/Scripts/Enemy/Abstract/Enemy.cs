@@ -13,66 +13,83 @@ using System.Collections;
 /// Generisches T, um die konkrete Klasse des Gegners referenzieren zu können
 /// (für die Zustandsautomaten)
 /// 
-public abstract class Enemy<T> : Entity, MessageReceiver {
+public abstract class Enemy<T> : Entity {
 	
 	
-	/*
-	 * Referenz auf das Spieler-Objekt
-	*/
-	private static GameObject _player;
+	
+	// Spieler
+	
 	/// <summary>
 	/// Referenz auf das Spieler-Objekt
 	/// </summary>
-	public GameObject player {get{
-		if(_player == null) _player = GameObject.FindWithTag("Player");
+	public GameObject Player {get{
+		//wenn die Referenz noch nicht besteht
+		if(_player == null)
+			//Lade sie
+			_player = GameObject.FindWithTag("Player");
 		return _player;
-	}}
+		}
+	}
+	/// <summary>
+	/// Spielerposition
+	/// </summary>
+	public Vector3 PlayerPos {get{
+			return Player.collider.bounds.center;
+		}
+	}
+	
+	private static GameObject _player;  //Instanzvariable die von der Property verwendet wird
+	/// <summary>
+	/// Entfernung des Gegners zum Spieler
+	/// </summary>
+	/// <returns>
+	/// Die absolute Distanz zum Spieler
+	/// </returns>
+	public float DistanceToPlayer(){
+		return DistanceTo(Player);
+	}
 	
 	
-	/*
-	 * Textur / Sprite Controller
-	*/
-	public SpriteController spriteCntrl {get; private set;}
-	/// <summary>Zeile der Animation</summary>
-	private int txtState = 0;
-	/// <summary>Anzahl Spalten (Frames)</summary>
-	protected abstract int txtCols  { get; }
-	/// <summary>Anzahl Zeilen (Zustände)</summary>
-	protected abstract int txtRows { get; }
-	/// <summary>Frames per Second</summary>
-	protected abstract int txtFPS { get; }
-	/// <summary>Ob für den aktuellen Frame der SpriteController verwendet werden soll</summary>(
-	private bool animate = true;
+	/// <summary>
+	/// Referenz auf das Geräusch, dass abgespielt werden soll, wenn ein 
+	/// Health-Globe beim sterben des Gegners fallengelassen wird.
+	/// </summary>
+	private static AudioClip ac_healthdrop;
 	
 	
 	
-	/*
-	 * Health
-	*/
-	public override int health {get; protected set;} //aktuell
-	public override int maxHealth {get; protected set;} //maximal
-	public override float healthFactor { get; protected set; } //zwischen 0.0 und 1.0
-	
-	private static AudioClip ac_healthdrop; //Health Globe Drop Sound
-	
-	
-	
-	/// <summary>Wahrscheinlichkeit das ein Health Globe droppt</summary>
-	protected float f_HealthGlobeProbability = 0.3f; //30% drop, 70% kein drop
-	
-	/// <summary>Wahrscheinlichkeit das der gedroppte Health Globe groß ist</summary>
-	protected float f_HealthGlobeBigProbability = 0.3f; //30% big, 70% small
-	
-	/// <summary>Lebenszeit von Health Globes. Wie lange Health Globes vorhanden bleiben.</summary>
-	protected float f_HealthGlobeLifetime = 10.0f; //10 Sekunden
-	
+	// Health Globes
 	// 0,3 * ( 0,3 * 50 + 0,7 * 10 ) = 6,6 HP on average
 	
+	/// <summary>
+	/// Wahrscheinlichkeit, dass ein Health-Globe beim Tode des Gegners 
+	/// fallengelassen wird.
+	/// 
+	/// Wertebereich: 0.0 bis 1.0
+	/// Default: 0.3 (=> 30 % drop, 70 % kein drop)
+	/// </summary>
+	protected float f_HealthGlobeProbability = 0.3f;
+	
+	/// <summary>
+	/// Wahrscheinlichkeit, dass der fallengelassene Health-Globe ein großer ist.
+	/// 
+	/// Wertebereich: 0.0 bis 1.0
+	/// Default: 0.3 (=> 30 % groß, 70 % klein)
+	/// </summary>
+	protected float f_HealthGlobeBigProbability = 0.3f;
+	
+	/// <summary>
+	/// Lebenszeit von Health-Globes die von Gegnern fallengelassen werden.
+	/// Wie lange Health Globes angezeigt werden bevor sie verschwinden.
+	/// 
+	/// Default: 10.0 (10 Sekunden)
+	/// </summary>
+	protected float f_HealthGlobeLifetime = 10.0f;
 	
 	
-	/**
-	 * Zustandsautomaten für Angriff und Bewegung
-	*/
+	
+	// Zustandsautomaten
+	
 	/// <summary>
 	/// Zustandsautomat für die Bewegung.
 	/// </summary>
@@ -84,22 +101,15 @@ public abstract class Enemy<T> : Entity, MessageReceiver {
 	
 	
 	
-	public readonly static System.Random rnd = new System.Random();
+	// Konstruktor
 	
-	
-	/*
-	 * Konstruktor
-	*/
-	private Enemy(){}
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Enemy`1"/> class.
 	/// </summary>
 	/// <param name='maxHealth'>
 	/// Maximale Trefferpunkte des Gegners. Bei 0 HP stirbt der Gegner.
 	/// </param>
-	public Enemy(int maxHealth){
-		this.maxHealth = maxHealth;
-		healthFactor = 1.0f;
+	public Enemy(int maxHealth) : base(maxHealth) {
 		//Zustandsautomaten erstellen
 		MoveFSM = new StateMachine<Enemy<T>>(this);
 		AttackFSM = new StateMachine<Enemy<T>>(this);
@@ -107,12 +117,12 @@ public abstract class Enemy<T> : Entity, MessageReceiver {
 	
 	
 	
-	protected virtual void Start () {
-		health = maxHealth;
+	// Start
+	
+	protected override void Start() {
+		base.Start();
 		
-		//SpriteController hinzufügen
-		spriteCntrl = gameObject.AddComponent<SpriteController>();
-				
+		//Referenz auf den Sound für den Health-Globe-Drop laden
 		if(ac_healthdrop == null) ac_healthdrop = (AudioClip) Resources.Load("Sounds/healthfall");
 		
 		//Zustandsautomaten starten (Enter)
@@ -121,20 +131,24 @@ public abstract class Enemy<T> : Entity, MessageReceiver {
 	}
 	
 	
+	
+	// Update
+	
 	/// <summary>
 	/// Zustandsautomaten, Animation
 	/// </summary>
-	protected virtual void Update() {
+	protected override void Update() {
 		//Update der Zustandsautomaten
 		MoveFSM.Update();
 		AttackFSM.Update();
-		//Animation des Sprite-Controllers
-		if(animate)
-			spriteCntrl.animate(txtCols, txtRows, 0, txtState, txtCols, txtFPS);
-		animate = true;
+		
+		//Animation
+		base.Update();
 	}
 	
 	
+	
+	// HandleMessage
 	
 	/// <summary>
 	/// Nachricht empfangen, deligieren an BEIDE Zustandsautomaten
@@ -145,231 +159,48 @@ public abstract class Enemy<T> : Entity, MessageReceiver {
 	/// <param name='msg'>
 	/// Die Nachricht
 	/// </param>
-	public bool HandleMessage(Telegram msg){
+	public override bool HandleMessage(Telegram msg){
+		//Move-Zustandsautomat
 		bool tmp = MoveFSM.HandleMessage(msg);
+		//Angriffs-Zustandsautomat
 		return AttackFSM.HandleMessage(msg) || tmp;
 	}
 	
 	
 	
 	/// <summary>
-	/// Schaden erhalten, der die HP verringert, und zum Tode führen kann
+	/// Death-Methode überschrieben, um beim sterben Health-Globes fallen 
+	/// zu lassen
 	/// </summary>
-	/// <param name='damage'>
-	/// Schaden der dem Gegner zugefügt wird
-	/// </param>
-	public virtual void ApplyDamage(Vector3 damage){
-		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage.magnitude+" dmg received");
-		health = System.Math.Max(health - (int)damage.magnitude, 0);
-		healthFactor = ((float)health) / ((float)maxHealth);
-		if(health <= 0) Death();
-	}
-	
-	
-	
-	/// <summary>
-	/// Heilung erhalten, überschreitet nicht das maximale Leben
-	/// </summary>
-	/// <param name='hp'>
-	/// Trefferpunkte die geheilt werden
-	/// </param>
-	public virtual void ApplyHeal(int hp){
-		health = System.Math.Min(health + hp, maxHealth);
-		healthFactor = ((float)health) / ((float)maxHealth);
-	}
-	
-	
-	
-	/// <summary>
-	/// Lässt den Gegner sterben, z.B. weil die HP auf 0 gefallen sind
-	/// </summary>
-	public virtual void Death(){
-		//Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): death");
+	public override void Death(){
 		
 		//soll ein Health Globe droppen?
 		if(rnd.NextDouble() <= f_HealthGlobeProbability ){
 			UnityEngine.Object res;
 			
 			//soll es ein großer oder kleiner Health Globe sein?
-			if(rnd.NextDouble() <= f_HealthGlobeBigProbability){
+			if(rnd.NextDouble() <= f_HealthGlobeBigProbability)
 				//groß
 				res = Resources.Load("bigHP");
-			} else { 
+			else 
 				//klein
 				res = Resources.Load("smallHP");
-			}
 			
 			//Health Globe erstellen
-			GameObject obj = (GameObject)UnityEngine.Object.Instantiate(res, transform.position, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+			GameObject obj = Instantiate(res);
+			HealthGlobe hg = obj.GetComponent<HealthGlobe>();
 			
 			//Geräusch machen
-			AudioSource.PlayClipAtPoint(ac_healthdrop, obj.collider.bounds.center);
+			hg.PlaySound(ac_healthdrop);
 			
 			//Health Globe kurz nach oben bewegen lassen
-			obj.rigidbody.AddForce(Vector3.up * 4.0f, ForceMode.Impulse);
+			hg.rigidbody.AddForce(Vector3.up * 4.0f, ForceMode.Impulse);
 			
+			//Health Globe nach einer bestimmten Zeit sterben lassen
 			Destroy(obj, f_HealthGlobeLifetime);
 		}
 		
-		Destroy(gameObject);
-	}
-	
-	
-	
-	/// <summary>
-	/// Ändert bei Gegnern mit kontextabhängigen Sprite welche 
-	/// Zeile angezeigt werden soll
-	/// </summary>
-	/// <param name='row'>
-	/// Die Zeile in der Textur die für die Animation verwendet werden soll
-	/// </param>
-	public void SetSprite(int row){txtState = row;}
-	
-	
-	
-	/// <summary>
-	/// Überspringt die Animation des SpriteControllers für den aktuellen Frame
-	/// </summary>
-	public void SkipAnimation(){animate = false;}
-	
-	
-	
-	/// <summary>
-	/// Macht den Gegner Sichtbar
-	/// </summary>
-	public void SetVisible(){
-		renderer.enabled = true;
-	}
-	
-	
-	
-	/// <summary>
-	/// Macht den Gegner Unsichtbar
-	/// </summary>
-	public void SetInvisible(){
-		renderer.enabled = false;
-	}
-	
-	
-	
-	/// <summary>
-	/// Entfernung des Gegners zu einem Spielobjekt bestimmen
-	/// </summary>
-	/// <returns>
-	/// Die absolute Distanz zum Objekt
-	/// </returns>
-	/// <param name='obj'>
-	/// Das Objekt zu dem die Distanz ermittelt werden soll
-	/// </param>
-	public float DistanceTo(GameObject obj){
-		return Mathf.Abs(Vector3.Distance(collider.bounds.center, obj.collider.bounds.center));
-	}
-	
-	
-	
-	/// <summary>
-	/// Entfernung des Gegners zu einer Position bestimmen
-	/// </summary>
-	/// <returns>
-	/// Die absolute Distanz zur Position
-	/// </returns>
-	/// <param name='obj'>
-	/// Die Position zu dem die Distanz ermittelt werden soll
-	/// </param>
-	public float DistanceTo(Vector3 pos){
-		return Mathf.Abs(Vector3.Distance(collider.bounds.center, pos));
-	}
-	
-	
-	
-	/// <summary>
-	/// Entfernung des Gegners zum Spieler
-	/// </summary>
-	/// <returns>
-	/// Die absolute Distanz zum Spieler
-	/// </returns>
-	public float DistanceToPlayer(){
-		return Mathf.Abs(Vector3.Distance(collider.bounds.center, player.collider.bounds.center));
-	}
-	
-	
-	
-	/// <summary>
-	/// ist die Position sichtbar für den Gegner
-	/// </summary>
-	/// <returns>
-	/// false: wenn zw. Gegner und Ziel eine Wand oder Platform ist
-	/// </returns>
-	/// <param name='target'>
-	/// Das Objekt zu dem LOS geprüft werden soll
-	/// </param>
-	public bool LineOfSight(Vector3 pos){
-		int layer = 1<<8; //Layer 8: Level (also  Kollision mit Level-Geometrie)
-		return ! Physics.Linecast(collider.bounds.center, pos, layer);
-	}
-	
-	
-	
-	/// <summary>
-	/// ist das Objekt Sichtbar für den Gegner
-	/// dies prüft nicht ob sich das Objekt in einem bestimmten Winkel
-	/// zum Gegner befindet (z.B. ob es vor ihm ist).
-	/// </summary>
-	/// <returns>
-	/// false: wenn zw. Gegner und Ziel eine Wand oder Platform ist
-	/// </returns>
-	/// <param name='target'>
-	/// Das Objekt zu dem LOS geprüft werden soll
-	/// </param>
-	public bool LineOfSight(GameObject target){
-		RaycastHit hit; //wenn kollision, dann steht hier womit
-		int layer = 0; //kollidiert mit nichts
-		layer += 1<<8; //Layer 8: Level (also  Kollision mit Level-Geometrie)
-		if(Physics.Linecast(collider.bounds.center, target.collider.bounds.center, out hit, layer))
-			return hit.collider.gameObject == target;
-		return true;
-	}
-	
-	
-	public void DoDamageTo(GameObject other, int damage){
-		Vector3 dmg = (other.collider.bounds.center - collider.bounds.center).normalized * damage;
-		other.SendMessage("ApplyDamage", dmg, SendMessageOptions.DontRequireReceiver);
-	}
-	
-	
-	
-	/// <summary>
-	/// Ob die Position rechts vom Gegner ist.
-	/// </summary>
-	public bool IsRight(Vector3 pos){
-		return Vector3.Dot((pos - collider.bounds.center), Vector3.right) > 0.0f;
-	}
-	
-	
-	
-	/// <summary>
-	/// Ob das Object rechts vom Gegner ist.
-	/// </summary>
-	public bool IsRight(GameObject obj){
-		return IsRight(obj.collider.bounds.center);
-	}
-	
-	
-	
-	/// <summary>
-	/// Ob die Position über den Gegner ist.
-	/// </summary>
-	public bool IsOver(Vector3 pos){
-		return Vector3.Dot((pos - collider.bounds.center), Vector3.up) > 0.0f;
-	}
-	
-	
-	
-	/// <summary>
-	/// Ob das Object über den Gegner ist.
-	/// </summary>
-	public bool IsOver(GameObject obj){
-		return IsOver(obj.collider.bounds.center);
+		base.Death();
 	}
 	
 	

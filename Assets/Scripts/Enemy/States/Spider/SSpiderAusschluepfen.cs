@@ -7,9 +7,9 @@ public class SSpiderAusschluepfen : State<Enemy<Spider>> {
 	
 	public override void Execute(Enemy<Spider> owner){
 		//Texturrichtung
-		if(owner.IsRight(owner.player))
-			owner.SetSprite(1);
-		else owner.SetSprite(0);
+		if(owner.IsRight(owner.Player))
+			owner.Sprite = 1;
+		else owner.Sprite = 0;
 		
 		//Health Bar einblenden
 		((Spider)owner).healthbar.Show();

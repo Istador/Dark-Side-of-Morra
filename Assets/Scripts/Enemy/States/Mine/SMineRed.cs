@@ -9,7 +9,7 @@ public class SMineRed : State<Enemy<Mine>> {
 	
 	
 	public override void Enter(Enemy<Mine> owner){
-		owner.SetSprite(2); //rot blinken
+		owner.Sprite = 2; //rot blinken
 		
 		//sich selbst eine Nachricht in 2 Sekunden schicken zum explodieren
 		MessageDispatcher.Instance.Dispatch(owner, owner, "minetimer", 2.0f, null);
@@ -19,7 +19,7 @@ public class SMineRed : State<Enemy<Mine>> {
 	
 	public override void Execute(Enemy<Mine> owner){
 		//Ticken
-		if(owner.spriteCntrl.index == 1){
+		if(owner.SpriteCntrl.index == 1){
 			if(! ((Mine)owner).ticked){
 				AudioSource.PlayClipAtPoint(Mine.ac_tick, owner.collider.bounds.center);
 				((Mine)owner).ticked = true;

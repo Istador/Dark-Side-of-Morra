@@ -13,12 +13,6 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	public override float maxForce { get{return 7.0f;} }
 	
 	
-	
-	protected override int txtCols { get{return 10;} } //Anzahl Spalten (Frames)
-	protected override int txtRows { get{return 10;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 12;} }  //Frames per Second
-	
-	
 		
 	/// <summary>
 	/// Optimale Entfernung in der stehen geblieben wird. Untere Grenze
@@ -62,7 +56,16 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	protected override void Start(){
 		base.Start();
-		_lastKnownPosition = player.collider.bounds.center;
+		
+		//Sprite-Eigenschaften
+		txtCols = 10;
+		txtRows = 10;
+		txtFPS = 12;
+		
+		//SpriteController einschalten
+		Animated = true;
+		
+		_lastKnownPosition = PlayerPos;
 		_lastTimeVisited = Time.time;
 		if(ac_shoot == null) ac_shoot = (AudioClip) Resources.Load("Sounds/shoot2");
 	}
@@ -70,7 +73,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	//bool once = true;
 	protected override void Update(){
-		SetSprite(DetermineSprite());
+		Sprite = DetermineSprite();
 		
 		base.Update();
 		
@@ -88,7 +91,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	public bool IsPlayerInfront(){
 		//Debug.DrawLine(Vector3.zero, player.collider.bounds.center - collider.bounds.center, Color.yellow);
 		//Debug.Log(Vector3.Dot((player.collider.bounds.center - collider.bounds.center), Heading()) );
-		return Vector3.Dot((player.collider.bounds.center - collider.bounds.center), Heading()) > 0.0f;
+		return Vector3.Dot((PlayerPos - Pos), Heading()) > 0.0f;
 	}
 	
 	
@@ -101,7 +104,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 		float distance = DistanceToPlayer();
 		return ( 
 			   distance < f_visibleRange 
-			&& LineOfSight(player)
+			&& LineOfSight(Player)
 			&& (IsOnLadder || IsPlayerInfront() )
 		);
 			
@@ -116,9 +119,9 @@ public class Soldier : MLeftRightClimb<Soldier> {
 		float distance = DistanceToPlayer();
 		return ( 
 			   distance <= f_outOfRange		//in Reichweite
-			&& LineOfSight(player)			//Sicht frei
+			&& LineOfSight(Player)			//Sicht frei
 			&& IsPlayerInfront()			//vor dem Gegner
-			&& IsHeightOk(player.collider.bounds.center) //Höhenunterschied nicht zu groß
+			&& IsHeightOk(PlayerPos) //Höhenunterschied nicht zu groß
 		);
 	}
 	
@@ -144,7 +147,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	private Vector3 _lastHeading;
 	
 	public void RememberNow(){
-		_lastKnownPosition = player.collider.bounds.center;
+		_lastKnownPosition = PlayerPos;
 		_lastTimeVisited = Time.time;
 		if( ! DirectlyAboveOrUnder(_lastKnownPosition))
 			_lastHeading = Heading();

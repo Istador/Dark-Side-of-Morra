@@ -10,7 +10,7 @@ public class SRPGSSeekPosition : State<Enemy<RPGSoldier>> {
 	
 	
 	public override void Execute(Enemy<RPGSoldier> owner){
-		if(owner.LineOfSight(owner.player)){
+		if(owner.LineOfSight(owner.Player)){
 			owner.MoveFSM.ChangeState(SRPGSStay.Instance);
 			return;
 		}

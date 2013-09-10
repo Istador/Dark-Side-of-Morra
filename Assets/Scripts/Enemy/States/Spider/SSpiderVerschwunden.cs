@@ -7,7 +7,7 @@ public class SSpiderVerschwunden : State<Enemy<Spider>> {
 		
 	public override void Enter(Enemy<Spider> owner){
 		//Unsichtbar werden
-		owner.SetInvisible();
+		owner.Visible = false;
 	}
 	
 	
@@ -26,7 +26,7 @@ public class SSpiderVerschwunden : State<Enemy<Spider>> {
 	
 	public override void Exit(Enemy<Spider> owner){
 		//Sichtbar werden
-		owner.SetVisible();
+		owner.Visible = true;
 	}
 	
 	

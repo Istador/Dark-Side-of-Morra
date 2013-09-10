@@ -8,7 +8,7 @@ public class SMineDead : State<Enemy<Mine>> {
 	
 	
 	public override void Enter(Enemy<Mine> owner){
-		owner.SetInvisible(); //Mine ausblenden
+		owner.Visible = false; //Mine ausblenden
 		
 		//Schaden an allen in Reichweite machen
 		float maxrange = Mine.f_explosionRadius;
@@ -36,7 +36,7 @@ public class SMineDead : State<Enemy<Mine>> {
 					
 					//Schadensmeldung verschicken
 					if(dmg > 0) 
-						owner.DoDamageTo(c.gameObject, dmg);
+						owner.DoDamage(c, dmg);
 				}
 			}
 		}

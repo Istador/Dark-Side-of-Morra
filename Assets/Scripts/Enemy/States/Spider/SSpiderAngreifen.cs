@@ -10,22 +10,22 @@ public class SSpiderAngreifen : State<Enemy<Spider>> {
 		owner.constantForce.enabled = false;
 		
 		//Spieler rechts oder links?
-		bool right = owner.IsRight(owner.player);
+		bool right = owner.IsRight(owner.Player);
 		
 		//Angriffsrichtung merken
-		((Spider)owner).v_attackVector = ( owner.IsRight(owner.player) ? Vector3.right : Vector3.left );
+		((Spider)owner).v_attackVector = ( right ? Vector3.right : Vector3.left );
 		
 		//Texturrichtung
 		if(right)
-			owner.SetSprite(5);
-		else owner.SetSprite(4);
+			owner.Sprite = 5;
+		else owner.Sprite = 4;
 	}
 	
 	
 	
 	public override void Execute(Enemy<Spider> owner){
 		//nicht vom SpriteController animieren lassen, sondern selbst
-		owner.SkipAnimation();
+		owner.SkipAnimation = true;
 		
 		//Ist dies der letzte Frame?
 		if( ((Spider)owner).AttackFrame() ) { //Textur animieren
@@ -46,7 +46,7 @@ public class SSpiderAngreifen : State<Enemy<Spider>> {
 			//wurde der Spieler getroffen?
 			if(c.gameObject.tag == "Player" ){
 				//Schadensmeldung verschicken
-				owner.DoDamageTo(c.gameObject, Spider.i_damage);
+				owner.DoDamage(c, Spider.i_damage);
 			}
 		}
 		

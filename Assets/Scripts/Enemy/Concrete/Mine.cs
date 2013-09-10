@@ -25,11 +25,6 @@ public class Mine : ImmovableEnemy<Mine> {
 	public bool ticked = false; //für den roten zustand, ob bereits getickt wurde
 	
 	
-	protected override int txtCols { get{return 10;} } //Anzahl Spalten (Frames)
-	protected override int txtRows { get{return 3;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 20;} }  //Frames per Second
-	
-	
 	
 	public Mine() : base(1) { //1 HP
 		AttackFSM.SetGlobalState(SMineInvisible.Instance);
@@ -40,6 +35,14 @@ public class Mine : ImmovableEnemy<Mine> {
 	
 	protected override void Start(){
 		base.Start();
+		
+		//Sprite-Eigenschaften
+		txtCols = 10;
+		txtRows = 3;
+		txtFPS = 20;
+		
+		//SpriteController einschalten
+		Animated = true;
 		
 		if(ac_explosion == null) ac_explosion = (AudioClip) Resources.Load("Sounds/explode");
 		if(ac_tick == null) ac_tick = (AudioClip) Resources.Load("Sounds/minetick");

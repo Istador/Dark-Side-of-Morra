@@ -150,7 +150,7 @@ public class BossHealthBar : MonoBehaviour {
 		//Smoothes HP verringern
 		
 		//Breite des aktuellen HP-Wertes
-		float new_width = Mathf.RoundToInt((float)rc.width * boss.healthFactor);
+		float new_width = Mathf.RoundToInt((float)rc.width * boss.HealthFactor);
 		
 		//keine HP-Änderung
 		if(new_width >= last_width){
@@ -171,14 +171,14 @@ public class BossHealthBar : MonoBehaviour {
 		Color ca = Color.Lerp(cTransp, cBox, lerp);
 		Color cb = Color.Lerp(cTransp, cBar, lerp);
 		//Übergang von Grün zu Rot
-		Color cHP = Color.Lerp(cRed, cGreen, GreenToRed ? boss.healthFactor : 0.0f);
+		Color cHP = Color.Lerp(cRed, cGreen, GreenToRed ? boss.HealthFactor : 0.0f);
 		Color cc = Color.Lerp(cTransp, cHP, lerp);
 		
 		
 		//Zeichnen
 		Utility.DrawRectangle(ra, ca);
 		Utility.DrawRectangle(rb, cb);
-		if(boss.healthFactor > 0.0f)
+		if(boss.HealthFactor > 0.0f)
 			Utility.DrawRectangle(rc, cc);
 		
 	}

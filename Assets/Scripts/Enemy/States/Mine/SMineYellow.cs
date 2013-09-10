@@ -7,7 +7,7 @@ public class SMineYellow : State<Enemy<Mine>> {
 	
 	
 	public override void Enter(Enemy<Mine> owner){
-		owner.SetSprite(1); //gelb blinken
+		owner.Sprite = 1; //gelb blinken
 	}
 	
 	

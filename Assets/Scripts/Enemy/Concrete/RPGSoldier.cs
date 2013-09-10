@@ -10,12 +10,6 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	
 	
-	protected override int txtCols { get{return 10;} } //Anzahl Spalten (Frames)
-	protected override int txtRows { get{return 6;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 6;} }  //Frames per Second
-	
-	
-	
 	public Vector3 bulletSpawn { get{
 			return collider.bounds.center 
 				+ Heading() * collider.bounds.size.x/4.0f
@@ -78,14 +72,24 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	protected override void Start(){
 		base.Start();
-		_lastKnownPosition = player.collider.bounds.center;
+		
+		//Sprite-Eigenschaften
+		txtCols = 10;
+		txtRows = 6;
+		txtFPS = 6;
+		
+		//SpriteController einschalten
+		Animated = true;
+		
+		_lastKnownPosition = PlayerPos;
 		_lastTimeVisited = Time.time;
 	}
 	
 	
 	
 	protected override void Update(){
-		SetSprite(DetermineSprite());
+		Sprite = DetermineSprite();
+		
 		base.Update();
 		//Debug.Log(MoveFSM.GetCurrentState());
 	}
@@ -98,7 +102,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	public bool IsPlayerInfront(){
 		//Debug.DrawLine(Vector3.zero, player.collider.bounds.center - collider.bounds.center, Color.yellow);
 		//Debug.Log(Vector3.Dot((player.collider.bounds.center - collider.bounds.center), Heading()) );
-		return Vector3.Dot((player.collider.bounds.center - collider.bounds.center), Heading()) > 0.0f;
+		return Vector3.Dot((PlayerPos - Pos), Heading()) > 0.0f;
 	}
 	
 	
@@ -111,7 +115,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 		float distance = DistanceToPlayer();
 		return ( 
 			   distance < f_visibleRange 
-			&& LineOfSight(player)
+			&& LineOfSight(Player)
 			&& IsPlayerInfront()
 		);
 			
@@ -127,7 +131,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 		return ( 
 			   distance <= f_outOfRange
 			&& distance >= f_closeRange
-			&& LineOfSight(player)
+			&& LineOfSight(Player)
 			&& IsPlayerInfront()
 		);
 	}
@@ -137,7 +141,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	private double _lastTimeVisited;
 	
 	public void RememberNow(){
-		_lastKnownPosition = player.collider.bounds.center;
+		_lastKnownPosition = PlayerPos;
 		_lastTimeVisited = Time.time;
 	}
 	

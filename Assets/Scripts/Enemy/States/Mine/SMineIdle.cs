@@ -8,7 +8,7 @@ public class SMineIdle : State<Enemy<Mine>> {
 	
 	
 	public override void Enter(Enemy<Mine> owner){
-		owner.SetSprite(0); //nicht blinken
+		owner.Sprite = 0; //nicht blinken
 	}
 	
 	

@@ -6,13 +6,13 @@ public class SSoldierFlee : State<Enemy<Soldier>> {
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
-		if(!owner.LineOfSight(owner.player)){
+		if(!owner.LineOfSight(owner.Player)){
 			owner.MoveFSM.ChangeState(SSoldierSeekPosition.Instance);
 			return;
 		}
 		
 		//Distanz zum Spieler ermitteln
-		Vector3 pos = owner.player.collider.bounds.center;
+		Vector3 pos = owner.PlayerPos;
 		float distance = owner.DistanceTo(pos);
 		
 		//optimale position erreicht

@@ -8,14 +8,14 @@ public class SMineInvisible : State<Enemy<Mine>> {
 	
 	
 	public override void Enter(Enemy<Mine> owner){
-		owner.SetInvisible(); //unsichtbar
+		owner.Visible = false; //unsichtbar
 	}
 	
 	
 	
 	public override void Execute(Enemy<Mine> owner){
 		//nur wenn der Spieler die Mine auch sehen kann
-		if(owner.LineOfSight(owner.player))
+		if(owner.LineOfSight(owner.Player))
 		{
 			//Distanz zum Spieler ermitteln
 			float distance = owner.DistanceToPlayer();
@@ -28,7 +28,7 @@ public class SMineInvisible : State<Enemy<Mine>> {
 	
 	
 	public override void Exit(Enemy<Mine> owner){
-		owner.SetVisible(); //sichtbar
+		owner.Visible = true; //sichtbar
 	}
 	
 	

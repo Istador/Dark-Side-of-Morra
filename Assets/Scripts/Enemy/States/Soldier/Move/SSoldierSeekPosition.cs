@@ -9,7 +9,7 @@ public class SSoldierSeekPosition : State<Enemy<Soldier>> {
 		Vector3 pos = ((Soldier)owner).LastKnownPosition();
 		
 		//LoS und Höhe in Ordnung
-		if(owner.LineOfSight(owner.player) && ((Soldier)owner).IsHeightOk(pos)){
+		if(owner.LineOfSight(owner.Player) && ((Soldier)owner).IsHeightOk(pos)){
 			owner.MoveFSM.ChangeState(SSoldierStay.Instance);
 			return;
 		}

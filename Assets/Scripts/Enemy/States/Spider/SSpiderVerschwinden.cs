@@ -23,10 +23,9 @@ public class SSpiderVerschwinden : State<Enemy<Spider>> {
 	
 	public override void Execute(Enemy<Spider> owner){
 		//Texturrichtung
-		bool right = owner.IsRight(owner.player);
-		if(right)
-			owner.SetSprite(1);
-		else owner.SetSprite(0);
+		if( owner.IsRight(owner.Player) )
+			owner.Sprite = 1;
+		else owner.Sprite = 0;
 		
 		//nach oben bewegen
 		owner.rigidbody.AddRelativeForce(Vector3.up * Spider.f_seilSpeed);

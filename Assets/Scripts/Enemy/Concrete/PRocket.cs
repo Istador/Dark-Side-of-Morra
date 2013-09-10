@@ -25,14 +25,16 @@ public class PRocket : Projektile<PRocket> {
 	
 	
 	
-	protected override int txtCols { get{return 4;} } //Anzahl Spalten (Frames)
-	protected override int txtRows { get{return 1;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 6;} }  //Frames per Second
-	
-	
-	
 	protected override void Start(){
 		base.Start();
+		
+		//Sprite-Eigenschaften
+		txtCols = 4;
+		txtRows = 1;
+		txtFPS = 6;
+		
+		//SpriteController einschalten
+		Animated = true;
 		
 		if(ac_explosion == null) ac_explosion = (AudioClip) Resources.Load("Sounds/explode");
 	}
@@ -41,9 +43,9 @@ public class PRocket : Projektile<PRocket> {
 	
 	protected override void Update() {
 		//Wenn der Spieler in Sicht ist
-		if(LineOfSight(player)){
+		if(LineOfSight(Player)){
 			//Strebe die Position des Spielers an
-			_targetPos = player.collider.bounds.center;
+			_targetPos = PlayerPos;
 			//heading = (_targetPos - collider.bounds.center).normalized;
 			Debug.DrawLine(collider.bounds.center, _targetPos, Color.green);
 		}

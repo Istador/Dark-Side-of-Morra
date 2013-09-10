@@ -10,14 +10,19 @@ public class Stachel : MLeftRight<Stachel> {
 	
 	
 	
-	protected override int txtCols { get{return 10;} } //Anzahl Spalten (Frames)
-	protected override int txtRows { get{return 2;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 6;} }  //Frames per Second
-	
-	
-	
 	public Stachel() : base(150){}
 	
+	
+	
+	protected override void Start(){
+		//Sprite-Eigenschaften
+		txtCols = 10;
+		txtRows = 2;
+		txtFPS = 6;
+		
+		//SpriteController einschalten
+		Animated = true;
+	}
 	
 	
 }

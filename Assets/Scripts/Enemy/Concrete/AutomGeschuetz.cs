@@ -28,12 +28,6 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	
 	
 	
-	protected override int txtCols { get{return 1;} } //Anzahl Spalten (Frames)
-	protected override int txtRows { get{return 1;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 1;} }  //Frames per Second
-	
-	
-	
 	public Vector3 bulletSpawn { get{
 			return collider.bounds.center 
 				+ Heading() * collider.bounds.size.x/4.0f
@@ -66,7 +60,7 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 		base.Update();
 		
 		//Spieler rechts vom Geschütz
-		if(IsRight(player.collider.bounds.center)){
+		if(IsRight(PlayerPos)){
 			//Textur vertikal spiegeln
 			Vector2 tmp = gameObject.renderer.material.mainTextureScale;
 			tmp = new Vector2(-tmp.x, tmp.y);
@@ -92,7 +86,7 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	
 	
 	public Vector3 Heading(){
-		if(IsRight(player))
+		if(IsRight(Player))
 			return Vector3.right;
 		else
 			return Vector3.left;
@@ -108,7 +102,7 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 		return ( 
 			   distance <= f_outOfRange
 			&& distance >= f_closeRange
-			&& LineOfSight(player)
+			&& LineOfSight(Player)
 		);
 	}
 }

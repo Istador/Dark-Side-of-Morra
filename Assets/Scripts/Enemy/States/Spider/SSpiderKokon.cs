@@ -6,7 +6,7 @@ public class SSpiderKokon : State<Enemy<Spider>> {
 	
 	
 	public override void Enter(Enemy<Spider> owner){
-		owner.SetInvisible();
+		owner.Visible = false;
 	}
 	
 	
@@ -25,10 +25,10 @@ public class SSpiderKokon : State<Enemy<Spider>> {
 	
 	public override void Exit(Enemy<Spider> owner){
 		//Texturrichtung
-		if(owner.IsRight(owner.player))
-			owner.SetSprite(1);
-		else owner.SetSprite(0);
-		owner.SetVisible();
+		if(owner.IsRight(owner.Player))
+			owner.Sprite = 1;
+		else owner.Sprite = 0;
+		owner.Visible = true;
 	}
 	
 	

@@ -35,12 +35,6 @@ public class Spider : MovableEnemy<Spider> {
 	
 	
 	
-	protected override int txtCols { get{return 10;} } //Anzahl Spalten (Frames)
-	protected override int txtRows { get{return 6;} } //Anzahl Zeilen (Zustände)
-	protected override int txtFPS { get{return 8;} }  //Frames per Second
-	
-	
-	
 	/// <summary>
 	/// Schaden den die Spinne pro Schlag macht
 	/// </summary>
@@ -80,11 +74,20 @@ public class Spider : MovableEnemy<Spider> {
 	
 	protected override void Start(){
 		base.Start();
+		
+		//Sprite-Eigenschaften
+		txtCols = 10;
+		txtRows = 6;
+		txtFPS = 8;
+		
+		//SpriteController einschalten
+		Animated = true;
+		
 		steering.Seek(false);
 		level = GameObject.Find("Level").GetComponent<BossLevel>();
 		platten = GameObject.Find("Bodenplatten").GetComponent<Bodenplatten>();
 		healthbar = (BossHealthBar) GameObject.FindObjectOfType(typeof(BossHealthBar));
-		SetSprite(1);
+		Sprite = 1;
 		pc = GetComponentInChildren<PlayerCollider>();
 		invincible = true;
 	}

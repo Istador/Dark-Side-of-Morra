@@ -16,13 +16,13 @@ public class SSpiderStehen : State<Enemy<Spider>> {
 	
 	public override void Execute(Enemy<Spider> owner){
 		//Texturrichtung
-		if(owner.IsRight(owner.player))
-			owner.SetSprite(1);
-		else owner.SetSprite(0);
+		if(owner.IsRight(owner.Player))
+			owner.Sprite = 1;
+		else owner.Sprite = 0;
 		
 		
 		//HP in Prozent
-		float hp = owner.healthFactor;
+		float hp = owner.HealthFactor;
 		
 		//Zeit zum verschwinden?
 		if(
