@@ -69,19 +69,22 @@ public class PlayerController : MonoBehaviour
 
 	void  InputCheck ()
 	{
+		// horizontale Achse abgreifen
 		velocity.x = Input.GetAxis("Horizontal") * runSpeed;
+		// vertikale Achse abgreifen
 		velocity.y = Input.GetAxis("Vertical") * climbSpeed;
 
+		// "gucken, in welche Richtung er guckt"
 		if (velocity.x > 0)
 		{
 			lookRight = true;
 		}
-
 		if (velocity.x < 0)
 		{
 			lookRight = false;
 		}
 
+		// "gucken, ob er springt"
 		if (Input.GetButtonDown("Jump"))
 		{
 			InputJump = true;
@@ -91,6 +94,7 @@ public class PlayerController : MonoBehaviour
 			InputJump = false;
 		}
 
+		// "gucken ob er schießt"
 		if (Input.GetButtonDown("Fire1"))
 		{
 			InputShoot = true;
@@ -103,46 +107,55 @@ public class PlayerController : MonoBehaviour
 
 	void  Move ()
 	{
+		// wenn er aufm Boden ist
 		if (characterController.isGrounded)
 		{
+			// und gedrückt wurde, dass er springen soll
 			if (InputJump)
 			{
+				// dann wandel die jumpPower in die moveDirection,
 				moveDirection.y = jumpPower;
-				audio.clip = jumpSound;
-				audio.Play();
+				// spiele den jumpSound ab
+				audio.PlayOneShot(jumpSound, 1);
 			}
 		}
 
+		// wenn er auf ner Leiter ist
 		if (isOnLadder)
 		{
+			// wandel die vertikale Achse in moveDirection
 			moveDirection.y = velocity.y;
 		}
-		else
+		else // ansonsten ziehe die gravity wieder ab
 		{
-			if (moveDirection.y > -20)
+			if (moveDirection.y > -20) // aber nur bis -20, da wir sonst irgendwann einen Speichermsprung haben
 			{
 				moveDirection.y -= gravity;
 			}
 		}
 
+		// horizontale Bewegung ist immer die Achse
 		moveDirection.x = velocity.x;
 
+		// prüfen wegen dem DamageEffect, da darf der Spieler sich für kurze Zeit nicht bewegen.
 		if (movementAllowed)
 		{
+			// Bewegen des Spielercharakters anhand der vorher festgestellten moveDirection
 			characterController.Move(moveDirection * Time.deltaTime);
 		}
 	}
 
+	// Prüfen ob der Spieler auf ner Leiter ist
 	void  OnTriggerEnter ( Collider characterController  )
 	{
 		if (characterController.gameObject.CompareTag ("Ladder"))
 		{
-		
 			isOnLadder = true;
 			// character is on the trigger
 		}
 	}
 
+	// Prüfen ob der Spieler auf ner Leiter ist
 	void  OnTriggerExit ( Collider characterController  )
 	{
 		if (characterController.gameObject.CompareTag ("Ladder"))
@@ -154,8 +167,10 @@ public class PlayerController : MonoBehaviour
 
 	void Shoot ()
 	{
+		// wenn gedrückt wurde und es nicht zu schnell hintereinander ist
 		if (InputShoot && shootingAllowed)
 		{
+			// und n bullet prefab drin ist
 			if (bullet)
 			{
 				//Spawnpunkt für Bullet, im Lokalem Koordinatensystem des Spielers
@@ -169,7 +184,9 @@ public class PlayerController : MonoBehaviour
 				
 				//Bullet erstellen
 				Instantiate(bullet, pos, bulletSpawn.rotation);	
+				// Schießen aussetzen
 				shootingAllowed = false;
+				// und Coroutine starten um Schießen wieder zu erlauben
 				StartCoroutine(DelayShooting(shootingDelay));
 			}
 			else
@@ -177,10 +194,12 @@ public class PlayerController : MonoBehaviour
 				Debug.Log("No Bullet! Please assign in Inspector!");
 			}
 			
+			// und Sound abspielen
 			audio.PlayOneShot(shootSound, 1); 
 		}
 	}
 
+	// abwarten und dann schießen wieder erlauben
 	IEnumerator DelayShooting(float delay)
 	{
 		yield return new WaitForSeconds(delay);
@@ -189,38 +208,50 @@ public class PlayerController : MonoBehaviour
 
 	void  Animate ()
 	{
+		// wenn der spieler steht
 		if (velocity.x == 0)
 		{
+			// und nach rechts guckt
 			if(lookRight)
 			{
+				// animier ihn stehend und nach rechts guckend
 				anim((int)AnimationTypes.stayRight);
 			}
 			else
-			{
+			{	
+				// oder eben sonst nach links guckend
 				anim((int)AnimationTypes.stayLeft);
 			}
 		}
+		// wenn er sich nun aber nach links bewegt
 		else if (velocity.x < 0)
 		{
+			// dann animier ihn nach links laufend
 			anim((int)AnimationTypes.moveLeft);
 		}
 		else
 		{
+			// oder eben nach rechts laufend
 			anim((int)AnimationTypes.moveRight);
 		}
 
+		// wenn er den Boden nicht berührt
 		if (!characterController.isGrounded)
 		{
+			// und nach rechts guckt
 			if (lookRight)
 			{
+				// animier ihn nach rechts springend
 				anim((int)AnimationTypes.jumpRight);
 			}
 			else
 			{
+				// oder eben nach links springend
 				anim((int)AnimationTypes.jumpLeft);
 			}
 		}
 		
+		// altes Code-Schnipsel als wir noch keine Grafiken hatten, hat die Dummy-Grafik gespiegelt um so links/rechts zu simulieren
 		/*if(!lookRight){
 			//Textur vertikal spiegeln
 			Vector2 tmp = renderer.material.mainTextureScale;
@@ -229,6 +260,7 @@ public class PlayerController : MonoBehaviour
 		}*/
 	}
 
+	// die ganzen Animationstypen als enum
 	public enum AnimationTypes
 	{
 		// Zahl ist für rowFrameStart, d.h. Auswahl der Reihe in welcher die Sprites liegen.
@@ -249,6 +281,7 @@ public class PlayerController : MonoBehaviour
 		other3		= 14
 	}
 
+	// aufrufen des spritecontrollers
 	public void  anim (int animType)
 	{
 		SpriteController spritePlay;
@@ -256,9 +289,6 @@ public class PlayerController : MonoBehaviour
 		// enum an spritePlay.animate übergeben an gegebener Stelle
 		spritePlay.animate(columnSize, rowSize, colFrameStart, animType, totalFrames, framesPerSecond);
 	}
-	
-	
-	// TODO param mit damage und dmg richtig kommentieren
 
 	/// <summary>
 	/// Schaden erhalten, der die HP verringert, und zum Tode führen kann
@@ -268,9 +298,12 @@ public class PlayerController : MonoBehaviour
 	/// </param>
 	void ApplyDamage(Vector3 damage)
 	{
+		// wenn nicht gerade der godMode an ist
 		if (!godMode)
 		{
+			// runde den damage
 			int dmg = Mathf.RoundToInt(damage.magnitude);
+			// mach ne Debug Ausgabe
 			Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
 		
 			// HP verringern
@@ -280,13 +313,14 @@ public class PlayerController : MonoBehaviour
 			float volume = 0.2f + 0.8f * ((float)dmg)/30.0f; //ab 30 dmg volle lautstärke, dadrunter abhängig vom schaden
 			audio.PlayOneShot(hitSound, volume); 
 
-			// Blinken
+			// Blinken und kurz Bewegung aussetzen
 			StartCoroutine(DamageEffect());
 
 
 		}
 	}
 	
+	// Blinken und kurz Bewegung aussetzen
 	IEnumerator DamageEffect()
 	{
 		renderer.enabled = false;

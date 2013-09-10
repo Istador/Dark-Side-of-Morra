@@ -27,8 +27,7 @@ public class SpriteController : MonoBehaviour
 		float u = (index + (rndCol % columnSize )) % columnSize;
 		
 		//float v = (float) index /  (float) columnSize;
-
-				
+			
 		Vector2 offset = new Vector2( (u + colFrameStart) * size.x, (1.0f - size.y) - ( (/*v + */rowFrameStart) * size.y) );
 		
 		// texture scale
