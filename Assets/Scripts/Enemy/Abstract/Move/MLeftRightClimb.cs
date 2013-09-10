@@ -18,6 +18,10 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 	/// <summary>Ob der Gegner sich auf einer Leiter befindet. Wird von außen verändert</summary>
 	public bool IsOnLadder = false;
 	
+	
+	
+	// auf Leitern langsamer Bewegen
+	public static float ladderSlowDown = 0.25f;
 		
 	
 	/// <summary>
@@ -33,13 +37,13 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 			
 			
 			if( (a >= -45.0f && a < 45.0f) || a >= 315.0f || a < -315.0f)
-				return Vector3.left * vIn.magnitude * 0.25f;
+				return Vector3.left * vIn.magnitude * ladderSlowDown;
 			if( (a >=45.0f && a < 135.0f) || (a >= -135.0f && a < -45.0f) )
-				return Vector3.up * vIn.magnitude * 0.25f;
+				return Vector3.up * vIn.magnitude * ladderSlowDown;
 			if( (a >= 135.0f && a < 225.0f) || (a >= -225.0f && a < -135.0f) )
-				return Vector3.right * vIn.magnitude * 0.25f;
+				return Vector3.right * vIn.magnitude * ladderSlowDown;
 			if( (a >= 225.0f && a < 315.0f) || (a >= -315.0f && a < -225.0f) )
-				return Vector3.down * vIn.magnitude * 0.25f;
+				return Vector3.down * vIn.magnitude * ladderSlowDown;
 			return Vector3.zero;
 		} else {
 			return base.FilterForce(vIn);
@@ -47,31 +51,45 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 	}
 	
 	
-		
-	public bool CanClimbToDirection(Vector3 direction){
+	private bool CanClimbToHeading(Vector3 heading){
 		Bounds bb = collider.bounds;
+		
 		Vector3 pos = bb.center;
+		Vector3 direction = pos + heading * bb.size.y/1.95f;
+		
 		Vector3 left = Vector3.left * bb.size.x/2.15f;
 		Vector3 right = Vector3.right * bb.size.x/2.15f;
-		
-		Debug.DrawLine(pos, direction, Color.red);
-		Debug.DrawLine(pos + left, direction + left, Color.red);
-		Debug.DrawLine(pos + right, direction + right, Color.red);
+		Vector3 up = pos + Vector3.up * bb.size.x/2.15f;
+		Vector3 down = pos + Vector3.down * bb.size.x/2.15f;
 		
 		int level = 1<<8;
 		int leiter = 1<<12;
 		
-		//nicht in der Mitte der Leiter
+		//nicht in der Mitte der Leiter?
 		if(
 			!(
 			     Physics.Linecast(pos + left, pos, leiter) //links nach mitte
 			  && Physics.Linecast(pos + right, pos, leiter) //rechts nach mitte
 			)
+			&&
+			!(
+			     Physics.Linecast(up + left, up, leiter) //links nach mitte
+			  && Physics.Linecast(up + right, up, leiter) //rechts nach mitte
+			)
+			&&
+			!(
+			     Physics.Linecast(down + left, down, leiter) //links nach mitte
+			  && Physics.Linecast(down + right, down, leiter) //rechts nach mitte
+			)
 		){
 			return false;
 		}
 		
-		//keine Wand
+		Debug.DrawLine(pos, direction, Color.red);
+		Debug.DrawLine(pos + left, direction + left, Color.red);
+		Debug.DrawLine(pos + right, direction + right, Color.red);
+		
+		//Wand die den Weg nach oben/unten versperrt?
 		if(
 			   Physics.Linecast(pos + left, direction + left, level) //links
 			|| Physics.Linecast(pos, direction, level) //mitte
@@ -80,26 +98,23 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 			return false;
 		}
 		
+		
+		
+		//Position verschieben, damit weiter geklettert werden kann
+		Vector3 pos2 = pos - heading * bb.size.y/2.0f;
+		Vector3 direction2 = pos2 + heading * bb.size.y/1.95f;
+		
 		//nicht das Ende der Leiter
 		//kollidiert nicht wenn der Line-Ursprung innerhalb der Leiter ist, deshalb umgedrehte Logik
 		if(
 			//   Physics.Linecast(direction + left, pos + left, leiter) //links
-			/*||*/ Physics.Linecast(direction, pos, leiter) //mitte
+			/*||*/ Physics.Linecast(direction2, pos2, leiter) //mitte
 			//|| Physics.Linecast(direction + right, pos + right, leiter) //rechts
 		){
 			return false;
 		}
 		
 		return true;
-	}
-	
-	
-	
-	//Hilfsmethode
-	private bool CanClimbToHeading(Vector3 heading){
-		Bounds bb = collider.bounds;
-		Vector3 direction = bb.center + heading * bb.size.y/1.95f;
-		return CanClimbToDirection(direction);
 	}
 	
 	

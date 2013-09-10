@@ -43,8 +43,8 @@ public class SLEnter : State<Enemy<Soldier>> {
 		}
 		//Fehler- Verlasse die Leiter wieder
 		else {
-			Debug.Log("keine Richtung");
-			owner.MoveFSM.ChangeState(SLLeave.Instance);
+			//Debug.Log("keine Richtung");
+			owner.MoveFSM.ChangeState(SLLeaveD.Instance);
 		}
 	}
 	
