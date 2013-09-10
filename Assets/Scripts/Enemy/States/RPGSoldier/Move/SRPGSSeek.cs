@@ -5,12 +5,6 @@ public class SRPGSSeek : State<Enemy<RPGSoldier>> {
 	
 	
 	
-	public override void Enter(Enemy<RPGSoldier> owner){
-		((RPGSoldier)owner).steering.Flee(false);
-	}
-	
-	
-	
 	public override void Execute(Enemy<RPGSoldier> owner){
 		if(!owner.LineOfSight(owner.Player)){
 			owner.MoveFSM.ChangeState(SRPGSSeekPosition.Instance);
@@ -29,18 +23,17 @@ public class SRPGSSeek : State<Enemy<RPGSoldier>> {
 		
 		
 		if(   ((RPGSoldier)owner).CanMoveTo(pos)   ){
-			((RPGSoldier)owner).steering.Seek(true);
-			((RPGSoldier)owner).steering.SetTarget(pos);
+			((RPGSoldier)owner).Steering.DoSeek(pos);
 			
 		} else {
-			((RPGSoldier)owner).steering.Seek(false);
+			((RPGSoldier)owner).Steering.Seeking = false;
 		}
 	}
 	
 	
 	
 	public override void Exit(Enemy<RPGSoldier> owner){
-		((RPGSoldier)owner).steering.Seek(false);
+		((RPGSoldier)owner).Steering.Seeking = false;
 	}
 	
 	

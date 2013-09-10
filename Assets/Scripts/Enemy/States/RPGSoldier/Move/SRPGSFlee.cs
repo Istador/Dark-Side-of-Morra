@@ -26,10 +26,9 @@ public class SRPGSFlee : State<Enemy<RPGSoldier>> {
 		}
 		
 		if(   ((RPGSoldier)owner).CanMoveTo(pos, true)   ){
-			((RPGSoldier)owner).steering.Flee(true);
-			((RPGSoldier)owner).steering.SetTarget(pos);
+			((RPGSoldier)owner).Steering.DoFlee(pos);
 		} else {
-			((RPGSoldier)owner).steering.Flee(false);
+			((RPGSoldier)owner).Steering.Fleeing = false;
 		}
 		
 	}
@@ -37,7 +36,7 @@ public class SRPGSFlee : State<Enemy<RPGSoldier>> {
 	
 	
 	public override void Exit(Enemy<RPGSoldier> owner){
-		((RPGSoldier)owner).steering.Flee(false);
+		((RPGSoldier)owner).Steering.Fleeing = false;
 	}
 	
 	

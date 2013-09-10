@@ -10,7 +10,7 @@ public class SSoldierFire : State<Enemy<Soldier>> {
 		GameObject bullet = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("pBullet"), owner.transform.position, owner.transform.rotation);
 		
 		//Richtung der Patrone setzen
-		bullet.GetComponent<PBullet>().heading = ((Soldier)owner).Heading();
+		bullet.GetComponent<PBullet>().heading = ((Soldier)owner).Heading;
 		
 		//Sound abspielen
 		AudioSource.PlayClipAtPoint(Soldier.ac_shoot, owner.collider.bounds.center);

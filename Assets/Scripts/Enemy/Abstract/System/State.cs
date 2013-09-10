@@ -1,5 +1,7 @@
 /**
  * ein einzelner Zustand
+ * 
+ * Die Methoden die nicht benötigt werden können weggelassen werden.
 */
 public abstract class State<T> {
 	

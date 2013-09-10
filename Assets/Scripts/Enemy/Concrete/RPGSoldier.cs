@@ -5,19 +5,13 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	
 	
-	public override float maxSpeed { get{return 5.0f;} }
-	public override float maxForce { get{return 5.0f;} }
-	
-	
-	
 	public Vector3 bulletSpawn { get{
 			return collider.bounds.center 
-				+ Heading() * collider.bounds.size.x/4.0f
+				+ Heading * collider.bounds.size.x/4.0f
 				+ Vector3.up * collider.bounds.size.y/8.0f
 			;
 		}
 	}
-	
 	
 	
 	
@@ -60,8 +54,8 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	
 	public RPGSoldier() : base(150) {
-		MoveFSM.SetGlobalState(SRPGSPatrol.Instance);
-		AttackFSM.SetCurrentState(SRPGSHoldFire.Instance);
+		MoveFSM.GlobalState = SRPGSPatrol.Instance;
+		AttackFSM.CurrentState = SRPGSHoldFire.Instance;
 		
 		f_HealthGlobeProbability = 0.6f; //60% drop, 40% kein drop
 		f_HealthGlobeBigProbability = 0.6f; //60% big, 40% small
@@ -80,6 +74,10 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 		
 		//SpriteController einschalten
 		Animated = true;
+		
+		//Geschwindigkeit setzen
+		MaxSpeed = 5.0f;
+		MaxForce = 5.0f;
 		
 		_lastKnownPosition = PlayerPos;
 		_lastTimeVisited = Time.time;
@@ -102,7 +100,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	public bool IsPlayerInfront(){
 		//Debug.DrawLine(Vector3.zero, player.collider.bounds.center - collider.bounds.center, Color.yellow);
 		//Debug.Log(Vector3.Dot((player.collider.bounds.center - collider.bounds.center), Heading()) );
-		return Vector3.Dot((PlayerPos - Pos), Heading()) > 0.0f;
+		return Vector3.Dot((PlayerPos - Pos), Heading) > 0.0f;
 	}
 	
 	
@@ -174,7 +172,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	/// </param>
 	public override void ApplyDamage(Vector3 damage){
 		//Zustandsautomaten informieren
-		MessageDispatcher.Instance.Dispatch(new Telegram(this, "damage"));
+		MessageDispatcher.I.Dispatch(this, "damage");
 		
 		//Position merken
 		RememberNow();
@@ -185,21 +183,21 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	
 	
-	public Vector3 Heading(){
-		if(MoveFSM.GetCurrentState() == SPatrolLeft<RPGSoldier>.Instance)
+	public override Vector3 Heading { get{
+		if(MoveFSM.IsInState(SPatrolLeft<RPGSoldier>.Instance))
 			return Vector3.left;
-		else if(MoveFSM.GetCurrentState() == SPatrolRight<RPGSoldier>.Instance)
+		else if(MoveFSM.IsInState(SPatrolRight<RPGSoldier>.Instance))
 			return Vector3.right;
 		else if(IsRight(_lastKnownPosition))
 			return Vector3.right;
 		else
 			return Vector3.left;
-	}
+	}}
 	
 	
 	
 	public Vector3 Moving(){
-		Vector3 f = steering.Calculate();
+		Vector3 f = Steering.Calculate();
 		if(f == Vector3.zero)
 			return Vector3.zero;
 		else if(IsRight(collider.bounds.center + rigidbody.velocity))
@@ -211,7 +209,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	
 	public int DetermineSprite(){
-		Vector3 h = Heading();
+		Vector3 h = Heading;
 		Vector3 m = Moving();
 		//keine Bewegung
 		if(m == Vector3.zero){

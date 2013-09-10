@@ -26,6 +26,7 @@ public class MessageDispatcher {
 	/// Die Nachricht die ausgeliefert wird
 	/// </param>
 	private void Discharge(Telegram msg){
+		//Nachricht an MessageReceiver Methode übergeben
 		msg.receiver.HandleMessage(msg);
 	}
 	
@@ -59,7 +60,12 @@ public class MessageDispatcher {
 	}
 	
 	
-	
+	/// <summary>
+	/// Nachricht an Nachrichtensystem zum Ausliefern übergeben
+	/// </summary>
+	/// <param name='msg'>
+	/// Die Nachricht die ausgeliefert werden soll
+	/// </param>
 	public void Dispatch(MessageReceiver receiver, string msg, float delay = 0.0f, object extraInfo = null){
 		Dispatch(new Telegram(null, receiver, msg, Time.time+delay, extraInfo));
 	}
@@ -76,6 +82,7 @@ public class MessageDispatcher {
 		
 		//Nachricht mit frühestem auslieferzeitpunkt
 		Telegram t = pq.First();
+		
 		//wenn das Telegram jetzt ausgeliefert werden soll
 		while(t!=null && t.dispatchTime <= now && t.dispatchTime >= 0.0f){
 			//ausliefern

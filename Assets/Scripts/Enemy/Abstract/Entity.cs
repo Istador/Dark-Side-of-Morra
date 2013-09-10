@@ -91,6 +91,9 @@ public abstract class Entity : GeneralObject {
 	/// Schaden der dem Subjekt zugefügt wird, inklusive Richtung woher der Schaden kommt
 	/// </param>
 	public virtual void ApplyDamage(Vector3 damage){
+		//nichts tun, bei unserblichkeit
+		if(Invincible) return;
+		
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage.magnitude+" dmg received");
 		
 		//Trefferpunkte verringern
@@ -110,6 +113,11 @@ public abstract class Entity : GeneralObject {
 		Health += hp;
 	}
 	
+	
+	
+	// Unbesiegbarkeit
+	
+	public bool Invincible {get; set;}
 	
 	
 	// Sterben

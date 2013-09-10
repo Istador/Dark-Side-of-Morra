@@ -27,8 +27,8 @@ public class Mine : ImmovableEnemy<Mine> {
 	
 	
 	public Mine() : base(1) { //1 HP
-		AttackFSM.SetGlobalState(SMineInvisible.Instance);
-		AttackFSM.SetCurrentState(SMineIdle.Instance);
+		AttackFSM.GlobalState = SMineInvisible.Instance;
+		AttackFSM.CurrentState = SMineIdle.Instance;
 	}
 	
 	
@@ -84,7 +84,7 @@ public class Mine : ImmovableEnemy<Mine> {
 	/// </summary>
 	private void Explode(){
 		//sende eine Nachricht an den Zustandsautomat um in den roten zustand zu gehen.
-		MessageDispatcher.Instance.Dispatch(new Telegram(this, "explode"));
+		MessageDispatcher.I.Dispatch(new Telegram(this, "explode"));
 	}
 	
 	

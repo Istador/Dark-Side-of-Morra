@@ -6,6 +6,21 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 	
 	
 	/// <summary>
+	/// Richtung in die der Gegner guckt.
+	/// Lokales Koordinatensystem.
+	/// </summary>
+	public override Vector3 Heading { get{
+			if(MoveFSM.IsInState(SPatrolLeft<T>.Instance))
+				return Vector3.left;
+			else if(MoveFSM.IsInState(SPatrolRight<T>.Instance))
+				return Vector3.right;
+			return  Vector3.zero;
+		}
+	}
+	
+	
+	
+	/// <summary>
 	/// Initializes a new instance of the <see cref="MLeftRight`1"/> class.
 	/// </summary>
 	/// <param name='maxHealth'>

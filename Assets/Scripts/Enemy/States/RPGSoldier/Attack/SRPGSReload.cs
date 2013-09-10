@@ -7,7 +7,7 @@ public class SRPGSReload : State<Enemy<RPGSoldier>> {
 	
 	public override void Enter(Enemy<RPGSoldier> owner){
 		//Nachtricht an sich selbst in x sekunden, das Nachladen vorbei
-		MessageDispatcher.Instance.Dispatch(owner, owner, "reloaded", (float)RPGSoldier.d_reloadTime, null);
+		MessageDispatcher.I.Dispatch(owner, "reloaded", (float)RPGSoldier.d_reloadTime);
 	}
 	
 	

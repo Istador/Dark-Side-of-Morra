@@ -23,17 +23,17 @@ public class StateMachine<T> : MessageReceiver {
 	/// <summary>
 	/// Der globale Zustand des Automatens
 	/// </summary>
-	private State<T> globalState;
+	public State<T> GlobalState {get; set;}
 	
 	/// <summary>
 	/// Der aktuelle Zustand des Automatens
 	/// </summary>
-	private State<T> currentState;
+	public State<T> CurrentState {get; set;}
 	
 	/// <summary>
 	/// Der vorherige Zustand (vor dem aktuellen Zustand)
 	/// </summary>
-	private State<T> previousState;
+	public State<T> PreviousState {get; set;}
 	
 	
 	
@@ -49,33 +49,6 @@ public class StateMachine<T> : MessageReceiver {
 	
 	
 	
-	/*
-	 * Getter
-	*/
-	public State<T> GetGlobalState(){return globalState;}
-	public State<T> GetCurrentState(){return currentState;}
-	public State<T> GetPreviousState(){return previousState;}
-	
-	
-	
-	/*
-	 * Setter
-	*/ 
-	/// <summary>
-	/// ! nur zum Initialisieren verwenden !
-	/// </summary>
-	public void SetGlobalState(State<T> state){globalState = state;}
-	/// <summary>
-	/// ! nur zum Initialisieren verwenden !
-	/// </summary>
-	public void SetCurrentState(State<T> state){currentState = state;}
-	/// <summary>
-	/// ! nur zum Initialisieren verwenden !
-	/// </summary>
-	public void SetPreviousState(State<T> state){previousState = state;}
-	
-	
-	
 	/// <summary>
 	/// Ändert den aktuellen Zustand des Automatens.
 	/// ruft Exit() des alten und Enter() des neuen Zustands auf.
@@ -84,12 +57,16 @@ public class StateMachine<T> : MessageReceiver {
 	/// der neue Zustand zu dem gewechselt werden soll.
 	/// </param>
 	public void ChangeState(State<T> state){
-		if(currentState!=null) currentState.Exit(owner);
+		//wenn ein voriger Zustand existiert verlasse ihn
+		if(CurrentState!=null) CurrentState.Exit(owner);
 		
-		previousState = currentState;
-		currentState = state;
+		//merke aktuellen Zustand als alten Zustand
+		PreviousState = CurrentState;
+		//ersetze aktuellen Zustand durch den neuen Zustand
+		CurrentState = state;
 		
-		if(currentState!=null) currentState.Enter(owner);
+		//betrete den neuen Zustand
+		if(CurrentState!=null) CurrentState.Enter(owner);
 	}
 	
 	
@@ -102,9 +79,12 @@ public class StateMachine<T> : MessageReceiver {
 	/// der neue Zustand zu dem gewechselt werden soll.
 	/// </param>
 	public void ChangeGlobalState(State<T> state){
-		if(globalState!=null) globalState.Exit(owner);
-		globalState = state;
-		if(globalState!=null) globalState.Enter(owner);
+		//wenn ein voriger Zustand existiert verlasse ihn
+		if(GlobalState!=null) GlobalState.Exit(owner);
+		//ersetze aktuellen Zustand durch den neuen Zustand
+		GlobalState = state;
+		//betrete den neuen Zustand
+		if(GlobalState!=null) GlobalState.Enter(owner);
 	}
 	
 	
@@ -114,7 +94,7 @@ public class StateMachine<T> : MessageReceiver {
 	/// ruft Exit() des aktuellen und Enter() des vorigen Zustandes auf.
 	/// </summary>
 	public void RevertToPreviousState(){
-		ChangeState(previousState);
+		ChangeState(PreviousState);
 	}
 	
 	
@@ -124,8 +104,8 @@ public class StateMachine<T> : MessageReceiver {
 	/// Ruft die Enter-Methode des aktuellen Zustandes auf.
 	/// </summary>
 	public void Start(){
-		if(globalState!=null) globalState.Enter(owner);
-		if(currentState!=null) currentState.Enter(owner);
+		if(GlobalState!=null) GlobalState.Enter(owner);
+		if(CurrentState!=null) CurrentState.Enter(owner);
 	}
 	
 	
@@ -135,8 +115,10 @@ public class StateMachine<T> : MessageReceiver {
 	/// Deligiert an die jeweiligen Zustände.
 	/// </summary>
 	public void Update(){
-		if(globalState!=null) globalState.Execute(owner);
-		if(currentState!=null) currentState.Execute(owner);
+		//zuerst der globale Zustand
+		if(GlobalState!=null) GlobalState.Execute(owner);
+		//und dann der normale
+		if(CurrentState!=null) CurrentState.Execute(owner);
 	}
 	
 	
@@ -150,8 +132,8 @@ public class StateMachine<T> : MessageReceiver {
 	/// <param name='state'>
 	/// Der Zustand der überprüft werden soll.
 	/// </param>
-	public bool isInState(State<T> state){
-		return currentState == state || (currentState!=null && currentState.Equals(state));
+	public bool IsInState(State<T> state){
+		return CurrentState == state || (CurrentState!=null && CurrentState.Equals(state));
 	}
 	
 	
@@ -169,10 +151,10 @@ public class StateMachine<T> : MessageReceiver {
 	/// </param>
 	public bool HandleMessage(Telegram msg){
 		//wenn der aktuelle Zustand die Nachricht verarbeiten kann
-		if(currentState!=null && currentState.OnMessage(owner, msg))
+		if(CurrentState!=null && CurrentState.OnMessage(owner, msg))
 			return true;
 		//falls aktueller zustand nicht kann, dann globaler
-		else if(globalState!=null && globalState.OnMessage(owner, msg))
+		else if(GlobalState!=null && GlobalState.OnMessage(owner, msg))
 			return true;
 		//Nachricht unverarbeitet
 		return false;

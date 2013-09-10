@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /*
- * Abstrakte Klasse für Projektile von Gegnern
+ * Abstrakte Oberklasse für Projektile von Gegnern
  * Gemeinsam für alle Projektile:
  * - Schaden Verursachen 
  * - Sterben wenn sie selbst Schaden erleiden (1 HP)
@@ -19,7 +19,7 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	/// <value>
 	/// in ganzen Trefferpunkten
 	/// </value>
-	public abstract int damage { get; }
+	public abstract int Damage { get; }
 	
 	
 	
@@ -29,13 +29,14 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	public GameObject owner;
 	
 	
+	
 	/// <summary>
 	/// Position die das Projektil anstrebt
 	/// </summary>
 	/// <value>
 	/// 3D-Koordinate der Zielposition
 	/// </value>
-	public abstract Vector3 targetPos { get; }
+	public Vector3 TargetPos { get; protected set; }
 	
 	
 	
@@ -43,10 +44,58 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	/// Initializes a new instance of the <see cref="Projektile`1"/> class.
 	/// </summary>
 	public Projektile() : base(1) {
+		//Health-Globe Wahrscheinlichkeiten ändern
 		f_HealthGlobeProbability = 0.01f; //1% drop, 99% kein drop
 		f_HealthGlobeBigProbability = 0.1f; //10% big, 90% small
 		// 0,01 * ( 0,1 * 50 + 0,9 * 10 ) = 0,14 HP on average
 	}
+	
+	
+	
+	protected override void Start() {
+		base.Start();
+		
+		//Zielposition anstreben
+		Steering.DoSeek(TargetPos);
+		
+		//Rotiere das Projektil in Richtung Ziel
+		Rotate();
+	}
+	
+	
+	
+	/// <summary>
+	/// Ziel für Steering Behaviors setzen, Rotiere zum Ziel
+	/// </summary>
+	protected override void Update() {
+		//Seek-Ziel auf Position setzen
+		Steering.TargetPos = TargetPos;
+		
+		//Rotiere das Projektil in Richtung Ziel
+		Rotate();
+		
+		base.Update();
+	}
+	
+	
+	
+	/// <summary>
+	/// Rotiere das Projektil in Bewegungsrichtung
+	/// </summary>
+	protected void Rotate(){
+		Vector3 rotate = rigidbody.velocity.Equals(Vector3.zero) ? TargetPos : rigidbody.velocity ;
+		
+		//Rotiere zum Ziel entlang der Z-Achse
+		transform.rotation = Quaternion.LookRotation(rotate, zvector);
+		
+		//Drehe Sprite um 90°
+		transform.Rotate(-90.0f, 0.0f, -90.0f);
+	}
+	
+	/// <summary>
+	/// Rotation um die Z-Achse
+	/// </summary>
+	private static readonly Vector3 zvector = new Vector3(0.0f, 0.0f, 1.0f);
 	
 	
 	
@@ -61,64 +110,18 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 		//nicht null, wenn Projektil von selben Typ
 		Projektile<T> p = other.gameObject.GetComponent<Projektile<T>>();
 		
-		//Nicht mit dem Besitzer dieses Projektils oder eines seiner Projektile kollidieren
+		//Nicht mit dem Besitzer dieses Projektiles oder eines seiner anderen Projektile kollidieren
 		if(other.gameObject != owner && (p==null || p.owner != owner ) ){
 		
 			//Kollision mit Spieler?
 			if(other.gameObject.tag == "Player")
 				//Schaden verursachen
-				DoDamage(other, damage);
+				DoDamage(other, Damage);
 			//auch bei Kollisionen die nicht mit dem Spieler sind sterben
 			Death();
 		}
 	}
 	
 	
-	
-	protected override void Start() {
-		base.Start();
-		steering.Seek(true); //Zielposition anstreben
-		Visible = false;
-		
-		//Kollision mit Spieler einschalten
-		Physics.IgnoreCollision(collider, Player.collider, false);
-		Physics.IgnoreCollision(Player.collider, collider, false);
-		
-		transform.Rotate(-90.0f, 0.0f, -90.0f);
-	}
-	
-	
-	
-	/// <summary>
-	///  Ziel für Steering Behaviors setzen, Rotiere zum Ziel
-	/// </summary>
-	protected override void Update() {
-		steering.SetTarget(targetPos);
-		
-		rotate();
-		
-		Visible = true;
-		base.Update();
-	}
-	
-	float inc = 0.0f;
-	protected void rotate(){
-		//Vector3 rotate = targetPos - transform.position; //sofort
-		Vector3 rotate = rigidbody.velocity; //träge
-		
-		if(!rotate.Equals(Vector3.zero)){
-			//rotiere zum Ziel
-			transform.rotation = Quaternion.LookRotation(rotate, zvector);
-			//Quaternion rot = Quaternion.LookRotation(rotate, zvector);
-			//float speed = 0.5f;
-			//transform.rotation = Quaternion.Slerp(transform.rotation, rot, speed*Time.deltaTime);
-		
-			inc += 0.02f;
-			//drehe Sprite um 90°
-			transform.Rotate(-90.0f, 0.0f, -90.0f);
-		}
-	}
-	
-	private static readonly Vector3 zvector = new Vector3(0.0f, 0.0f, 1.0f); //rotation um die Z-Achse
 	
 }

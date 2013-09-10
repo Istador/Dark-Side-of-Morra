@@ -11,9 +11,7 @@ public class SLClimb : State<Enemy<Soldier>> {
 	
 	public override void Enter(Enemy<Soldier> owner){
 		//anhalten
-		owner.rigidbody.velocity = Vector3.zero;
-		owner.rigidbody.angularVelocity = Vector3.zero;
-		((Soldier)owner).steering.Seek(false);
+		((Soldier)owner).StopMoving();
 	}
 	
 	

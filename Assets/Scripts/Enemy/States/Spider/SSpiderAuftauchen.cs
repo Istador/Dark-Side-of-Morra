@@ -7,7 +7,7 @@ public class SSpiderAuftauchen : State<Enemy<Spider>> {
 		
 	public override void Enter(Enemy<Spider> owner){
 		//in zwei Sekunde wieder normales Verhalten
-		MessageDispatcher.Instance.Dispatch(owner, owner, "show", 2.0f, null);
+		MessageDispatcher.I.Dispatch(owner, "show", 2.0f);
 	}
 	
 	
@@ -38,7 +38,7 @@ public class SSpiderAuftauchen : State<Enemy<Spider>> {
 	
 	public override void Exit(Enemy<Spider> owner){
 		//wieder angreifbar werden
-		((Spider)owner).invincible = false;
+		((Spider)owner).Invincible = false;
 	}
 	
 	

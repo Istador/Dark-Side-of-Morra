@@ -10,13 +10,13 @@ public class SSpiderVerschwinden : State<Enemy<Spider>> {
 		owner.constantForce.enabled = false;
 		
 		//Unbesiegbar werden
-		((Spider)owner).invincible = true;
+		((Spider)owner).Invincible = true;
 		
 		//Platten-Event starten
-		MessageDispatcher.Instance.Dispatch(owner, ((Spider)owner).platten, "begin", 0.5f, null);
+		MessageDispatcher.I.Dispatch(owner, ((Spider)owner).platten, "begin", 0.5f);
 		
 		//selbst nach zwei sekunde verschwinden
-		MessageDispatcher.Instance.Dispatch(owner, owner, "hide", 2.0f, null);
+		MessageDispatcher.I.Dispatch(owner, "hide", 2.0f);
 	}
 	
 	

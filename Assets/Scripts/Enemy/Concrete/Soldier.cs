@@ -9,11 +9,6 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	
 	
-	public override float maxSpeed { get{return 7.0f;} }
-	public override float maxForce { get{return 7.0f;} }
-	
-	
-		
 	/// <summary>
 	/// Optimale Entfernung in der stehen geblieben wird. Untere Grenze
 	/// </summary>
@@ -47,9 +42,10 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	public static readonly float f_visibleRange = 10.0f;
 	
 	
+	
 	public Soldier() : base(200) {
-		MoveFSM.SetGlobalState(SSoldierPatrol.Instance);
-		AttackFSM.SetCurrentState(SSoldierHoldFire.Instance);
+		MoveFSM.GlobalState = SSoldierPatrol.Instance;
+		AttackFSM.CurrentState = SSoldierHoldFire.Instance;
 	}
 	
 	
@@ -64,6 +60,10 @@ public class Soldier : MLeftRightClimb<Soldier> {
 		
 		//SpriteController einschalten
 		Animated = true;
+		
+		//Geschwindigkeit setzen
+		MaxSpeed = 7.0f;
+		MaxForce = 7.0f;
 		
 		_lastKnownPosition = PlayerPos;
 		_lastTimeVisited = Time.time;
@@ -91,7 +91,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	public bool IsPlayerInfront(){
 		//Debug.DrawLine(Vector3.zero, player.collider.bounds.center - collider.bounds.center, Color.yellow);
 		//Debug.Log(Vector3.Dot((player.collider.bounds.center - collider.bounds.center), Heading()) );
-		return Vector3.Dot((PlayerPos - Pos), Heading()) > 0.0f;
+		return Vector3.Dot((PlayerPos - Pos), Heading) > 0.0f;
 	}
 	
 	
@@ -150,7 +150,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 		_lastKnownPosition = PlayerPos;
 		_lastTimeVisited = Time.time;
 		if( ! DirectlyAboveOrUnder(_lastKnownPosition))
-			_lastHeading = Heading();
+			_lastHeading = Heading;
 	}
 	
 	public void DeterminePlayerPosition(){
@@ -182,7 +182,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	/// </param>
 	public override void ApplyDamage(Vector3 damage){
 		//Zustandsautomaten informieren
-		MessageDispatcher.Instance.Dispatch(new Telegram(this, "damage"));
+		MessageDispatcher.I.Dispatch(this, "damage");
 		
 		//Position merken
 		RememberNow();
@@ -192,25 +192,29 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	}
 	
 	
+	
 	public Vector3 LastHeading(){
 		return _lastHeading;
 	}
 	
-	public Vector3 Heading(){
-		if(MoveFSM.GetCurrentState() == SPatrolLeft<Soldier>.Instance)
+	
+	
+	public override Vector3 Heading{ get{
+		if(MoveFSM.IsInState(SPatrolLeft<Soldier>.Instance))
 			return Vector3.left;
-		else if(MoveFSM.GetCurrentState() == SPatrolRight<Soldier>.Instance)
+		else if(MoveFSM.IsInState(SPatrolRight<Soldier>.Instance))
 			return Vector3.right;
 		else if(IsRight(_lastKnownPosition))
 			return Vector3.right;
 		else
 			return Vector3.left;
 	}
+	}
 	
 	
 	
 	public Vector3 Moving(){
-		Vector3 f = steering.Calculate();
+		Vector3 f = Steering.Calculate();
 		if(f == Vector3.zero)
 			return Vector3.zero;
 		
@@ -237,7 +241,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	
 	public int DetermineSprite(){
-		Vector3 h = Heading();
+		Vector3 h = Heading;
 		Vector3 m = Moving();
 		
 		//auf Leiter

@@ -38,7 +38,7 @@ public abstract class Enemy<T> : Entity {
 		}
 	}
 	
-	private static GameObject _player;  //Instanzvariable die von der Property verwendet wird
+	private static GameObject _player; //Instanzvariable die von der Property verwendet wird
 	/// <summary>
 	/// Entfernung des Gegners zum Spieler
 	/// </summary>

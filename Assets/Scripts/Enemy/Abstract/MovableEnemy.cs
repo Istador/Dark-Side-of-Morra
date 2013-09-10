@@ -9,23 +9,32 @@ public abstract class MovableEnemy<T> : Enemy<T> {
 	
 	
 	/// <summary>
+	/// Richtung in die der Gegner guckt.
+	/// Lokales Koordinatensystem.
+	/// </summary>
+	public virtual Vector3 Heading {get{return _Heading;}}
+	private Vector3 _Heading = Vector3.zero;
+	
+	
+	
+	/// <summary>
 	/// maximale Geschwindigkeit
 	/// </summary>
-	public abstract float maxSpeed { get; }
+	public float MaxSpeed { get; protected set; }
 	
 	
 	
 	/// <summary>
 	/// maximale Kraft der Steering Behaviors
 	/// </summary>
-	public abstract float maxForce { get; }
+	public float MaxForce { get; protected set; }
 	
 	
 	
 	/// <summary>
-	/// Komponente die den "Wunsch nach Bewegung" ausdrückt
+	/// Steering Behavior Komponente, die den "Wunsch nach Bewegung" ausdrückt
 	/// </summary>
-	public readonly SteeringBehaviors<T> steering;
+	public readonly SteeringBehaviors<T> Steering;
 	
 	
 	
@@ -36,7 +45,11 @@ public abstract class MovableEnemy<T> : Enemy<T> {
 	/// Maximale Trefferpunkte des Gegners. Bei 0 HP stirbt der Gegner.
 	/// </param>
 	public MovableEnemy(int maxHealth) : base(maxHealth){
-		this.steering = new SteeringBehaviors<T>(this);
+		//Steering Behavior Komonente erstellen
+		Steering = new SteeringBehaviors<T>(this);
+		
+		MaxSpeed = 1.0f;
+		MaxForce = 1.0f;
 	}
 	
 	
@@ -57,36 +70,49 @@ public abstract class MovableEnemy<T> : Enemy<T> {
 	
 	
 	/// <summary>
-	/// Steering Behaviors berechnen und anwenden
+	/// Zustandsautomaten, Animation, Steering Behaviors berechnen und anwenden
 	/// </summary>
 	protected override void Update () {
+		//Zustandsautomaten, Animation
 		base.Update();
 		
 		//resultierende Kraft der verschiedenen Steering Behaviors berechnen
-		Vector3 f = FilterForce(steering.Calculate());
+		Vector3 f = FilterForce(Steering.Calculate());
 		
 		if(f != Vector3.zero){
+			
 			//Kraft auf die Unity-Physik-Engine übertragen, um Bewegung zu erzeugen
-			//rigidbody.AddRelativeForce(f);
+			//rigidbody.AddRelativeForce(f); //nicht für Projektile
 			rigidbody.AddForce(f);
 				
 			//Bewegungsgeschwindigkeit limitieren
-			if(rigidbody.velocity.magnitude > maxSpeed)
-				rigidbody.velocity = rigidbody.velocity.normalized * maxSpeed;
+			if(rigidbody.velocity.magnitude > MaxSpeed)
+				rigidbody.velocity = rigidbody.velocity.normalized * MaxSpeed;
 		}
 	}
 	
 	
 	
-	protected override void Start(){
-		base.Start();
-		
-		//ignoriere Kollision mit Spieler, wird woanders geprüft
-		Physics.IgnoreCollision(collider, Player.collider);
-		Physics.IgnoreCollision(Player.collider, collider);
-		
+	/// <summary>
+	/// Hört auf sich zu bewegen
+	/// </summary>
+	public void StopMoving(){
+		//anhalten
+		rigidbody.velocity = Vector3.zero;
+		rigidbody.angularVelocity = Vector3.zero;
+		Steering.Stop();
 	}
 	
+	
+	public void Move(Vector3 heading){
+		_Heading = heading;
+		Steering.DoSeek(Pos + Heading * MaxSpeed);
+	}
+	
+	public void MoveUp(){ Move(Vector3.up); }
+	public void MoveDown(){ Move(Vector3.down); }
+	public void MoveLeft(){ Move(Vector3.left); }
+	public void MoveRight(){ Move(Vector3.right); }
 	
 	
 }

@@ -7,9 +7,7 @@ public class SSpiderSeek : State<Enemy<Spider>> {
 		
 	public override void Enter(Enemy<Spider> owner){
 		//anhalten
-		owner.rigidbody.velocity = Vector3.zero;
-		owner.rigidbody.angularVelocity = Vector3.zero;
-		((Spider)owner).steering.Seek(false);
+		((Spider)owner).StopMoving();
 	}
 	
 	
@@ -28,15 +26,14 @@ public class SSpiderSeek : State<Enemy<Spider>> {
 		}
 		
 		//immer noch zu weit weg -> annähern
-		((Spider)owner).steering.SetTarget(owner.PlayerPos);
-		((Spider)owner).steering.Seek(true);
+		((Spider)owner).Steering.DoSeek(owner.PlayerPos);
 	}
 	
 	
 	
 	public override void Exit(Enemy<Spider> owner){
 		//Seek aus
-		((Spider)owner).steering.Seek(false);
+		((Spider)owner).Steering.Seeking = false;
 	}
 	
 	

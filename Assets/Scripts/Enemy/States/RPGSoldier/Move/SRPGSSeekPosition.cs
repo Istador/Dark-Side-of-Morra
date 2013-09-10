@@ -27,18 +27,17 @@ public class SRPGSSeekPosition : State<Enemy<RPGSoldier>> {
 		
 		
 		if(   ((RPGSoldier)owner).CanMoveTo(pos)   ){
-			((RPGSoldier)owner).steering.Seek(true);
-			((RPGSoldier)owner).steering.SetTarget(pos);
+			((RPGSoldier)owner).Steering.DoSeek(pos);
 			
 		} else {
-			((RPGSoldier)owner).steering.Seek(false);
+			((RPGSoldier)owner).Steering.Seeking = false;
 		}
 	}
 	
 	
 	
 	public override void Exit(Enemy<RPGSoldier> owner){
-		((RPGSoldier)owner).steering.Seek(false);
+		((RPGSoldier)owner).Steering.Seeking = false;
 	}
 	
 	

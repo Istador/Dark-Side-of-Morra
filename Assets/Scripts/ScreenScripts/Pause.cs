@@ -61,7 +61,7 @@ public class Pause : Menu {
 			{2, "Zum Hauptmenü",    null, null, (Action<int>)(
 				(int id)=>{
 					//Nachrichtenwarteschlange leeren
-					MessageDispatcher.Instance.EmptyQueue();
+					MessageDispatcher.I.EmptyQueue();
 					//Hauptmenü laden
 					Application.LoadLevel(0);
 					//Spiel fortsetzen

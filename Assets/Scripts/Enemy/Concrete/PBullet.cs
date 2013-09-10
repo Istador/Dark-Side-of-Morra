@@ -1,38 +1,52 @@
 using UnityEngine;
 using System.Collections;
 
+/// 
+/// Bullets sind Geschosse die von Soldaten verschossen werden
+/// 
+/// Sie bewegen sich stur in eine Richtung und haben eine begrenzte Lebensdauer
+/// 
 public class PBullet : Projektile<PBullet> {
 	
 	
+	/// <summary>
+	/// Richtung in die der Gegner guckt.
+	/// Lokales Koordinatensystem.
+	/// </summary>
+	public override Vector3 Heading { get{ return heading; } }
+	public Vector3 heading = Vector3.zero; //Instanzvariable die von der Property verwendet wird
+	
 	
 	/// <summary>
-	/// Richtung in die sich die Kugel in einer geraden Linie bewegt.
+	/// Schaden den das Projektil beim Spieler verursacht
 	/// </summary>
-	public Vector3 heading;
-	
-	private Vector3 _targetPos = Vector3.zero;
-	public override Vector3 targetPos { get{return _targetPos;} }
-	
-	
-	
-	public override int damage { get{return 10;} }
+	/// <value>
+	/// in ganzen Trefferpunkten
+	/// </value>
+	public override int Damage { get{return 10;} }
 	
 	
 	
-	public override float maxSpeed { get{return 7.0f;} }
-	public override float maxForce { get{return 7.0f;} }
+	/// <summary>
+	/// Zeitpunkt an dem die Kugel erstellt wurde, um die Lebenszeit berechnen zu 
+	/// können und wenn es so weit ist zu sterben.
+	/// </summary>
+	private double d_startTime;
 	
 	
-		
-	private double startTime;
+	
 	/// <summary>
 	/// Zeit in Sekunden nach der die Kugel automatisch stirbt
 	/// </summary>
-	public static readonly double timeToLife = 5.0;
+	public static readonly double d_timeToLife = 5.0;
 	
 	
 	
 	protected override void Start() {
+		//Zielposition setzen
+		TargetPos = Pos + Heading.normalized * MaxSpeed;
+		
+		//u.a. Rotieren zum Ziel
 		base.Start();
 		
 		//Sprite-Eigenschaften
@@ -43,32 +57,50 @@ public class PBullet : Projektile<PBullet> {
 		//SpriteController einschalten
 		Animated = true;
 		
-		startTime = Time.time;
+		//Geschwindigkeit setzen
+		MaxSpeed = 7.0f;
+		MaxForce = 7.0f;
+		
+		//Startzeitpunkt merken
+		d_startTime = Time.time;
 	}
 	
 	
 	
 	protected override void Update() {
-		_targetPos = collider.bounds.center + heading.normalized * maxSpeed;
+		//Zielposition aktualisieren
+		TargetPos = Pos + Heading.normalized * MaxSpeed;
 		
+		//u.a. Rotieren zum Ziel, Bewegung umsetzen
 		base.Update();
 		
-		//sterben nach einer bestimmten Zeit
-		if(startTime + timeToLife <= Time.time)
+		//Sterben nach einer bestimmten Zeit
+		if(d_startTime + d_timeToLife <= Time.time)
 			Death();
 	}
 	
 	
-	//PBullets können nicht mit anderen PBullets kollidieren
+	
+	/// <summary>
+	/// Überschreiben, damit PBullets nicht mit anderen PBullets oder Soldaten
+	/// kollidieren können
+	/// </summary>
+	/// <param name='other'>
+	/// das Kollisionsobjekt
+	/// </param>
 	protected override void OnTriggerEnter(Collider other) {
-		PBullet bul = other.gameObject.GetComponent<PBullet>();
-		Soldier sol = other.gameObject.GetComponent<Soldier>();
+		//Kollisionsobjekt kein PBullet?
+		bool bul = other.gameObject.GetComponent<PBullet>() == null;
+		//Kollisionsobjekt kein Soldat?
+		bool sol = other.gameObject.GetComponent<Soldier>() == null;
 		//wenn kein bullet und kein Soldat
-		if(bul==null && sol==null){
+		if(bul && sol){
 			//normales kollidieren
 			base.OnTriggerEnter(other);
 		}
+		//sonst keine Kollision
 	}
+	
 	
 	
 }

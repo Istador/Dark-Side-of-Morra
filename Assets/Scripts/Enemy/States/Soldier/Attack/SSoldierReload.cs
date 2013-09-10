@@ -7,7 +7,7 @@ public class SSoldierReload : State<Enemy<Soldier>> {
 	
 	public override void Enter(Enemy<Soldier> owner){
 		//Nachtricht an sich selbst in x sekunden, das Nachladen vorbei
-		MessageDispatcher.Instance.Dispatch(owner, "reloaded", ((Soldier)owner).f_reloadTime);
+		MessageDispatcher.I.Dispatch(owner, "reloaded", ((Soldier)owner).f_reloadTime);
 	}
 	
 	

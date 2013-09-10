@@ -12,7 +12,7 @@ public class SMineRed : State<Enemy<Mine>> {
 		owner.Sprite = 2; //rot blinken
 		
 		//sich selbst eine Nachricht in 2 Sekunden schicken zum explodieren
-		MessageDispatcher.Instance.Dispatch(owner, owner, "minetimer", 2.0f, null);
+		MessageDispatcher.I.Dispatch(owner, "minetimer", 2.0f);
 	}
 	
 	

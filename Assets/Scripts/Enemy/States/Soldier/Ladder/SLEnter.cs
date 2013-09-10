@@ -15,12 +15,7 @@ public class SLEnter : State<Enemy<Soldier>> {
 		((Soldier)owner).IsOnLadder = true;
 		
 		//anhalten
-		owner.rigidbody.velocity = Vector3.zero;
-		owner.rigidbody.angularVelocity = Vector3.zero;
-		((Soldier)owner).steering.Seek(false);
-		((Soldier)owner).steering.Evade(false);
-		((Soldier)owner).steering.Flee(false);
-		((Soldier)owner).steering.Pursuit(false);
+		((Soldier)owner).StopMoving();
 		
 		//Schwerkraft aus (für einheitliche hoch und runter geschwindigkeit)
 		owner.rigidbody.useGravity = false;	

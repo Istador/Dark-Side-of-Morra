@@ -6,9 +6,7 @@ public class SRPGSStay : State<Enemy<RPGSoldier>> {
 	
 	
 	public override void Enter(Enemy<RPGSoldier> owner){
-		((RPGSoldier)owner).steering.Seek(false);
-		((RPGSoldier)owner).steering.Flee(false);
-		((RPGSoldier)owner).steering.SetTarget(null);
+		((RPGSoldier)owner).StopMoving();
 	}
 	
 	

@@ -7,7 +7,6 @@ public class SPatrolLeft<T> : State<Enemy<T>> {
 	
 	public override void Enter(Enemy<T> owner){
 		owner.Sprite = 0;
-		((MovableEnemy<T>)owner).steering.Seek(true);
 	}
 	
 	
@@ -16,8 +15,7 @@ public class SPatrolLeft<T> : State<Enemy<T>> {
 		if(
 			((MLeftRight<T>)owner).CanMoveLeft()
 		){
-			Vector3 direction = owner.collider.bounds.center + Vector3.left * ((MovableEnemy<T>)owner).maxSpeed;
-			((MovableEnemy<T>)owner).steering.SetTarget(direction);
+			((MovableEnemy<T>)owner).MoveLeft();
 		} else {
 			owner.MoveFSM.ChangeState(SPatrolRight<T>.Instance);
 		}
@@ -25,7 +23,9 @@ public class SPatrolLeft<T> : State<Enemy<T>> {
 	
 	
 	
-	public override void Exit(Enemy<T> owner){}
+	public override void Exit(Enemy<T> owner){
+		((MovableEnemy<T>)owner).StopMoving();
+	}
 	
 	
 	

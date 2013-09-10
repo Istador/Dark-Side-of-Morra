@@ -10,9 +10,7 @@ public class SLEnterR : State<Enemy<Soldier>> {
 	
 	public override void Enter(Enemy<Soldier> owner){
 		//anhalten
-		owner.rigidbody.velocity = Vector3.zero;
-		owner.rigidbody.angularVelocity = Vector3.zero;
-		((Soldier)owner).steering.Seek(false);
+		((Soldier)owner).StopMoving();
 	}
 	
 	
@@ -27,9 +25,7 @@ public class SLEnterR : State<Enemy<Soldier>> {
 		//kann nach rechts gehen oder klettern
 		if(   ((Soldier)owner).CanClimbRight()   ){
 			//Bewegung nach rechts
-			Vector3 direction = owner.collider.bounds.center + Vector3.right * ((Soldier)owner).maxSpeed;
-			((Soldier)owner).steering.SetTarget(direction);
-			((Soldier)owner).steering.Seek(true);
+			((Soldier)owner).MoveRight();
 		}
 		//klettern nicht möglich - Hindernis? wieder zurück
 		else {

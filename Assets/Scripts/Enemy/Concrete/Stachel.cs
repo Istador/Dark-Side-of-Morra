@@ -5,11 +5,6 @@ public class Stachel : MLeftRight<Stachel> {
 	
 	
 	
-	public override float maxSpeed { get{return 6.0f;} }
-	public override float maxForce { get{return 6.0f;} }
-	
-	
-	
 	public Stachel() : base(150){}
 	
 	
@@ -22,6 +17,10 @@ public class Stachel : MLeftRight<Stachel> {
 		
 		//SpriteController einschalten
 		Animated = true;
+		
+		//Geschwindigkeit setzen
+		MaxSpeed = 6.0f;
+		MaxForce = 6.0f;
 	}
 	
 	

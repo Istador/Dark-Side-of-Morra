@@ -30,7 +30,7 @@ public class SSpiderAusschluepfen : State<Enemy<Spider>> {
 	
 	
 	public override void Exit(Enemy<Spider> owner){
-		((Spider)owner).invincible = false;
+		((Spider)owner).Invincible = false;
 	}
 	
 	

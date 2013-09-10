@@ -22,10 +22,9 @@ public class SSoldierFlee : State<Enemy<Soldier>> {
 		}
 		
 		if( ((Soldier)owner).CanMoveTo(pos, true)   ){
-			((Soldier)owner).steering.Flee(true);
-			((Soldier)owner).steering.SetTarget(pos);
+			((Soldier)owner).Steering.DoFlee(pos);
 		} else {
-			((Soldier)owner).steering.Flee(false);
+			((Soldier)owner).Steering.Fleeing = false;
 		}
 		
 	}
@@ -33,7 +32,7 @@ public class SSoldierFlee : State<Enemy<Soldier>> {
 	
 	
 	public override void Exit(Enemy<Soldier> owner){
-		((Soldier)owner).steering.Flee(false);
+		((Soldier)owner).Steering.Fleeing = false;
 	}
 	
 	

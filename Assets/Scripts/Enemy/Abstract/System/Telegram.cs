@@ -146,8 +146,11 @@ public class Telegram : IComparable<Telegram> {
 	/// die andere Nachricht mit der Verglichen wird
 	/// </param>
 	public int CompareTo(Telegram other){
+		//auslieferungszeit vergleichen
 		int r = this.dispatchTime.CompareTo(other.dispatchTime);
+		//wenn es nicht gleich ist, Ergebnis ausgeben
 		if(r != 0) return r;
+		//wenn Zeitpunkt gleich ist HashCode vergleichen
 		return this.GetHashCode().CompareTo(other.GetHashCode());
 	}
 	

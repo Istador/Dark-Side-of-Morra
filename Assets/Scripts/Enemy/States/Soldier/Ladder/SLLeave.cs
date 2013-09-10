@@ -11,7 +11,7 @@ public class SLLeave : State<Enemy<Soldier>> {
 	public override void Enter(Enemy<Soldier> owner){
 		
 		//Jagd auf den Gegner
-		if( owner.MoveFSM.GetGlobalState() == SSoldierEngaged.Instance ){
+		if( owner.MoveFSM.GlobalState == SSoldierEngaged.Instance ){
 			//Spieler auf neuer Platform sichtbar?
 			if( ((Soldier)owner).IsPlayerVisible() ){
 				owner.MoveFSM.ChangeState(SSoldierStay.Instance);
@@ -34,7 +34,7 @@ public class SLLeave : State<Enemy<Soldier>> {
 		}
 		
 		//Patroulieren Links
-		if(owner.MoveFSM.GetPreviousState() == SLLeaveL.Instance){
+		if(owner.MoveFSM.PreviousState == SLLeaveL.Instance){
 			owner.MoveFSM.ChangeState(SPatrolLeft<Soldier>.Instance);
 		}
 		//Patroulieren Rechts

@@ -10,9 +10,7 @@ public class SLLeaveL : State<Enemy<Soldier>> {
 	
 	public override void Enter(Enemy<Soldier> owner){
 		//anhalten
-		owner.rigidbody.velocity = Vector3.zero;
-		owner.rigidbody.angularVelocity = Vector3.zero;
-		((Soldier)owner).steering.Seek(false);
+		((Soldier)owner).StopMoving();
 	}
 	
 	
@@ -27,9 +25,7 @@ public class SLLeaveL : State<Enemy<Soldier>> {
 		else if(
 			((Soldier)owner).CanClimbLeft()
 		){
-			Vector3 direction = owner.collider.bounds.center + Vector3.left * ((Soldier)owner).maxSpeed;
-			((Soldier)owner).steering.SetTarget(direction);
-			((Soldier)owner).steering.Seek(true);
+			((Soldier)owner).MoveLeft();
 		}
 		
 		//nicht klettern - Hindernis? wieder auf die Leiter zurück

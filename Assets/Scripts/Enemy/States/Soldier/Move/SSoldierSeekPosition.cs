@@ -44,13 +44,12 @@ public class SSoldierSeekPosition : State<Enemy<Soldier>> {
 		//dem Gegner
 		if( ((Soldier)owner).DirectlyAboveOrUnder(pos) ){
 			//Bewege in die Richtung weiter, nicht zum Ziel
-			pos = owner.collider.bounds.center + ((Soldier)owner).LastHeading() * ((Soldier)owner).maxSpeed;
+			pos = owner.collider.bounds.center + ((Soldier)owner).LastHeading() * ((Soldier)owner).MaxSpeed;
 		}
 		
 		//Kann sich in gewünschte Richtung bewegen
 		if( ((Soldier)owner).CanMoveTo(pos)   ){
-			((Soldier)owner).steering.Seek(true);
-			((Soldier)owner).steering.SetTarget(pos);
+			((Soldier)owner).Steering.DoSeek(pos);
 			
 		}
 		//kann nicht gehen, aber klettern
@@ -59,14 +58,14 @@ public class SSoldierSeekPosition : State<Enemy<Soldier>> {
 		}
 		//keine Bewegung möglich
 		else {
-			((Soldier)owner).steering.Seek(false);
+			((Soldier)owner).Steering.Seeking = false;
 		}
 	}
 	
 	
 	
 	public override void Exit(Enemy<Soldier> owner){
-		((Soldier)owner).steering.Seek(false);
+		((Soldier)owner).Steering.Seeking = false;
 	}
 	
 	

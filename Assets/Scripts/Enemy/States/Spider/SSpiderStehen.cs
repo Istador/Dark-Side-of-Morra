@@ -7,10 +7,8 @@ public class SSpiderStehen : State<Enemy<Spider>> {
 		
 	public override void Enter(Enemy<Spider> owner){
 		//anhalten
-		owner.rigidbody.velocity = Vector3.zero;
-		owner.rigidbody.angularVelocity = Vector3.zero;
+		((Spider)owner).StopMoving();
 		owner.constantForce.enabled = false; //Gravitation ausschalten
-		((Spider)owner).steering.Seek(false);
 	}
 	
 	

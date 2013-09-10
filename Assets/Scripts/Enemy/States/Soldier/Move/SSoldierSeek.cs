@@ -23,8 +23,7 @@ public class SSoldierSeek : State<Enemy<Soldier>> {
 		
 		//Kann sich in gewünschte Richtung bewegen
 		if(   ((Soldier)owner).CanMoveTo(pos)   ){
-			((Soldier)owner).steering.Seek(true);
-			((Soldier)owner).steering.SetTarget(pos);
+			((Soldier)owner).Steering.DoSeek(pos);
 		}
 		//kann nicht gehen, aber klettern
 		else if(   ((Soldier)owner).CanClimbTo(pos)   ){
@@ -32,14 +31,14 @@ public class SSoldierSeek : State<Enemy<Soldier>> {
 		}
 		//keine Bewegung möglich
 		else {
-			((Soldier)owner).steering.Seek(false);
+			((Soldier)owner).Steering.Seeking = false;
 		}
 	}
 	
 	
 	
 	public override void Exit(Enemy<Soldier> owner){
-		((Soldier)owner).steering.Seek(false);
+		((Soldier)owner).Steering.Seeking = false;
 	}
 	
 	

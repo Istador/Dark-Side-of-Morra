@@ -5,20 +5,22 @@ public class Spider : MovableEnemy<Spider> {
 	
 	
 	
+	/// <summary>
+	/// Richtung in die der Gegner guckt.
+	/// Lokales Koordinatensystem.
+	/// </summary>
+	public override Vector3 Heading { get{
+			return IsRight(Player) ? Vector3.right : Vector3.left;
+		}
+	}
+	
+	
+	
 	public BossLevel level {get; private set;}
 	public BossHealthBar healthbar {get; private set;}
 	public Bodenplatten platten  {get; private set;}
 	
-	/// <summary>Boss erleidet keinen Schaden</summary>
-	public bool invincible {
-		get{return this._invincible;}
-		set{
-			this._invincible = value;
-			pc.collider.enabled = !value;
-		}
-	}
-	private bool _invincible;
-	private PlayerCollider pc;
+	
 	
 	/// <summary>Angriffsrichtung, je nachdem ob der Spieler links oder rechts von der Spinne ist</summary>
 	public Vector3 v_attackVector = Vector3.right;
@@ -29,9 +31,6 @@ public class Spider : MovableEnemy<Spider> {
 	
 	/// <summary>Wie oft bereits die Platten eingesetzt wurden</summary>
 	public int stage = 0;
-	
-	public override float maxSpeed { get{return 3.5f;} }
-	public override float maxForce { get{return 8.0f;} }
 	
 	
 	
@@ -63,9 +62,8 @@ public class Spider : MovableEnemy<Spider> {
 	
 	
 	
-	
 	public Spider() : base(2000){
-		MoveFSM.SetCurrentState(SSpiderKokon.Instance);
+		MoveFSM.CurrentState = SSpiderKokon.Instance;
 		f_HealthGlobeProbability = 1.0f; //100% drop, 0% kein drop
 		f_HealthGlobeBigProbability = 1.0f; //100% big, 0% small
 	}
@@ -83,21 +81,28 @@ public class Spider : MovableEnemy<Spider> {
 		//SpriteController einschalten
 		Animated = true;
 		
-		steering.Seek(false);
+		//Geschwindigkeit setzen
+		MaxSpeed = 3.5f;
+		MaxForce = 8.0f;
+		
+		//Referenzen laden
 		level = GameObject.Find("Level").GetComponent<BossLevel>();
 		platten = GameObject.Find("Bodenplatten").GetComponent<Bodenplatten>();
 		healthbar = (BossHealthBar) GameObject.FindObjectOfType(typeof(BossHealthBar));
+		
+		//nach Rechts gucken
 		Sprite = 1;
-		pc = GetComponentInChildren<PlayerCollider>();
-		invincible = true;
+		
+		//Unbesiegbar
+		Invincible = true;
 	}
 	
 	
 	
 	protected override void Update(){
 		base.Update();
-		Debug.DrawLine(collider.bounds.center, collider.bounds.center + steering.Calculate(), Color.green);
-		Debug.DrawLine(collider.bounds.center, collider.bounds.center + rigidbody.velocity, Color.red);
+		Debug.DrawLine(Pos, Pos + Steering.Calculate(), Color.green);
+		Debug.DrawLine(Pos, Pos + rigidbody.velocity, Color.red);
 	}
 	
 	
@@ -114,15 +119,6 @@ public class Spider : MovableEnemy<Spider> {
 		key.rigidbody.AddForce(Vector3.up * 6.0f, ForceMode.Impulse);
 		
 		base.Death();
-	}
-	
-	
-	
-	/// <summary>
-	/// überschrieben für unbesiegbarkeit
-	/// </summary>
-	public override void ApplyDamage(Vector3 damage){
-		if(!invincible) base.ApplyDamage(damage);
 	}
 	
 	

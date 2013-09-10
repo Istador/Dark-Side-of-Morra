@@ -6,9 +6,8 @@ public class SSoldierStay : State<Enemy<Soldier>> {
 	
 	
 	public override void Enter(Enemy<Soldier> owner){
-		((Soldier)owner).steering.Seek(false);
-		((Soldier)owner).steering.Flee(false);
-		((Soldier)owner).steering.SetTarget(null);
+		//anhalten
+		((Soldier)owner).StopMoving();
 	}
 	
 	

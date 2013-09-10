@@ -39,7 +39,7 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	
 	
 	public AutomGeschuetz() : base(250) { //250 HP
-		AttackFSM.SetCurrentState(SAGHoldFire.Instance);
+		AttackFSM.CurrentState = SAGHoldFire.Instance;
 		
 		f_HealthGlobeProbability = 0.8f; //80% drop, 20% kein drop
 		f_HealthGlobeBigProbability = 0.8f; //80% big, 20% small

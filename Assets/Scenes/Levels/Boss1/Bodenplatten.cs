@@ -99,7 +99,7 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 				MessageDispatcher.I.Dispatch(platten[i], "green");
 			//für die anderen, roten Platten
 			else
-				MessageDispatcher.Instance.Dispatch(platten[i], "red");
+				MessageDispatcher.I.Dispatch(platten[i], "red");
 		}
 		
 		//den restlichen Boden

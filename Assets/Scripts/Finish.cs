@@ -19,7 +19,7 @@ public class Finish : MonoBehaviour
 			SaveLoad.Save();
 			
 			//Nachrichtensystem zurücksetzen
-			MessageDispatcher.Instance.EmptyQueue();
+			MessageDispatcher.I.EmptyQueue();
 			
 			//zur Level-Auswahl
 			Application.LoadLevel(1);

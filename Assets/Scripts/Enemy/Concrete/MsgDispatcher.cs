@@ -7,6 +7,6 @@ public class MsgDispatcher : MonoBehaviour {
 	/// Liefert zeitverzögerte Nachrichten aus
 	/// </summary>
 	void LateUpdate(){
-		MessageDispatcher.Instance.DispatchDelayedMessages();
+		MessageDispatcher.I.DispatchDelayedMessages();
 	}
 }

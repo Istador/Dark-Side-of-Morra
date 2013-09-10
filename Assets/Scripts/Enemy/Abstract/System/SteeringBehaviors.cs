@@ -20,15 +20,27 @@ public class SteeringBehaviors<T> {
 	/// </summary>
 	private MovableEnemy<T> owner;
 	
+	
+	
 	/// <summary>
 	/// Ziel das für einige Behaviors benötigt wird
 	/// </summary>
-	private MovableEnemy<T> target;
+	public MovableEnemy<T> Target {get; set;}
+	
+	
 	
 	/// <summary>
 	/// Zielkoordinaten
 	/// </summary>
-	private Vector3 targetPos;
+	public Vector3 TargetPos {
+		get{
+			if(_TargetPos == Vector3.zero && Target != null)
+				return Target.Pos;
+			return _TargetPos;
+		}
+		set{_TargetPos = value;}
+	}
+	private Vector3 _TargetPos = Vector3.zero; //Instanzvariable
 	
 	
 	
@@ -45,6 +57,7 @@ public class SteeringBehaviors<T> {
 	
 	
 	/// <summary>
+	/// Interne Methode.
 	/// Anstreben der Zielkoordinaten mit maximaler Geschwindigkeit
 	/// </summary>
 	/// <param name='targetPos'>
@@ -52,13 +65,36 @@ public class SteeringBehaviors<T> {
 	/// </param>
 	private Vector3 Seek(Vector3 targetPos){
 		Vector3 desiredVelocity = 
-			(targetPos - owner.collider.bounds.center).normalized * owner.maxForce;
+			(targetPos - owner.Pos).normalized * owner.MaxForce;
 		return desiredVelocity - owner.rigidbody.velocity;
+	}
+	
+	/// <summary>
+	/// Anstreben der Zielkoordinaten mit maximaler Geschwindigkeit
+	/// </summary>
+	/// <param name='targetPos'>
+	/// Zielkoordinaten
+	/// </param>
+	public void DoSeek(Vector3 targetPos){
+		Stop();
+		Seeking = true;
+		TargetPos = targetPos;
+	}
+	
+	/// <summary>
+	/// Anstreben der Zielkoordinaten des Objektes mit maximaler Geschwindigkeit
+	/// </summary>
+	/// <param name='targetPos'>
+	/// Zielkoordinaten
+	/// </param>
+	public void DoSeek(GeneralObject target){
+		DoSeek(target.Pos);
 	}
 	
 	
 	
 	/// <summary>
+	/// Interne Methode.
 	/// Fliehen vor den Zielkoordinaten mit maximaler Geschwindigkeit
 	/// </summary>
 	/// <param name='targetPos'>
@@ -66,9 +102,31 @@ public class SteeringBehaviors<T> {
 	/// </param>
 	private Vector3 Flee(Vector3 targetPos){
 		Vector3 desiredVelocity = 
-			(owner.collider.bounds.center - targetPos).normalized * owner.maxForce;
+			(owner.Pos - targetPos).normalized * owner.MaxForce;
 		
 		return desiredVelocity - owner.rigidbody.velocity;
+	}
+	
+	/// <summary>
+	/// Fliehen vor den Zielkoordinaten mit maximaler Geschwindigkeit
+	/// </summary>
+	/// <param name='targetPos'>
+	/// Zielkoordinaten
+	/// </param>
+	public void DoFlee(Vector3 targetPos){
+		Stop();
+		Fleeing = true;
+		TargetPos = targetPos;
+	}
+	
+	/// <summary>
+	/// Fliehen vor den Zielkoordinaten des Objektes mit maximaler Geschwindigkeit
+	/// </summary>
+	/// <param name='targetPos'>
+	/// Zielkoordinaten
+	/// </param>
+	public void DoFlee(GeneralObject target){
+		DoFlee(target.Pos);
 	}
 	
 	
@@ -79,8 +137,8 @@ public class SteeringBehaviors<T> {
 	/// <param name='evader'>
 	/// Objekt das abgefangen werden soll
 	/// </param>
-	private Vector3 Pursuit(MovableEnemy<T> evader){
-		Vector3 toEvader = evader.collider.bounds.center - owner.collider.bounds.center;
+	private Vector3 Pursuit(MovableEnemy<T> target){
+		Vector3 toEvader = target.Pos - owner.Pos;
 		
 		/*
 		if(
@@ -92,8 +150,8 @@ public class SteeringBehaviors<T> {
 		}
 		*/
 						
-		float LAT = toEvader.magnitude / ( owner.maxForce + evader.rigidbody.velocity.magnitude );
-		return Seek(evader.collider.bounds.center + evader.rigidbody.velocity * LAT);
+		float LAT = toEvader.magnitude / ( owner.MaxForce + target.rigidbody.velocity.magnitude );
+		return Seek(target.Pos + target.rigidbody.velocity * LAT);
 	}
 	
 	
@@ -104,72 +162,56 @@ public class SteeringBehaviors<T> {
 	/// <param name='evader'>
 	/// Der Verfolger dem man asuweichen will
 	/// </param>
-	private Vector3 Evade(MovableEnemy<T> persuer){
-		Vector3 toPersuer = persuer.collider.bounds.center - owner.collider.bounds.center;
-		float LAT = toPersuer.magnitude / ( owner.maxForce + persuer.rigidbody.velocity.magnitude );
-		return Flee(persuer.collider.bounds.center + persuer.rigidbody.velocity * LAT);
+	private Vector3 Evade(MovableEnemy<T> target){
+		Vector3 toPersuer = target.Pos - owner.Pos;
+		float LAT = toPersuer.magnitude / ( owner.MaxForce + target.rigidbody.velocity.magnitude );
+		return Flee(target.Pos + target.rigidbody.velocity * LAT);
 	}
 	
 	
 	
-	private bool seeking = false;
 	/// <summary>
 	/// Anstreben ein-/ausschalten
 	/// </summary>
 	/// <param name='on'>
 	/// true=ein, false=aus
 	/// </param>
-	public void Seek(bool on){seeking = on;}
+	public bool Seeking {get; set;}
 	
-	private bool fleeing = false;
 	/// <summary>
 	/// Fliehen ein-/ausschalten
 	/// </summary>
 	/// <param name='on'>
 	/// true=ein, false=aus
 	/// </param>
-	public void Flee(bool on){fleeing = on;}
+	public bool Fleeing {get; set;}
 	
-	private bool pursuing = false;
 	/// <summary>
 	/// Abfangen ein-/ausschalten
 	/// </summary>
 	/// <param name='on'>
 	/// true=ein, false=aus
 	/// </param>
-	public void Pursuit(bool on){pursuing = on;}
+	public bool Pursuing {get; set;}
 	
-	private bool evading = false;
 	/// <summary>
 	/// Ausweichen ein-/ausschalten
 	/// </summary>
 	/// <param name='on'>
 	/// true=ein, false=aus
 	/// </param>
-	public void Evade(bool on){evading = on;}
+	public bool Evading {get; set;}
 	
 	
 	
 	/// <summary>
-	/// Setzt die Zielkoordinaten
+	/// Alles anhalten
 	/// </summary>
-	/// <param name='targetPos'>
-	/// Zielkoordinaten
-	/// </param>
-	public void SetTarget(Vector3 targetPos){
-		this.targetPos = targetPos;
-	}
-	
-	
-	
-	/// <summary>
-	/// Setzt das Ziel das für einige Behaviors benötigt wird
-	/// </summary>
-	/// <param name='targetPos'>
-	/// Ziel das für einige Behaviors benötigt wird
-	/// </param>
-	public void SetTarget(MovableEnemy<T> target){
-		this.target = target;
+	public void Stop(){
+		Seeking = false;
+		Fleeing = false;
+		Pursuing = false;
+		Evading = false;
 	}
 	
 	
@@ -183,14 +225,14 @@ public class SteeringBehaviors<T> {
 	public Vector3 Calculate(){
 		Vector3 f = Vector3.zero;
 		
-		if(seeking) f += Seek(targetPos);
-		if(fleeing) f += Flee(targetPos);
-		if(pursuing && target != null) f+= Pursuit(target);
-		if(evading && target != null) f+= Evade(target);
+		if(Seeking) f += Seek(TargetPos);
+		if(Fleeing) f += Flee(TargetPos);
+		if(Pursuing && Target != null) f+= Pursuit(Target);
+		if(Evading && Target != null) f+= Evade(Target);
 		
 		//truncat
-		if(f != Vector3.zero && f.magnitude > owner.maxForce)
-			f = f.normalized * owner.maxForce;
+		if(f != Vector3.zero && f.magnitude > owner.MaxForce)
+			f = f.normalized * owner.MaxForce;
 		
 		return f;
 	}
