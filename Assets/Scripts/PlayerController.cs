@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
 	// health
 	public const int MAX_HEALTH = 100;
-	public int currentHealth;
+	public int currentHealth = 100;
 
 	// shoot
 	public GameObject bullet;
@@ -49,7 +49,9 @@ public class PlayerController : MonoBehaviour
 	private bool	  InputShoot = false;
 	private bool shootingAllowed = true;
 	public float shootingDelay = 0.5f;
-
+	
+	
+	
 	void  Start ()
 	{
 		characterController = GetComponent<CharacterController>();
@@ -227,7 +229,7 @@ public class PlayerController : MonoBehaviour
 		}*/
 	}
 
-	enum AnimationTypes
+	public enum AnimationTypes
 	{
 		// Zahl ist für rowFrameStart, d.h. Auswahl der Reihe in welcher die Sprites liegen.
 		stayRight	=  0,
@@ -247,7 +249,7 @@ public class PlayerController : MonoBehaviour
 		other3		= 14
 	}
 
-	void  anim (int animType)
+	public void  anim (int animType)
 	{
 		SpriteController spritePlay;
 		spritePlay = GetComponent<SpriteController>();
