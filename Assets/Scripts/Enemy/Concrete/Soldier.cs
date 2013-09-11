@@ -44,6 +44,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	
 	public Soldier() : base(200) {
+		//Zustandsautomaten initialisieren
 		MoveFSM.GlobalState = SSoldierPatrol.Instance;
 		AttackFSM.CurrentState = SSoldierHoldFire.Instance;
 	}
@@ -77,7 +78,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 		
 		base.Update();
 		
-		Debug.Log(MoveFSM.CurrentState);
+		//Debug.Log(MoveFSM.CurrentState);
 	}
 	
 	

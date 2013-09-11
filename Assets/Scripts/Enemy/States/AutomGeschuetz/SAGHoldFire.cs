@@ -7,7 +7,7 @@ public class SAGHoldFire : State<Enemy<AutomGeschuetz>> {
 	
 	public override void Execute(Enemy<AutomGeschuetz> owner){
 		//auf Spieler kann geschossen werden
-		if(((AutomGeschuetz)owner).IsPlayerInFireRange()){
+		if( ((AutomGeschuetz)owner).IsPlayerInFireRange ){
 			//zum Feuern Zustand wechseln
 			owner.AttackFSM.ChangeState(SAGFire.Instance);
 		}

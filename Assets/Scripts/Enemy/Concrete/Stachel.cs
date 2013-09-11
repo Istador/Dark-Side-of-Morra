@@ -1,11 +1,20 @@
 using UnityEngine;
 using System.Collections;
 
+
+/// 
+/// Der Stachel bewegt sich immer von Links nach Rechts auf einer Platform
+/// ohne jegliche Intelligenz.
+/// 
+/// Diese Klasse ist so leer, weil das Patroulieren als Standard-Verhalten
+/// in der MLeftRight Klasse implementier ist, und der Stachel selbst keinen 
+/// Schaden macht, sondern diesen über seinen PlayerCollider verursacht.
+/// 
 public class Stachel : MLeftRight<Stachel> {
 	
 	
 	
-	public Stachel() : base(150){}
+	public Stachel() : base(150){} //150 HP
 	
 	
 	
@@ -22,6 +31,7 @@ public class Stachel : MLeftRight<Stachel> {
 		MaxSpeed = 6.0f;
 		MaxForce = 6.0f;
 	}
+	
 	
 	
 }
