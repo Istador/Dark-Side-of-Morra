@@ -89,7 +89,7 @@ public class Spider : MovableEnemy<Spider> {
 	
 	
 	
-	public Spider() : base(10){
+	public Spider() : base(2500){
 		//Zustandsautomaten initialisieren
 		MoveFSM.CurrentState = SSpiderKokon.Instance;
 		

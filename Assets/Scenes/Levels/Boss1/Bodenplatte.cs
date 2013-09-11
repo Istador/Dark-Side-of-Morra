@@ -9,7 +9,7 @@ using System.Collections;
 /// und aktiviert den Trigger für den sicheren Standort wenn es eine Grüne 
 /// Platte ist.
 /// 
-public class Bodenplatte : MonoBehaviour, MessageReceiver {
+public class Bodenplatte : GeneralObject, MessageReceiver {
 	
 	
 	
@@ -25,21 +25,23 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 	/// Die normale Textur die außerhalb des Platten-Events angezeigt wird.
 	/// Fertig zum Anwenden auf den Renderer.
 	/// </summary>
-	private static Material[] normal;
+	public static Material[] normal{
+		get{return Resource.UsableMaterial("Luftschacht");}
+	}
 	/// <summary>
 	/// Die rote Textur die wärend des Platten-Events angezeigt wird für Platten auf denen der Spieler sterben würde.
 	/// Fertig zum Anwenden auf den Renderer.
 	/// </summary>
-	private static Material[] red;
+	public static Material[] red{
+		get{return Resource.UsableMaterial("Enemy/Falle");}
+	}
 	/// <summary>
 	/// Die grüne Textur die wärend des Platten-Events angezeigt wird, auf der der Spieler sicher ist.
 	/// Fertig zum Anwenden auf den Renderer.
 	/// </summary>
-	private static Material[] green;
-	/// <summary>
-	/// Ein Array der drei zu verwendenen Texturen.
-	/// </summary>
-	private static Material[] mats;
+	public static Material[] green{
+		get{return Resource.UsableMaterial("Gruen Luftschacht");}
+	}
 	
 	
 	
@@ -49,12 +51,6 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 		//Trigger ausschalten
 		trigger.collider.enabled = false;
 		
-		//Texturen laden falls noch nicht geschehen
-		if(mats == null) mats = GameObject.Find("Bodenplatten").GetComponent<Bodenplatten>().mats;
-		if(normal == null) normal = new Material[]{mats[0]};
-		if(red == null) red = new Material[]{mats[1]};
-		if(green == null) green = new Material[]{mats[2]};
-		
 		//Normale Textur benutzen
 		renderer.materials = normal;
 	}
@@ -62,7 +58,7 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 	
 	
 	// Methode um eingehende Nachrichten zu verarbeiten
-	public bool HandleMessage(Telegram msg){
+	public override bool HandleMessage(Telegram msg){
 		//Nachrichteneingang, je nach Nachricht etwas anderes tun
 		switch(msg.message){
 			
@@ -73,10 +69,8 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 				//Trigger einschalten
 				trigger.collider.enabled = true;
 				
-				//Health Globe laden
-				Object res = Resource.Prefab["bigHP"];
 				//Health Globe erstellen
-				GameObject obj = (GameObject)Object.Instantiate(res, transform.position+Vector3.up, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+				GameObject obj = Instantiate("bigHP", Pos+Vector3.up);
 				//Health Globe kurz nach oben bewegen lassen
 				obj.rigidbody.AddForce(Vector3.up * 4.0f, ForceMode.Impulse);
 			

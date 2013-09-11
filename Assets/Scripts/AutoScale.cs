@@ -3,6 +3,11 @@ using System.Collections;
 
 public class AutoScale : MonoBehaviour
 {	
+	public void Start()
+	{
+		Rescale();
+	}
+	
 	public void Rescale()
 	{
 		// nimm die Skalierung vom Gameobject

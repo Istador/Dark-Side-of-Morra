@@ -57,6 +57,12 @@ public static class Resource {
 	
 	public static IRes<Material> Materials = new Res<Material>("Materials/");
 	
-	
+	//Materialien in einem Array-Format um sie schnell auszuwechseln
+	private static Dictionary<string, Material[]> mats_map = new Dictionary<string, Material[]>();
+	public static Material[] UsableMaterial(string name){
+		if(! mats_map.ContainsKey(name))
+			mats_map.Add(name, new Material[]{Materials[name]});
+		return mats_map[name];
+	}
 	
 }

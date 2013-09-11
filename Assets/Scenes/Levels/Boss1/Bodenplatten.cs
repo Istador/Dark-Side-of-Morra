@@ -46,35 +46,12 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 	
 	
 	
-	//Texturen für die Bodenplatten
-	
-	/// <summary>
-	/// Ein Array der drei zu verwendenen Texturen.
-	/// </summary>
-	public Material[] mats;
-	/// <summary>
-	/// Die normale Textur die außerhalb des Platten-Events angezeigt wird.
-	/// Fertig zum Anwenden auf den Renderer.
-	/// </summary>
-	private Material[] normal;
-	/// <summary>
-	/// Die rote Textur die wärend des Platten-Events angezeigt wird für nicht-Bodenplatten.
-	/// Fertig zum Anwenden auf den Renderer.
-	/// </summary>
-	private Material[] red;
-	
-	
-	
 	void Start () {
 		//alle Bodenplatten abrufen
 		platten = gameObject.GetComponentsInChildren<Bodenplatte>();
 		
 		//Boss abrufen
 		spinne = GameObject.Find("Spider").GetComponent<Spider>();
-		
-		//Texturen laden
-		normal = new Material[]{mats[0]};
-		red = new Material[]{mats[1]};
 		
 		//Rampen und Boden abrufen um auch rot zu werden
 		boden = (AutoScale[])GameObject.FindObjectsOfType(typeof(AutoScale));
@@ -102,6 +79,7 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 				MessageDispatcher.I.Dispatch(platten[i], "red");
 		}
 		
+		Material[] red = Bodenplatte.red;
 		//den restlichen Boden
 		foreach(AutoScale o in boden){
 			//ebenfalls Rot machen
@@ -135,6 +113,7 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 			foreach(Bodenplatte p in platten)
 				MessageDispatcher.I.Dispatch(p, "normal");
 			//den restlichen Boden normalisieren
+			Material[] normal = Bodenplatte.normal;
 			foreach(AutoScale o in boden){
 				//Textur normalisieren
 				o.renderer.materials = normal;
