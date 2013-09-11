@@ -7,6 +7,7 @@ public class SMineYellow : State<Enemy<Mine>> {
 	
 	
 	public override void Enter(Enemy<Mine> owner){
+		//Sprite auswählen
 		owner.Sprite = 1; //gelb blinken
 	}
 	
@@ -17,22 +18,22 @@ public class SMineYellow : State<Enemy<Mine>> {
 		float distance = owner.DistanceToPlayer;
 		//rote Reichweite
 		if(distance <= Mine.f_redRange)
-			owner.AttackFSM.ChangeState(SMineRed.Instance);
+			//zu Roten Zustand
+			owner.AttackFSM.ChangeState(SMineRed.I);
 		//außerhalb gelber Reichweite
 		else if(distance > Mine.f_yellowRange)
-			owner.AttackFSM.ChangeState(SMineIdle.Instance);
+			//zu Idle Zustand
+			owner.AttackFSM.ChangeState(SMineIdle.I);
 	}
-	
-	
-	
-	public override void Exit(Enemy<Mine> owner){}
 	
 	
 	
 	public override bool OnMessage(Enemy<Mine> owner, Telegram msg){
 		switch(msg.message){
+			//Kollision mit Spieler, oder Schaden erlitten	
 			case "explode":
-				owner.AttackFSM.ChangeState(SMineRed.Instance);
+				//zu Roten Zustand
+				owner.AttackFSM.ChangeState(SMineRed.I);
 				return true;
 			default:
 				return false;
@@ -50,4 +51,5 @@ public class SMineYellow : State<Enemy<Mine>> {
 			if(instance==null) instance = new SMineYellow();
 			return instance;
 		}}
+	public static SMineYellow I{get{return Instance;}}
 }

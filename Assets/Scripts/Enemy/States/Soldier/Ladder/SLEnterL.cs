@@ -1,41 +1,25 @@
 using UnityEngine;
-using System.Collections;
 
-/// <summary>
-/// Betrete die Leiter von Rechts nach Links
-/// </summary>
-public class SLEnterL : State<Enemy<Soldier>> {
-	
-	
-	
-	public override void Enter(Enemy<Soldier> owner){
-		//anhalten
-		((Soldier)owner).StopMoving();
-	}
+// 
+// Betrete die Leiter von Rechts nach Links
+// 
+public class SLEnterL : SLState {
 	
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
-		//kann nach oben oder unten klettern -> mitte erreicht
-		if(   ((Soldier)owner).CanClimbUp || ((Soldier)owner).CanClimbDown   ){
-			owner.MoveFSM.ChangeState(SLClimb.Instance);
-			return;
-		}
+		//kann nach oben oder unten klettern -> beginne klettern
+		if(SLEnter.ClimbCheck(owner)) return;
 		
 		//kann nach links gehen oder klettern
-		if(   ((Soldier)owner).CanClimbLeft   ){
+		if( ((Soldier)owner).CanClimbLeft )
 			//Bewegung nach links
 			((Soldier)owner).MoveLeft();
-		}
-		//klettern nicht möglich - Hindernis? wieder zurück
-		else {
-			owner.MoveFSM.ChangeState(SLEnter.Instance);
-		}
+		//klettern nicht möglich - Hindernis?
+		else
+			//verlasse die Leiter wieder nach Rechts
+			owner.MoveFSM.ChangeState(SLLeaveR.I);
 	}
-	
-	
-	
-	public override void Exit(Enemy<Soldier> owner){}
 	
 	
 	
@@ -48,7 +32,5 @@ public class SLEnterL : State<Enemy<Soldier>> {
 			if(instance==null) instance = new SLEnterL();
 			return instance;
 		}}
-	
-	
-	
+	public static SLEnterL I{get{return Instance;}}
 }

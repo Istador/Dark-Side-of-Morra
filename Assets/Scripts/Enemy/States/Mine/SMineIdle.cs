@@ -1,13 +1,13 @@
-/**
- * Zustand in der die Mine sichtbar ist, aber nicht blinkt.
- * Der Zustand überprüft ob der Player in Reichweite gerät
- * 
-*/
+//
+// Zustand in der die Mine sichtbar ist, aber nicht blinkt.
+// Der Zustand überprüft ob der Player in Reichweite gerät
+// 
 public class SMineIdle : State<Enemy<Mine>> {
 	
 	
 	
 	public override void Enter(Enemy<Mine> owner){
+		//Sprite auswählen
 		owner.Sprite = 0; //nicht blinken
 	}
 	
@@ -18,22 +18,22 @@ public class SMineIdle : State<Enemy<Mine>> {
 		float distance = owner.DistanceToPlayer;
 		//rote Reichweite
 		if(distance <= Mine.f_redRange)
-			owner.AttackFSM.ChangeState(SMineRed.Instance);
+			//zu Roten Zustand
+			owner.AttackFSM.ChangeState(SMineRed.I);
 		//gelbe Reichweite
 		else if(distance <= Mine.f_yellowRange)
-			owner.AttackFSM.ChangeState(SMineYellow.Instance);
+			//zu Gelben Zustand
+			owner.AttackFSM.ChangeState(SMineYellow.I);
 	}
-	
-	
-	
-	public override void Exit(Enemy<Mine> owner){}
 	
 	
 	
 	public override bool OnMessage(Enemy<Mine> owner, Telegram msg){
 		switch(msg.message){
+			//Kollision mit Spieler, oder Schaden erlitten
 			case "explode":
-				owner.AttackFSM.ChangeState(SMineRed.Instance);
+				//zu Roten Zustand
+				owner.AttackFSM.ChangeState(SMineRed.I);
 				return true;
 			default:
 				return false;
@@ -51,4 +51,5 @@ public class SMineIdle : State<Enemy<Mine>> {
 			if(instance==null) instance = new SMineIdle();
 			return instance;
 		}}
+	public static SMineIdle I{get{return Instance;}}
 }

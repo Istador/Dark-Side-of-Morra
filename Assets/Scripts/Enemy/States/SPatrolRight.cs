@@ -1,29 +1,36 @@
 using UnityEngine;
 using System.Collections;
 
+/// 
+/// Zustand um nach Rechts zu gehen, und wenn nicht mehr nach Rechts gegangen
+/// werden kann gehe in den nach Links gehen Zustand.
+/// Dadurch wird abwechselnd nach Links / Rechts Patroliert
+/// 
 public class SPatrolRight<T> : State<Enemy<T>> {
 	
 	
 	
 	public override void Enter(Enemy<T> owner){
-		owner.Sprite = 1;
+		//Sprite auswählen
+		owner.Sprite = 1; //nach rechts gehen
 	}
 	
 	
 	
 	public override void Execute(Enemy<T> owner){
-		if(
-			((MLeftRight<T>)owner).CanMoveRight
-		){
+		//Wenn nach Rechts gegangen werden kann
+		if( ((MLeftRight<T>)owner).CanMoveRight )
+			//Gehe nach Rechts
 			((MovableEnemy<T>)owner).MoveRight();
-		} else {
-			owner.MoveFSM.ChangeState(SPatrolLeft<T>.Instance);
-		}	
+		else
+			//Wechsel in den nach Links gehen Zustand
+			owner.MoveFSM.ChangeState(SPatrolLeft<T>.I);
 	}
 	
 	
 	
 	public override void Exit(Enemy<T> owner){
+		//anhalten
 		((MovableEnemy<T>)owner).StopMoving();
 	}
 	
@@ -38,4 +45,5 @@ public class SPatrolRight<T> : State<Enemy<T>> {
 			if(instance==null) instance = new SPatrolRight<T>();
 			return instance;
 		}}
+	public static SPatrolRight<T> I{get{return Instance;}}
 }

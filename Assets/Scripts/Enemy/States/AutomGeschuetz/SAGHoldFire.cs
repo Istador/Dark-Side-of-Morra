@@ -1,6 +1,10 @@
 using UnityEngine;
-using System.Collections;
 
+/// 
+/// In diesem Zustand verweilt das Geschütz bis es in der Lage ist zu schießen.
+/// Das Nachladen ist bereits beendet, es wird nur darauf gewartet, dass der
+/// Spieler sichtbar und in Reichweite ist
+/// 
 public class SAGHoldFire : State<Enemy<AutomGeschuetz>> {
 	
 	
@@ -9,7 +13,7 @@ public class SAGHoldFire : State<Enemy<AutomGeschuetz>> {
 		//auf Spieler kann geschossen werden
 		if( ((AutomGeschuetz)owner).IsPlayerInFireRange ){
 			//zum Feuern Zustand wechseln
-			owner.AttackFSM.ChangeState(SAGFire.Instance);
+			owner.AttackFSM.ChangeState(SAGFire.I);
 		}
 	}
 	
@@ -24,7 +28,5 @@ public class SAGHoldFire : State<Enemy<AutomGeschuetz>> {
 			if(instance==null) instance = new SAGHoldFire();
 			return instance;
 		}}
-	
-	
-	
+	public static SAGHoldFire I{get{return Instance;}}
 }

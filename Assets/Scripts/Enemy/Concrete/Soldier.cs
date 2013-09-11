@@ -44,8 +44,8 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	public Soldier() : base(200) {
 		//Zustandsautomaten initialisieren
-		MoveFSM.GlobalState = SSoldierPatrol.Instance;
-		AttackFSM.CurrentState = SSoldierHoldFire.Instance;
+		MoveFSM.GlobalState = SSoldierPatrol.I;
+		AttackFSM.CurrentState = SSoldierHoldFire.I;
 	}
 	
 	
@@ -118,7 +118,7 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	/// <summary>
 	/// Stellt fest welcher Sprite dargestellt werden soll
 	/// </summary>
-	public int DetermineSprite(){
+	private int DetermineSprite(){
 		Vector3 h = Heading;
 		Vector3 m = Moving;
 		//auf Leiter

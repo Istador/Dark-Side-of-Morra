@@ -1,7 +1,17 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+// 
+// Zustand in dem die Spinne darauf wartet das die Animation des Kokons
+// vorbei ist.
+// 
 public class SSpiderAusschluepfen : State<Enemy<Spider>> {
+	
+	
+	
+	public override void Enter(Enemy<Spider> owner){
+		//Health Bar einblenden
+		((Spider)owner).healthbar.Show();
+	}
 	
 	
 	
@@ -10,17 +20,16 @@ public class SSpiderAusschluepfen : State<Enemy<Spider>> {
 		if(owner.IsRight(owner.Player))
 			owner.Sprite = 1;
 		else owner.Sprite = 0;
-		
-		//Health Bar einblenden
-		((Spider)owner).healthbar.Show();
 	}
 	
 	
 	
 	public override bool OnMessage(Enemy<Spider> owner, Telegram msg){
 		switch(msg.message){
+			//Nachricht dass die Kokon-Animation vorbei ist
 			case "kokon_offen":
-				owner.MoveFSM.ChangeState(SSpiderStehen.Instance);
+				//in den Kampfmodus gehen
+				owner.MoveFSM.ChangeState(SSpiderStehen.I);
 				return true;
 			default:
 				return false;
@@ -30,6 +39,7 @@ public class SSpiderAusschluepfen : State<Enemy<Spider>> {
 	
 	
 	public override void Exit(Enemy<Spider> owner){
+		//Spinne jetzt nicht mehr unbesiegbar.
 		((Spider)owner).Invincible = false;
 	}
 	
@@ -44,7 +54,5 @@ public class SSpiderAusschluepfen : State<Enemy<Spider>> {
 			if(instance==null) instance = new SSpiderAusschluepfen();
 			return instance;
 		}}
-	
-	
-	
+	public static SSpiderAusschluepfen I{get{return Instance;}}
 }

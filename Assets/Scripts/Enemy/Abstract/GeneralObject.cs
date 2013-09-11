@@ -237,7 +237,39 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 		/// Layer 12: Leitern.
 		/// Kollidieren nur mit Entities.
 		/// </summary>
-		Ladder = 1<<12
+		Ladder = 1<<12,
+		
+		/// <summary>
+		/// Für Explosionen
+		/// Kollidiert mit Entity und Projektile Layer
+		/// </summary>
+		Explosion = (int)Entity | (int)Projektile
+	}
+	
+	
+	
+	// IgnoreCollision
+	
+	/// <summary>
+	/// Makes the collision detection system ignore all collisions between this and coll.
+	/// </summary>
+	public void IgnoreCollision(Collider coll, bool ignore = true){
+		Physics.IgnoreCollision(collider, coll, ignore);
+		Physics.IgnoreCollision(coll, collider, ignore);
+	}
+	
+	/// <summary>
+	/// Makes the collision detection system ignore all collisions between this and coll.
+	/// </summary>
+	public void IgnoreCollision(GameObject coll, bool ignore = true){
+		IgnoreCollision(coll.collider, ignore);
+	}
+	
+	/// <summary>
+	/// Makes the collision detection system ignore all collisions between this and coll.
+	/// </summary>
+	public void IgnoreCollision(GeneralObject coll, bool ignore = true){
+		IgnoreCollision(coll.collider, ignore);
 	}
 	
 	

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+//
+// In diesem Zustand wartet die Spinne darauf, dass das Platten-Event 
+// beendet wird
+//
 public class SSpiderVerschwunden : State<Enemy<Spider>> {
 	
 	
@@ -14,8 +17,9 @@ public class SSpiderVerschwunden : State<Enemy<Spider>> {
 	
 	public override bool OnMessage(Enemy<Spider> owner, Telegram msg){
 		switch(msg.message){
+			//Nachricht, dass das Plattenevent beendet wurde.
 			case "auftauchen":
-				owner.MoveFSM.ChangeState(SSpiderAuftauchen.Instance);
+				owner.MoveFSM.ChangeState(SSpiderAuftauchen.I);
 				return true;
 			default:
 				return false;
@@ -40,7 +44,5 @@ public class SSpiderVerschwunden : State<Enemy<Spider>> {
 			if(instance==null) instance = new SSpiderVerschwunden();
 			return instance;
 		}}
-	
-	
-	
+	public static SSpiderVerschwunden I{get{return Instance;}}
 }

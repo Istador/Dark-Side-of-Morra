@@ -1,6 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
+//
+// Zustand in dem der RPG-Soldat eine Rakete abfeuert.
+//
 public class SRPGSFire : State<Enemy<RPGSoldier>> {
 	
 	
@@ -10,12 +12,13 @@ public class SRPGSFire : State<Enemy<RPGSoldier>> {
 		GameObject rocket = owner.Instantiate("pRocket", ((RPGSoldier)owner).bulletSpawn);
 		
 		//Kollisionen zwischen diesem Gegner und dieser Rakete ignorieren
-		Physics.IgnoreCollision(owner.collider, rocket.collider);
-		Physics.IgnoreCollision(rocket.collider, owner.collider);
+		owner.IgnoreCollision(rocket);
+		
+		//Setze den owner der Rakete
 		rocket.GetComponent<PRocket>().owner = owner.gameObject;
 		
 		//zum Nachlade Zustand wechseln
-		owner.AttackFSM.ChangeState(SRPGSReload.Instance);
+		owner.AttackFSM.ChangeState(SRPGSReload.I);
 	}
 	
 	
@@ -25,11 +28,9 @@ public class SRPGSFire : State<Enemy<RPGSoldier>> {
 	*/
 	private static SRPGSFire instance;
 	private SRPGSFire(){}
-	public static SRPGSFire Instance{get{
+	private static SRPGSFire Instance{get{
 			if(instance==null) instance = new SRPGSFire();
 			return instance;
 		}}
-	
-	
-	
+	public static SRPGSFire I{get{return Instance;}}
 }

@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
+/// 
+/// Zustand in dem der Soldat weiß das der Spieler da ist, und ihn
+/// aktiv verfolgt. Vergisst ihn nach einiger Zeit.
+/// 
 public class SSoldierEngaged : State<Enemy<Soldier>> {
 	
 	
@@ -9,7 +13,7 @@ public class SSoldierEngaged : State<Enemy<Soldier>> {
 		//wenn der Gegner sich nicht auf der Leiter befindet
 		if(! ((Soldier)owner).IsOnLadder)
 			//auf Verfolgungszustände wechseln
-			owner.MoveFSM.ChangeState(SSoldierStay.Instance);
+			owner.MoveFSM.ChangeState(SSoldierStay.I);
 		//merke die Position des Spielers
 		((Soldier)owner).RememberNow();
 	}
@@ -23,13 +27,9 @@ public class SSoldierEngaged : State<Enemy<Soldier>> {
 		//wenn er den Spieler zu lange nicht mehr gesehen hat
 		if( ! ((Soldier)owner).IsRememberingPlayer ){
 			//Patrolieren
-			owner.MoveFSM.ChangeGlobalState(SSoldierPatrol.Instance);
+			owner.MoveFSM.ChangeGlobalState(SSoldierPatrol.I);
 		}
 	}
-	
-	
-	
-	public override void Exit(Enemy<Soldier> owner){}
 	
 	
 	
@@ -53,7 +53,5 @@ public class SSoldierEngaged : State<Enemy<Soldier>> {
 			if(instance==null) instance = new SSoldierEngaged();
 			return instance;
 		}}
-	
-	
-	
+	public static SSoldierEngaged I{get{return Instance;}}
 }

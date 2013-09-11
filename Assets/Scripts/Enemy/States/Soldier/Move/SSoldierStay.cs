@@ -1,6 +1,9 @@
 using UnityEngine;
-using System.Collections;
 
+/// 
+/// In diesem Zustand ist der Spieler in optimaler Distanz zum Gegner, weshalb
+/// dieser stehen bleibt.
+/// 
 public class SSoldierStay : State<Enemy<Soldier>> {
 	
 	
@@ -16,25 +19,28 @@ public class SSoldierStay : State<Enemy<Soldier>> {
 		Vector3 pos = owner.PlayerPos;
 		
 		//Spieler nicht sichtbar
-		if(!owner.LineOfSight(owner.Player)){
-			owner.MoveFSM.ChangeState(SSoldierSeekPosition.Instance);
+		if( !owner.LineOfSight(owner.Player) ){
+			owner.MoveFSM.ChangeState(SSoldierSeekPosition.I);
 			return;
 		}
 		
 		//Höhe nicht in Ordnung
-		if(!((Soldier)owner).IsHeightOk(pos)){
-			owner.MoveFSM.ChangeState(SSoldierSeekPosition.Instance);
+		if( !owner.IsHeightOk(pos) ){
+			owner.MoveFSM.ChangeState(SSoldierSeekPosition.I);
 			return;
 		}
 		
 		//Distanz zum Spieler ermitteln
 		float distance = owner.DistanceTo(pos);
+		
 		//zu nah
-		if(distance < ((Soldier)owner).f_optimum_min)
-			owner.MoveFSM.ChangeState(SSoldierFlee.Instance); //zurückgehen
+		if( distance < ((Soldier)owner).f_optimum_min && ((Soldier)owner).CanMoveTo(pos, true) )
+			//zurückgehen
+			owner.MoveFSM.ChangeState(SSoldierFlee.I);
 		//zu weit weg
-		else if(distance > ((Soldier)owner).f_optimum_max)
-			owner.MoveFSM.ChangeState(SSoldierSeek.Instance); //annähern
+		else if( distance > ((Soldier)owner).f_optimum_max  && ((Soldier)owner).CanMoveTo(pos) )
+			//annähern
+			owner.MoveFSM.ChangeState(SSoldierSeek.I);
 	}
 	
 	
@@ -48,7 +54,5 @@ public class SSoldierStay : State<Enemy<Soldier>> {
 			if(instance==null) instance = new SSoldierStay();
 			return instance;
 		}}
-	
-	
-	
+	public static SSoldierStay I{get{return Instance;}}
 }

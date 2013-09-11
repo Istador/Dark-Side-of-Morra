@@ -1,6 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
+//
+// Zustand in dem der Soldat nachlädt.
+//
 public class SSoldierReload : State<Enemy<Soldier>> {
 	
 	
@@ -12,11 +14,12 @@ public class SSoldierReload : State<Enemy<Soldier>> {
 	
 	
 	
+	//die Nachricht verarbeiten
 	public override bool OnMessage(Enemy<Soldier> owner, Telegram msg){
 		switch(msg.message){
 			case "reloaded":
 				//zum Warte Zustand wechseln
-				owner.AttackFSM.ChangeState(SSoldierHoldFire.Instance);
+				owner.AttackFSM.ChangeState(SSoldierHoldFire.I);
 				return true;
 			default:
 				return false;
@@ -34,7 +37,5 @@ public class SSoldierReload : State<Enemy<Soldier>> {
 			if(instance==null) instance = new SSoldierReload();
 			return instance;
 		}}
-	
-	
-	
+	public static SSoldierReload I{get{return Instance;}}
 }

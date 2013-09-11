@@ -24,7 +24,7 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	/// Nachladezeit in Sekunden:
 	/// Die Zeit zwischen zwei Raketen die zum Nachladen veranschlagt wird.
 	/// </summary>
-	public static readonly double d_reloadTime = 3.0; // 3 sekunden nachladen
+	public static readonly float f_reloadTime = 3.0f; // 3 sekunden nachladen
 	
 	
 	
@@ -44,7 +44,7 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	
 	public AutomGeschuetz() : base(250) { //250 HP
 		//Angriffs Zustandsautomat initialisieren
-		AttackFSM.CurrentState = SAGHoldFire.Instance;
+		AttackFSM.CurrentState = SAGHoldFire.I;
 		
 		//Health-Globe Wahrscheinlichkeiten ändern
 		f_HealthGlobeProbability = 0.8f; //80% drop, 20% kein drop
@@ -57,13 +57,17 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	protected override void Update(){
 		base.Update();
 		
+		Vector2 tmp = gameObject.renderer.material.mainTextureScale;
+		
 		//Der Spieler ist Rechts vom Geschütz
-		if(IsRight(PlayerPos)){
+		if( IsRight(PlayerPos) )
 			//Textur vertikal spiegeln
-			Vector2 tmp = gameObject.renderer.material.mainTextureScale;
-			tmp = new Vector2(-tmp.x, tmp.y);
-			gameObject.renderer.material.mainTextureScale = tmp;
-		}
+			tmp = new Vector2( -Mathf.Abs(tmp.x), tmp.y);
+		else
+			//Textur nicht vertikal spiegeln
+			tmp = new Vector2( Mathf.Abs(tmp.x), tmp.y);
+		
+		gameObject.renderer.material.mainTextureScale = tmp;
 	}
 	
 	

@@ -231,7 +231,7 @@ public class SteeringBehaviors<T> {
 		if(Evading && Target != null) f+= Evade(Target);
 		
 		//truncat
-		if(f != Vector3.zero && f.magnitude > owner.MaxForce)
+		if(f != Vector3.zero && Mathf.Abs(f.magnitude) > owner.MaxForce)
 			f = f.normalized * owner.MaxForce;
 		
 		return f;

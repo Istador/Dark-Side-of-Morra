@@ -1,42 +1,48 @@
 using UnityEngine;
-using System.Collections;
 
+/// 
+/// In diesem Zustand ist der Spieler dem Gegner zu nahe, weshalb
+/// dieser Rückwärtsgehend vor ihm flieht.
+/// 
 public class SRPGSFlee : State<Enemy<RPGSoldier>> {
 	
 	
 	
-	public override void Enter(Enemy<RPGSoldier> owner){}
-	
-	
-	
 	public override void Execute(Enemy<RPGSoldier> owner){
-		if(!owner.LineOfSight(owner.Player)){
-			owner.MoveFSM.ChangeState(SRPGSSeekPosition.Instance);
+		Vector3 pos = owner.PlayerPos;
+		
+		//Spieler nicht sichtbar
+		if( !owner.LineOfSight(owner.Player) ){
+			//Strebe die zuletzt bekannte Position an
+			owner.MoveFSM.ChangeState(SRPGSSeekPosition.I);
 			return;
 		}
 		
 		//Distanz zum Spieler ermitteln
-		Vector3 pos = owner.PlayerPos;
-		float distance = owner.DistanceTo(pos);
+		float distance = owner.DistanceToPlayer;
 		
 		//optimale position erreicht
-		if(distance >= (RPGSoldier.f_optimum_min + RPGSoldier.f_optimum_max)/2.0f ){
-			owner.MoveFSM.ChangeState(SRPGSStay.Instance);
+		if( distance >= (RPGSoldier.f_optimum_min + RPGSoldier.f_optimum_max)/2.0f ){
+			//zum Stehen Zustand
+			owner.MoveFSM.ChangeState(SRPGSStay.I);
 			return;
 		}
 		
-		if(   ((RPGSoldier)owner).CanMoveTo(pos, true)   ){
+		//Kann sich in gewünschte Richtung bewegen
+		if( ((RPGSoldier)owner).CanMoveTo(pos, true) )
+			//Fliehe in die Richtung
 			((RPGSoldier)owner).Steering.DoFlee(pos);
-		} else {
-			((RPGSoldier)owner).Steering.Fleeing = false;
-		}
-		
+		//Kann sich nicht in die gewünschte Richtung bewegen
+		else
+			//stehen bleiben
+			((RPGSoldier)owner).StopMoving();
 	}
 	
 	
 	
 	public override void Exit(Enemy<RPGSoldier> owner){
-		((RPGSoldier)owner).Steering.Fleeing = false;
+		//anhalten
+		((RPGSoldier)owner).StopMoving();
 	}
 	
 	
@@ -50,7 +56,5 @@ public class SRPGSFlee : State<Enemy<RPGSoldier>> {
 			if(instance==null) instance = new SRPGSFlee();
 			return instance;
 		}}
-	
-	
-	
+	public static SRPGSFlee I{get{return Instance;}}
 }

@@ -1,14 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+/// 
+/// In diesem Zustand bewegt sich die Spinne auf den Spieler zu
+/// 
 public class SSpiderSeek : State<Enemy<Spider>> {
 	
-	
-		
-	public override void Enter(Enemy<Spider> owner){
-		//anhalten
-		((Spider)owner).StopMoving();
-	}
 	
 	
 	public override void Execute(Enemy<Spider> owner){
@@ -17,23 +13,15 @@ public class SSpiderSeek : State<Enemy<Spider>> {
 			owner.Sprite = 3;
 		else owner.Sprite = 2;
 		
-		//Distanz zum Spieler ermitteln
-		float distance = owner.DistanceToPlayer;
-		//nahkampfreichweite
-		if(distance <= Spider.f_seekRange){
-			owner.MoveFSM.ChangeState(SSpiderStehen.Instance); //anhalten
+		//Spieler in Nahkampfreichweite
+		if(owner.DistanceToPlayer <= Spider.f_seekRange){
+			//anhalten
+			owner.MoveFSM.ChangeState(SSpiderStehen.I); 
 			return;
 		}
 		
-		//immer noch zu weit weg -> annähern
+		//immer noch zu weit weg -> weiter annähern
 		((Spider)owner).Steering.DoSeek(owner.PlayerPos);
-	}
-	
-	
-	
-	public override void Exit(Enemy<Spider> owner){
-		//Seek aus
-		((Spider)owner).Steering.Seeking = false;
 	}
 	
 	
@@ -47,7 +35,5 @@ public class SSpiderSeek : State<Enemy<Spider>> {
 			if(instance==null) instance = new SSpiderSeek();
 			return instance;
 		}}
-	
-	
-	
+	public static SSpiderSeek I{get{return Instance;}}
 }

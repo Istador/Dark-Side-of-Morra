@@ -20,7 +20,7 @@ public abstract class MovableEnemy<T> : Enemy<T> {
 	public Vector3 Moving {
 		get{
 			//wenn kein Moving angegeben
-			if(_Moving == Vector3.zero && rigidbody.velocity.magnitude > 0.05f)
+			if(_Moving == Vector3.zero && Mathf.Abs(rigidbody.velocity.magnitude) > 0.5f)
 				//ermittel das aus der Geschwindigkeit
 				return Utility.ToHeading(rigidbody.velocity);
 			//sonst die Instanzvariable
@@ -56,11 +56,11 @@ public abstract class MovableEnemy<T> : Enemy<T> {
 	/// Hört auf sich zu bewegen
 	/// </summary>
 	public void StopMoving(){
-		Moving = Vector3.zero;
 		//anhalten
 		rigidbody.velocity = Vector3.zero;
 		rigidbody.angularVelocity = Vector3.zero;
 		Steering.Stop();
+		Moving = Vector3.zero;
 	}
 	
 	
@@ -134,7 +134,7 @@ public abstract class MovableEnemy<T> : Enemy<T> {
 			rigidbody.AddForce(f);
 				
 			//Bewegungsgeschwindigkeit limitieren
-			if(rigidbody.velocity.magnitude > MaxSpeed)
+			if(Mathf.Abs(rigidbody.velocity.magnitude) > MaxSpeed)
 				rigidbody.velocity = rigidbody.velocity.normalized * MaxSpeed;
 		}
 	}

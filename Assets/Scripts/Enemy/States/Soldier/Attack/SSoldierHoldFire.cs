@@ -1,16 +1,19 @@
 using UnityEngine;
-using System.Collections;
 
+/// 
+/// In diesem Zustand verweilt der Soldat bis er in der Lage ist zu schießen.
+/// Das Nachladen ist bereits beendet, es wird nur darauf gewartet, dass der
+/// Spieler sichtbar und in Reichweite ist
+/// 
 public class SSoldierHoldFire : State<Enemy<Soldier>> {
 	
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
-		//auf Spieler kann geschossen werden
-		if(((Soldier)owner).IsPlayerInFireRange && ! ((Soldier)owner).IsOnLadder){
+		//auf Spieler kann geschossen werden und Soldat befindet sich nicht auf einer Leiter
+		if(((Soldier)owner).IsPlayerInFireRange && ! ((Soldier)owner).IsOnLadder)
 			//zum Feuern Zustand wechseln
-			owner.AttackFSM.ChangeState(SSoldierFire.Instance);
-		}
+			owner.AttackFSM.ChangeState(SSoldierFire.I);
 	}
 	
 	
@@ -24,7 +27,5 @@ public class SSoldierHoldFire : State<Enemy<Soldier>> {
 			if(instance==null) instance = new SSoldierHoldFire();
 			return instance;
 		}}
-	
-	
-	
+	public static SSoldierHoldFire I{get{return Instance;}}
 }

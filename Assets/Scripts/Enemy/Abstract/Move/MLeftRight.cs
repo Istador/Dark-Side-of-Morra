@@ -21,10 +21,10 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 		//zufällig nach links oder rechts patroullieren
 		if(GeneralObject.rnd.Next(0,2) == 0)
 			//nach Links
-			MoveFSM.ChangeState(SPatrolLeft<T>.Instance);
+			MoveFSM.ChangeState(SPatrolLeft<T>.I);
 		else
 			//nach Rechts
-			MoveFSM.ChangeState(SPatrolRight<T>.Instance);
+			MoveFSM.ChangeState(SPatrolRight<T>.I);
 	}
 	
 	protected override void Start(){
@@ -101,7 +101,7 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 	/// Gedächtnis:
 	/// Die Zeit die der Gegner sich noch an den Spieler erinnert, wenn er ihn nicht mehr sieht.
 	/// </summary>
-	public static readonly double d_memoryTime = 7.0; // 7 sekunden
+	public static readonly double d_memoryTime = 8.0; // 8 sekunden
 	
 	/// <summary>
 	/// Der Zeitpunkt an dem der Gegner den Spieler zu letzt sah
@@ -171,10 +171,10 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 	/// </summary>
 	public override Vector3 Heading { get{
 			//Nach Links Patrolierend
-			if( MoveFSM.IsInState(SPatrolLeft<T>.Instance) )
+			if( MoveFSM.IsInState(SPatrolLeft<T>.I) )
 				return Vector3.left;
 			//nach Rechts Patrolierend
-			else if( MoveFSM.IsInState(SPatrolRight<T>.Instance) )
+			else if( MoveFSM.IsInState(SPatrolRight<T>.I) )
 				return Vector3.right;
 			//Ansonsten die gemerkte Position verwenden
 			else if( IsRight(LastPos) )

@@ -1,42 +1,27 @@
 using UnityEngine;
-using System.Collections;
 
-/// <summary>
-/// Verlasse die Leiter nach Links
-/// </summary>
-public class SLLeaveL : State<Enemy<Soldier>> {
-	
-	
-	
-	public override void Enter(Enemy<Soldier> owner){
-		//anhalten
-		((Soldier)owner).StopMoving();
-	}
+// 
+// Verlasse die Leiter nach Links
+// 
+public class SLLeaveL : SLState {
 	
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
 		//kann gehen statt klettern
-		if( ((Soldier)owner).CanMoveLeft ){
-			owner.MoveFSM.ChangeState(SLLeave.Instance);
-		}
+		if( ((Soldier)owner).CanMoveLeft )
+			//Verlasse die Leiter
+			owner.MoveFSM.ChangeState(SLLeave.I);
 		
-		//kann nur klettern
-		else if(
-			((Soldier)owner).CanClimbLeft
-		){
+		//kann klettern
+		else if( ((Soldier)owner).CanClimbLeft )
+			//Bewegung nach Links
 			((Soldier)owner).MoveLeft();
-		}
-		
-		//nicht klettern - Hindernis? wieder auf die Leiter zurück
-		else {
-			owner.MoveFSM.ChangeState(SLEnter.Instance);
-		}
+		//kein klettern oder gehen möglich - Hindernis?
+		else
+			//wieder auf die Leiter zurück
+			owner.MoveFSM.ChangeState(SLEnter.I);
 	}
-	
-	
-	
-	public override void Exit(Enemy<Soldier> owner){}
 	
 	
 	
@@ -49,7 +34,5 @@ public class SLLeaveL : State<Enemy<Soldier>> {
 			if(instance==null) instance = new SLLeaveL();
 			return instance;
 		}}
-	
-	
-	
+	public static SLLeaveL I{get{return Instance;}}
 }

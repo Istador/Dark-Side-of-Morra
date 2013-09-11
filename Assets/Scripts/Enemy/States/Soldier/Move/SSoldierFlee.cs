@@ -1,6 +1,9 @@
 using UnityEngine;
-using System.Collections;
 
+/// 
+/// In diesem Zustand ist der Spieler dem Gegner zu nahe, weshalb
+/// dieser Rückwärtsgehend vor ihm flieht.
+/// 
 public class SSoldierFlee : State<Enemy<Soldier>> {
 	
 	
@@ -9,37 +12,43 @@ public class SSoldierFlee : State<Enemy<Soldier>> {
 		Vector3 pos = owner.PlayerPos;
 		
 		//Spieler nicht sichtbar
-		if(!owner.LineOfSight(owner.Player)){
-			owner.MoveFSM.ChangeState(SSoldierSeekPosition.Instance);
+		if( !owner.LineOfSight(owner.Player) ){
+			//Strebe die zuletzt bekannte Position an
+			owner.MoveFSM.ChangeState(SSoldierSeekPosition.I);
 			return;
 		}
 		
 		//Höhe nicht in Ordnung
-		if(!((Soldier)owner).IsHeightOk(pos)){
-			owner.MoveFSM.ChangeState(SSoldierSeekPosition.Instance);
+		if( ! owner.IsHeightOk(pos) ){
+			//Strebe die zuletzt bekannte Position an
+			owner.MoveFSM.ChangeState(SSoldierSeekPosition.I);
 			return;
 		}
 		
 		//Distanz zum Spieler ermitteln
-		float distance = owner.DistanceTo(pos);
+		float distance = owner.DistanceToPlayer;
 		
 		//optimale position erreicht
-		if(distance >= (((Soldier)owner).f_optimum_min + ((Soldier)owner).f_optimum_max)/2.0f ){
-			owner.MoveFSM.ChangeState(SSoldierStay.Instance);
+		if( distance >= (((Soldier)owner).f_optimum_min + ((Soldier)owner).f_optimum_max)/2.0f ){
+			//zum Stehen Zustand
+			owner.MoveFSM.ChangeState(SSoldierStay.I);
 			return;
 		}
 		
-		if( ((Soldier)owner).CanMoveTo(pos, true)   ){
+		//Kann sich in gewünschte Richtung bewegen
+		if( ((Soldier)owner).CanMoveTo(pos, true)   )
+			//Fliehe in die Richtung
 			((Soldier)owner).Steering.DoFlee(pos);
-		} else {
+		//Kann sich nicht in die gewünschte Richtung bewegen
+		else
+			//stehen bleiben
 			((Soldier)owner).StopMoving();
-		}
-		
 	}
 	
 	
 	
 	public override void Exit(Enemy<Soldier> owner){
+		//anhalten
 		((Soldier)owner).StopMoving();
 	}
 	
@@ -54,7 +63,5 @@ public class SSoldierFlee : State<Enemy<Soldier>> {
 			if(instance==null) instance = new SSoldierFlee();
 			return instance;
 		}}
-	
-	
-	
+	public static SSoldierFlee I{get{return Instance;}}
 }

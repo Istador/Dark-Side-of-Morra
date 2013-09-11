@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
+/// 
+/// Patroliere so lange Links/Rechts, bis der Soldat den Spieler sieht
+/// oder angegriffen wird.
+/// 
 public class SSoldierPatrol : State<Enemy<Soldier>> {
 	
 	
@@ -10,9 +14,11 @@ public class SSoldierPatrol : State<Enemy<Soldier>> {
 		if(! ((Soldier)owner).IsOnLadder){
 			//zufällig nach links/rechts patrouillieren
 			if(GeneralObject.rnd.Next(0,2) == 0)
-				owner.MoveFSM.ChangeState(SPatrolLeft<Soldier>.Instance);
+				//nach Links
+				owner.MoveFSM.ChangeState(SPatrolLeft<Soldier>.I);
 			else
-				owner.MoveFSM.ChangeState(SPatrolRight<Soldier>.Instance);
+				//nach Rechts
+				owner.MoveFSM.ChangeState(SPatrolRight<Soldier>.I);
 		}
 	}
 	
@@ -22,13 +28,9 @@ public class SSoldierPatrol : State<Enemy<Soldier>> {
 		//wenn der Spieler gesehen wird
 		if( ((Soldier)owner).IsPlayerVisible ){
 			//angreifen
-			owner.MoveFSM.ChangeGlobalState(SSoldierEngaged.Instance);
+			owner.MoveFSM.ChangeGlobalState(SSoldierEngaged.I);
 		}
 	}
-	
-	
-	
-	public override void Exit(Enemy<Soldier> owner){}
 	
 	
 	
@@ -36,8 +38,8 @@ public class SSoldierPatrol : State<Enemy<Soldier>> {
 		switch(msg.message){
 			//wenn der Gegner angegriffen wird
 			case "damage":
-				//angreifen
-				owner.MoveFSM.ChangeGlobalState(SSoldierEngaged.Instance);
+				//Spieler angreifen
+				owner.MoveFSM.ChangeGlobalState(SSoldierEngaged.I);
 				return true;
 			default:
 				return false;
@@ -55,7 +57,5 @@ public class SSoldierPatrol : State<Enemy<Soldier>> {
 			if(instance==null) instance = new SSoldierPatrol();
 			return instance;
 		}}
-	
-	
-	
+	public static SSoldierPatrol I{get{return Instance;}}
 }

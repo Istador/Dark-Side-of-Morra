@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+/// 
+/// In diesem Zustand verschwindet die Spinne nach oben um das Plattenevent zu starten
+/// 
 public class SSpiderVerschwinden : State<Enemy<Spider>> {
 	
 	
@@ -15,7 +17,7 @@ public class SSpiderVerschwinden : State<Enemy<Spider>> {
 		//Platten-Event starten
 		MessageDispatcher.I.Dispatch(owner, ((Spider)owner).platten, "begin", 0.5f);
 		
-		//selbst nach zwei sekunde verschwinden
+		//selbst nach zwei sekunden unsichtbar werden
 		MessageDispatcher.I.Dispatch(owner, "hide", 2.0f);
 	}
 	
@@ -35,8 +37,9 @@ public class SSpiderVerschwinden : State<Enemy<Spider>> {
 	
 	public override bool OnMessage(Enemy<Spider> owner, Telegram msg){
 		switch(msg.message){
+			//unsichtbar werden
 			case "hide":
-				owner.MoveFSM.ChangeState(SSpiderVerschwunden.Instance);
+				owner.MoveFSM.ChangeState(SSpiderVerschwunden.I);
 				return true;
 			default:
 				return false;
@@ -54,7 +57,5 @@ public class SSpiderVerschwinden : State<Enemy<Spider>> {
 			if(instance==null) instance = new SSpiderVerschwinden();
 			return instance;
 		}}
-	
-	
-	
+	public static SSpiderVerschwinden I{get{return Instance;}}
 }

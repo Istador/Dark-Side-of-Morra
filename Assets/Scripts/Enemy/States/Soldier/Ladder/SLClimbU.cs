@@ -1,50 +1,24 @@
 using UnityEngine;
-using System.Collections;
 
-/// <summary>
-/// Zustand um nach oben zu klettern
-/// </summary>
-public class SLClimbU : State<Enemy<Soldier>> {
-	
-	
-	
-	public override void Enter(Enemy<Soldier> owner){
-		//anhalten
-		((Soldier)owner).StopMoving();
-	}
+// 
+// Zustand um nach oben zu klettern
+// 
+public class SLClimbU : SLState {
 	
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
 		//auf Höhe des Spielers && Spieler ist unter einem
-		if( ((Soldier)owner).IsHeightOk( ((Soldier)owner).LastPos )  
-			&& ! ((Soldier)owner).IsOver( ((Soldier)owner).LastPos )
+		if( owner.IsHeightOk( ((Soldier)owner).LastPos )  
+			&& owner.IsUnder( ((Soldier)owner).LastPos )
 		){
-			owner.MoveFSM.ChangeState(SLLeaveU.Instance);
+			owner.MoveFSM.ChangeState(SLLeaveU.I);
 			return;	
 		}
 		
-		//kann nicht weiter nach oben
-		if( ! ((Soldier)owner).CanClimbUp ){
-			//kann auch nicht weiter nach unten
-			if( ! ((Soldier)owner).CanClimbDown ){
-				//Betrete die Leiter neu
-				owner.MoveFSM.ChangeState(SLEnter.Instance);
-				return;
-			}
-			
-			//verlasse die Leiter nach unten
-			owner.MoveFSM.ChangeState(SLLeaveD.Instance);
-			return;
-		}
-		
-		//weiter nach oben
-		((Soldier)owner).Steering.DoSeek(owner.Pos + Vector3.up * ((Soldier)owner).MaxSpeed);		
+		//weiter nach oben sofern es geht
+		SLClimb.ClimbUpCheck(owner);
 	}
-	
-	
-	
-	public override void Exit(Enemy<Soldier> owner){}
 	
 	
 	
@@ -57,7 +31,5 @@ public class SLClimbU : State<Enemy<Soldier>> {
 			if(instance==null) instance = new SLClimbU();
 			return instance;
 		}}
-	
-	
-	
+	public static SLClimbU I{get{return Instance;}}
 }

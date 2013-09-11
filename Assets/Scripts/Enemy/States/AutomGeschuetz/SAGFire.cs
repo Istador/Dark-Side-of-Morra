@@ -1,7 +1,8 @@
 using UnityEngine;
-/**
- * Zustand in der das Automatische Geschütz eine Rakete abfeuert.
-*/
+
+//
+// Zustand in dem das Automatische Geschütz eine Rakete abfeuert.
+//
 public class SAGFire : State<Enemy<AutomGeschuetz>> {
 	
 	
@@ -11,12 +12,13 @@ public class SAGFire : State<Enemy<AutomGeschuetz>> {
 		GameObject rocket = owner.Instantiate("pRocket", ((AutomGeschuetz)owner).bulletSpawn);
 		
 		//Kollisionen zwischen diesem Gegner und dieser Rakete ignorieren
-		Physics.IgnoreCollision(owner.collider, rocket.collider);
-		Physics.IgnoreCollision(rocket.collider, owner.collider);
+		owner.IgnoreCollision(rocket);
+		
+		//Setze den owner der Rakete
 		rocket.GetComponent<PRocket>().owner = owner.gameObject;
 		
-		//zum Nachlade Zustand wechseln
-		owner.AttackFSM.ChangeState(SAGReload.Instance);
+		//zum Nachlade-Zustand wechseln
+		owner.AttackFSM.ChangeState(SAGReload.I);
 	}
 	
 	
@@ -30,4 +32,5 @@ public class SAGFire : State<Enemy<AutomGeschuetz>> {
 			if(instance==null) instance = new SAGFire();
 			return instance;
 		}}
+	public static SAGFire I{get{return Instance;}}
 }

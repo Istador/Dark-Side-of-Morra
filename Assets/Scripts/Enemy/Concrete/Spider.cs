@@ -91,7 +91,7 @@ public class Spider : MovableEnemy<Spider> {
 	
 	public Spider() : base(2500){
 		//Zustandsautomaten initialisieren
-		MoveFSM.CurrentState = SSpiderKokon.Instance;
+		MoveFSM.CurrentState = SSpiderKokon.I;
 		
 		//Health-Globe Wahrscheinlichkeiten ändern
 		f_HealthGlobeProbability = 1.0f; //100% drop, 0% kein drop

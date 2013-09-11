@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+// 
+// In diesem Zustand steht die Spinne (blöd) rum.
+// Er dient vorwiegend dazu im Kampf zu entscheiden in welchen Zustand
+// die Spinne als nächstes geht
+// 
 public class SSpiderStehen : State<Enemy<Spider>> {
 	
 	
@@ -8,7 +12,8 @@ public class SSpiderStehen : State<Enemy<Spider>> {
 	public override void Enter(Enemy<Spider> owner){
 		//anhalten
 		((Spider)owner).StopMoving();
-		owner.constantForce.enabled = false; //Gravitation ausschalten
+		//Gravitation ausschalten (falls sie auf der Rampe steht)
+		owner.constantForce.enabled = false;
 	}
 	
 	
@@ -22,30 +27,29 @@ public class SSpiderStehen : State<Enemy<Spider>> {
 		//HP in Prozent
 		float hp = owner.HealthFactor;
 		
-		//Zeit zum verschwinden?
+		//Ist jetzt Zeit zum verschwinden und das Plattenevent zu starten?
 		if(
-			((Spider)owner).stage == 0 && hp <= 0.75f
-			|| ((Spider)owner).stage == 1 && hp <= 0.50f
-			|| ((Spider)owner).stage == 2 && hp <= 0.25f
+			((Spider)owner).stage == 0 && hp <= 0.75f		//fällt unter 75% HP
+			|| ((Spider)owner).stage == 1 && hp <= 0.50f	//fällt unter 50% HP
+			|| ((Spider)owner).stage == 2 && hp <= 0.25f	//fällt unter 25% HP
 		){
-			//increment
+			//increment Zähler
 			((Spider)owner).stage++;
 			
 			//Verschwinden
-			owner.MoveFSM.ChangeState(SSpiderVerschwinden.Instance);
+			owner.MoveFSM.ChangeState(SSpiderVerschwinden.I);
 			
 			return;
 		}
 		
-		//Distanz zum Spieler ermitteln
-		float distance = owner.DistanceToPlayer;
-		//nahkampfreichweite
-		
-		if(distance <= Spider.f_outOfRange)
-			owner.MoveFSM.ChangeState(SSpiderAngreifen.Instance); //angreifen
+		//Spieler ist in Nahkampfreichweite
+		if(owner.DistanceToPlayer <= Spider.f_outOfRange)
+			//Angreifen
+			owner.MoveFSM.ChangeState(SSpiderAngreifen.I);
 		//zu weit weg
 		else
-			owner.MoveFSM.ChangeState(SSpiderSeek.Instance); //annähern
+			//Zum Spieler bewegen
+			owner.MoveFSM.ChangeState(SSpiderSeek.I);
 	}
 	
 	
@@ -66,7 +70,5 @@ public class SSpiderStehen : State<Enemy<Spider>> {
 			if(instance==null) instance = new SSpiderStehen();
 			return instance;
 		}}
-	
-	
-	
+	public static SSpiderStehen I{get{return Instance;}}
 }

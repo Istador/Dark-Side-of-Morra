@@ -1,12 +1,18 @@
 using UnityEngine;
-using System.Collections;
 
+/// 
+/// Zustand in dem der RPG-Soldat weiß das der Spieler da ist, und ihn
+/// aktiv verfolgt. Vergisst ihn nach einiger Zeit.
+/// 
 public class SRPGSEngaged : State<Enemy<RPGSoldier>> {
 	
 	
 	
 	public override void Enter(Enemy<RPGSoldier> owner){
-		owner.MoveFSM.ChangeState(SRPGSStay.Instance);
+		//Bewegungs Zustandsautomat von Patrolieren zum Verfolgen des Spielers
+		owner.MoveFSM.ChangeState(SRPGSStay.I);
+		
+		//Merke die Position des Spielers
 		((RPGSoldier)owner).RememberNow();
 	}
 	
@@ -19,13 +25,9 @@ public class SRPGSEngaged : State<Enemy<RPGSoldier>> {
 		//wenn er den Spieler zu lange nicht mehr gesehen hat
 		if( ! ((RPGSoldier)owner).IsRememberingPlayer ){
 			//Patrolieren
-			owner.MoveFSM.ChangeGlobalState(SRPGSPatrol.Instance);
+			owner.MoveFSM.ChangeGlobalState(SRPGSPatrol.I);
 		}
 	}
-	
-	
-	
-	public override void Exit(Enemy<RPGSoldier> owner){}
 	
 	
 	
@@ -49,7 +51,5 @@ public class SRPGSEngaged : State<Enemy<RPGSoldier>> {
 			if(instance==null) instance = new SRPGSEngaged();
 			return instance;
 		}}
-	
-	
-	
+	public static SRPGSEngaged I{get{return Instance;}}
 }

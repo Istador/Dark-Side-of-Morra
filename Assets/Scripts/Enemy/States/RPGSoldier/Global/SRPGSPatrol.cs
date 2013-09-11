@@ -1,16 +1,21 @@
 using UnityEngine;
-using System.Collections;
 
+/// 
+/// Patroliere so lange Links/Rechts, bis der RPG-Soldat den Spieler sieht
+/// oder angegriffen wird.
+/// 
 public class SRPGSPatrol : State<Enemy<RPGSoldier>> {
 	
 	
 	
 	public override void Enter(Enemy<RPGSoldier> owner){
-		//zufällig nach links/rechts patrouillieren
+		//zufällig nach links/rechts patrollieren
 		if(GeneralObject.rnd.Next(0,2) == 0)
-			owner.MoveFSM.ChangeState(SPatrolLeft<RPGSoldier>.Instance);
+			//nach Links
+			owner.MoveFSM.ChangeState(SPatrolLeft<RPGSoldier>.I);
 		else
-			owner.MoveFSM.ChangeState(SPatrolRight<RPGSoldier>.Instance);
+			//nach Rechts
+			owner.MoveFSM.ChangeState(SPatrolRight<RPGSoldier>.I);
 	}
 	
 	
@@ -19,13 +24,9 @@ public class SRPGSPatrol : State<Enemy<RPGSoldier>> {
 		//wenn der Spieler gesehen wird
 		if( ((RPGSoldier)owner).IsPlayerVisible ){
 			//angreifen
-			owner.MoveFSM.ChangeGlobalState(SRPGSEngaged.Instance);
+			owner.MoveFSM.ChangeGlobalState(SRPGSEngaged.I);
 		}
 	}
-	
-	
-	
-	public override void Exit(Enemy<RPGSoldier> owner){}
 	
 	
 	
@@ -33,8 +34,8 @@ public class SRPGSPatrol : State<Enemy<RPGSoldier>> {
 		switch(msg.message){
 			//wenn der Gegner angegriffen wird
 			case "damage":
-				//angreifen
-				owner.MoveFSM.ChangeGlobalState(SRPGSEngaged.Instance);
+				//Spieler angreifen
+				owner.MoveFSM.ChangeGlobalState(SRPGSEngaged.I);
 				return true;
 			default:
 				return false;
@@ -52,7 +53,5 @@ public class SRPGSPatrol : State<Enemy<RPGSoldier>> {
 			if(instance==null) instance = new SRPGSPatrol();
 			return instance;
 		}}
-	
-	
-	
+	public static SRPGSPatrol I{get{return Instance;}}
 }

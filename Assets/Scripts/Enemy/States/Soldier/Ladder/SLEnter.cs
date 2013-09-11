@@ -1,23 +1,21 @@
 using UnityEngine;
-using System.Collections;
 
-/// <summary>
-/// Eingangszustand für das Betreten der Leiter.
-/// Schwerkraft ausschalten, und herausfinden ob nach links oder 
-/// rechts gegangen werden muss zur Leitermitte.
-/// </summary>
-public class SLEnter : State<Enemy<Soldier>> {
+// 
+// Eingangszustand für das Betreten der Leiter.
+// Schwerkraft ausschalten, und herausfinden ob nach links oder 
+// rechts gegangen werden muss zur Leitermitte.
+// 
+public class SLEnter : SLState {
 	
 	
 	
 	public override void Enter(Enemy<Soldier> owner){
+		base.Enter(owner);
 		
+		//Schalter umlegen, dass sich nun auf der Leiter befunden wird
 		((Soldier)owner).IsOnLadder = true;
 		
-		//anhalten
-		((Soldier)owner).StopMoving();
-		
-		//Schwerkraft aus (für einheitliche hoch und runter geschwindigkeit)
+		//Schwerkraft aus (für eine einheitliche hoch/runter Geschwindigkeit)
 		owner.rigidbody.useGravity = false;	
 		
 		//Herausfinden ob die Leiter links oder rechts ist.
@@ -25,31 +23,38 @@ public class SLEnter : State<Enemy<Soldier>> {
 		Vector3 heading = ((Soldier)owner).DirectionToLadder;
 		
 		//von rechts kommend nach links
-		if(heading == Vector3.left){
-			owner.MoveFSM.ChangeState(SLEnterL.Instance);
-		}
+		if(heading == Vector3.left)
+			//nach Links
+			owner.MoveFSM.ChangeState(SLEnterL.I);
 		//von links kommend nach rechts
-		else if(heading == Vector3.right){
-			owner.MoveFSM.ChangeState(SLEnterR.Instance);
-		}
+		else if(heading == Vector3.right)
+			//nach Rechts
+			owner.MoveFSM.ChangeState(SLEnterR.I);
 		//ist bereits in Leitermitte
-		else if(heading == Vector3.zero){
-			owner.MoveFSM.ChangeState(SLClimb.Instance);
-		}
+		else if(heading == Vector3.zero)
+			//starte das Klettern
+			owner.MoveFSM.ChangeState(SLClimb.I);
 		//Fehler- Verlasse die Leiter wieder
 		else {
-			//Debug.Log("keine Richtung");
-			owner.MoveFSM.ChangeState(SLLeaveD.Instance);
+			Debug.LogError("SLEnter : Ungekannte Richtung zur Leitermitte");
+			owner.MoveFSM.ChangeState(SLLeave.I);
 		}
 	}
 	
 	
 	
-	public override void Execute(Enemy<Soldier> owner){}
-	
-	
-	
-	public override void Exit(Enemy<Soldier> owner){}
+	/// <summary>
+	/// Wenn die Mitte erreicht wurde, beginne zu Klettern
+	/// </summary>
+	public static bool ClimbCheck(Enemy<Soldier> owner){
+		//kann nach oben oder unten klettern -> mitte erreicht
+		if( ((Soldier)owner).CanClimbUp || ((Soldier)owner).CanClimbDown ){
+			//Beginne das Klettern
+			owner.MoveFSM.ChangeState(SLClimb.I);
+			return true;
+		}
+		return false;
+	}
 	
 	
 	
@@ -62,7 +67,5 @@ public class SLEnter : State<Enemy<Soldier>> {
 			if(instance==null) instance = new SLEnter();
 			return instance;
 		}}
-	
-	
-	
+	public static SLEnter I{get{return Instance;}}
 }

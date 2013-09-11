@@ -37,6 +37,12 @@ public class Mine : ImmovableEnemy<Mine> {
 	/// </summary>
 	public static readonly float f_explosionDamage = 75.0f;
 	
+	/// <summary>
+	/// Zeit in Sekunden welche die Mine im rotem Zustand verweilt,
+	/// bevor sie explodiert.
+	/// </summary>
+	public static readonly float f_tickDuration = 1.5f;
+	
 	
 	
 	/// <summary>
@@ -49,8 +55,8 @@ public class Mine : ImmovableEnemy<Mine> {
 	
 	public Mine() : base(1) { //1 HP
 		//Zustandsautomaten initialisieren
-		AttackFSM.GlobalState = SMineInvisible.Instance;
-		AttackFSM.CurrentState = SMineIdle.Instance;
+		AttackFSM.GlobalState = SMineInvisible.I;
+		AttackFSM.CurrentState = SMineIdle.I;
 	}
 	
 	
