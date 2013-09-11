@@ -18,7 +18,7 @@ public class SLClimb : State<Enemy<Soldier>> {
 	
 	public override void Execute(Enemy<Soldier> owner){
 		//Spieler ist über dem Gegner
-		if(   ((Soldier)owner).IsOver( ((Soldier)owner).LastKnownPosition() )   ){
+		if(   ((Soldier)owner).IsOver( ((Soldier)owner).LastPos )   ){
 			owner.MoveFSM.ChangeState(SLClimbU.Instance);
 		}
 		//Spieler ist unter dem Gegner

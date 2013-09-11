@@ -17,7 +17,7 @@ public class SRPGSEngaged : State<Enemy<RPGSoldier>> {
 		((RPGSoldier)owner).DeterminePlayerPosition();
 		
 		//wenn er den Spieler zu lange nicht mehr gesehen hat
-		if( ! ((RPGSoldier)owner).IsRememberingPlayer() ){
+		if( ! ((RPGSoldier)owner).IsRememberingPlayer ){
 			//Patrolieren
 			owner.MoveFSM.ChangeGlobalState(SRPGSPatrol.Instance);
 		}

@@ -13,14 +13,14 @@ public class SLLeave : State<Enemy<Soldier>> {
 		//Jagd auf den Gegner
 		if( owner.MoveFSM.GlobalState == SSoldierEngaged.Instance ){
 			//Spieler auf neuer Platform sichtbar?
-			if( ((Soldier)owner).IsPlayerVisible() ){
+			if( ((Soldier)owner).IsPlayerVisible ){
 				owner.MoveFSM.ChangeState(SSoldierStay.Instance);
 				return;
 			}
 			//nicht sichtbar
 			else {
 				//Letzt Bekannte Position sichtbar -> Patroullieren
-				if(owner.LineOfSight( ((Soldier)owner).LastKnownPosition() )){
+				if(owner.LineOfSight( ((Soldier)owner).LastPos )){
 					owner.MoveFSM.ChangeGlobalState(SSoldierPatrol.Instance);
 				}
 				//nicht sichtbar, position hat sich auf der Leiter verändert

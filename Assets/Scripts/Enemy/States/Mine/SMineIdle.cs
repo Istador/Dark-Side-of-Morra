@@ -15,7 +15,7 @@ public class SMineIdle : State<Enemy<Mine>> {
 	
 	public override void Execute(Enemy<Mine> owner){
 		//Distanz zum Spieler ermitteln
-		float distance = owner.DistanceToPlayer();
+		float distance = owner.DistanceToPlayer;
 		//rote Reichweite
 		if(distance <= Mine.f_redRange)
 			owner.AttackFSM.ChangeState(SMineRed.Instance);

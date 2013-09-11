@@ -408,6 +408,30 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 		return ! IsOver(obj);
 	}
 	
+	
+	
+	/// <summary>
+	/// Die Position ist direkt über oder unter dem Gegner
+	/// </summary>
+	public bool DirectlyAboveOrUnder(Vector3 pos){
+		return Mathf.Abs(Pos.x - pos.x) < (Width / 2.0f);
+	}
+	
+	/// <summary>
+	/// Die Postion ist direkt links oder rechts vom Gegner
+	/// </summary>
+	public bool DirectlyLeftOrRight(Vector3 pos){
+		return Mathf.Abs(Pos.y - pos.y) < (Height / 2.0f);
+	}
+	
+	/// <summary>
+	/// Ob die Höhe der Position innerhalb der des Gegners ist (ob grob auf selber Ebene)
+	/// </summary>
+	public bool IsHeightOk(Vector3 pos){
+		return DirectlyLeftOrRight(pos);
+	}
+	
+	
 	// Entfernung
 	
 	/// <summary>

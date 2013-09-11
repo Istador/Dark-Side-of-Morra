@@ -9,23 +9,7 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 	
 	
 	
-	/// <summary>
-	/// Richtung in die der Gegner guckt.
-	/// Lokales Koordinatensystem.
-	/// </summary>
-	public override Vector3 Heading { get{
-			//Nach Links Patrolierend
-			if(MoveFSM.IsInState(SPatrolLeft<T>.Instance))
-				return Vector3.left;
-			//nach Rechts Patrolierend
-			else if(MoveFSM.IsInState(SPatrolRight<T>.Instance))
-				return Vector3.right;
-			//sonst
-			return  Vector3.zero;
-		}
-	}
-	
-	
+	// Konstruktor
 	
 	/// <summary>
 	/// Initializes a new instance of the <see cref="MLeftRight`1"/> class.
@@ -35,7 +19,7 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 	/// </param>
 	public MLeftRight(int maxHealth) : base(maxHealth){
 		//zufällig nach links oder rechts patroullieren
-		if(Enemy<T>.rnd.Next(0,2) == 0)
+		if(GeneralObject.rnd.Next(0,2) == 0)
 			//nach Links
 			MoveFSM.ChangeState(SPatrolLeft<T>.Instance);
 		else
@@ -43,7 +27,16 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 			MoveFSM.ChangeState(SPatrolRight<T>.Instance);
 	}
 	
+	protected override void Start(){
+		base.Start();
+		
+		//Letzt bekannte Spielerposition und Zeit merken
+		LastPos = PlayerPos;
+		IsRememberingPlayer = false;
+	}
 	
+	
+	// FilterForce
 	
 	/// <summary>
 	/// Beschränkt die Bewegung auf Links/Rechts durch Drehung des Vectors
@@ -68,6 +61,135 @@ public abstract class MLeftRight<T> : MovableEnemy<T> {
 		return Vector3.zero;
 	}
 	
+	
+	
+	/// <summary>
+	/// Ob der Spieler vor dem Gegner ist (in seiner Blickrichtung).
+	/// </summary>
+	public bool IsPlayerInfront{ get{
+			return Vector3.Dot((PlayerPos - Pos), Heading) > 0.0f;
+		}
+	}
+	
+	
+	
+	/// <summary>
+	/// Sichtweite des Gegners. Bis zu dieser Distanz kann der Gegner 
+	/// den Spieler erkennen.
+	/// </summary>
+	public static readonly float f_visibleRange = 10.0f;
+	
+	/// <summary>
+	/// Ob der Spieler in Sichtweite und in Blickrichtung ist, sowie keine 
+	/// geometrie zwischen Spieler und Gegner liegen.
+	/// </summary>
+	public virtual bool IsPlayerVisible{ get{
+			return ( 
+				   //nicht zu weit weg
+				   DistanceToPlayer < f_visibleRange 
+				   //LoS besteht
+				&& LineOfSight(Player)
+				   //in Blickrichtung oder gerade noch gesehen
+				&& (IsPlayerInfront || IsRememberingPlayer)
+			);
+		}
+	}
+	
+	
+	
+	/// <summary>
+	/// Gedächtnis:
+	/// Die Zeit die der Gegner sich noch an den Spieler erinnert, wenn er ihn nicht mehr sieht.
+	/// </summary>
+	public static readonly double d_memoryTime = 7.0; // 7 sekunden
+	
+	/// <summary>
+	/// Der Zeitpunkt an dem der Gegner den Spieler zu letzt sah
+	/// </summary>
+	private double d_lastTimeVisited;
+	
+	/// <summary>
+	/// Die letzte Position an welcher der Gegner den Spieler gesehen hat
+	/// </summary>
+	public Vector3 LastPos {
+		get{return _LastPos;}
+		private set{
+			//setze  instanzvariable
+			_LastPos = value;
+			//merke zeit
+			IsRememberingPlayer = true;
+			//merke heading nur wenn nicht über/unter dem Spieler
+			if( ! DirectlyAboveOrUnder(_LastPos) )
+				LastHeading = Heading;
+		}
+	}
+	private Vector3 _LastPos; //verwendete Instanzvariable
+	public Vector3 LastHeading { get; private set;}
+	
+	/// <summary>
+	/// Ob der Gegner sich an den Spieler erinnert
+	/// </summary>
+	/// <value>
+	/// <c>true</c> wenn der Zeitpunkt der letzten Sichtung noch nicht zu weit entfernt ist; ansonsten, <c>false</c>.
+	/// </value>
+	public bool IsRememberingPlayer{ get{
+			return d_lastTimeVisited + d_memoryTime >= Time.time;
+		}
+		private set{
+			if(value) d_lastTimeVisited = Time.time;
+			else d_lastTimeVisited = -1.0;
+		}
+	}
+	
+	/// <summary>
+	/// Merke sich jetzt aktuelle Position des Spielers, sowie die aktuelle Zeit
+	/// </summary>
+	public void RememberNow(){
+		LastPos = PlayerPos;
+	}
+	
+	
+	
+	/// <summary>
+	/// Merkt sich die aktuelle Position des Spielers und die aktuelle Zeit,
+	/// aber nur wenn der Spieler sichtbar ist.
+	/// 
+	/// Diese Methode wird pro Update nur einmal von dem globalem Zustand 
+	/// aufgerufen.
+	/// </summary>
+	public void DeterminePlayerPosition(){
+		//wenn sichtbar
+		if(IsPlayerVisible)
+			RememberNow(); //merke Position und Zeit
+	}
+	
+	
+	
+	/// <summary>
+	/// Richtung in die der Gegner guckt.
+	/// Lokales Koordinatensystem.
+	/// </summary>
+	public override Vector3 Heading { get{
+			//Nach Links Patrolierend
+			if( MoveFSM.IsInState(SPatrolLeft<T>.Instance) )
+				return Vector3.left;
+			//nach Rechts Patrolierend
+			else if( MoveFSM.IsInState(SPatrolRight<T>.Instance) )
+				return Vector3.right;
+			//Ansonsten die gemerkte Position verwenden
+			else if( IsRight(LastPos) )
+				return Vector3.right;
+			else
+				return Vector3.left;
+		}
+	}
+	
+	
+	
+	
+	
+	
+
 	
 	
 	/// <summary>

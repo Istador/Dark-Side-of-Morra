@@ -45,8 +45,9 @@ public abstract class Enemy<T> : Entity {
 	/// <returns>
 	/// Die absolute Distanz zum Spieler
 	/// </returns>
-	public float DistanceToPlayer(){
-		return DistanceTo(Player);
+	public float DistanceToPlayer{ get{
+			return DistanceTo(Player);
+		}
 	}
 	
 	

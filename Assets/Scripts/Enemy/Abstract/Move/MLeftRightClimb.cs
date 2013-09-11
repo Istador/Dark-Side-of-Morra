@@ -60,38 +60,29 @@ public abstract class MLeftRightClimb<T> : MLeftRight<T> {
 		//Wenn der Gegner sich auf einer Leiter befindet genauere Betrachtung 
 		//mit zusätzlich Oben und Unten.
 		else{
-			//Keine Bewegung
-			if(vIn == Vector3.zero) 
-				return vIn;
-			
-			//genauerer Winkel mit +/- um die ganzen 360° abzudecken
-			float a = Mathf.Atan2 (vIn.x, vIn.y) * Mathf.Rad2Deg + 90.0f;
-			// Normal: -90° links, 0° oben, 90° rechts, 180° unten
-			// +90°  : 0° links, 90° oben, 180° rechts, 270° unten
-			
-			Vector3 heading;
-			
-			//Links:	315° ...  45°
-			if( (a >= -45.0f && a < 45.0f) || a >= 315.0f || a < -315.0f)
-				heading = Vector3.left;
-			//Oben:		 45° ... 135°
-			else if( (a >=45.0f && a < 135.0f) || (a >= -135.0f && a < -45.0f) )
-				heading = Vector3.up;
-			//Rechts:	135° ... 225°
-			else if( (a >= 135.0f && a < 225.0f) || (a >= -225.0f && a < -135.0f) )
-				heading = Vector3.right;
-			//Unten:	225° ... 315°
-			else if( (a >= 225.0f && a < 315.0f) || (a >= -315.0f && a < -225.0f) )
-				heading = Vector3.down;
-			//Fehlerfall der nie auftreten sollte
-			else{
-				Debug.LogError("Fehler: Winkelberechnung");
-				return Vector3.zero;
-			}
-			
 			//Geschwindigkeit auf Leitern verlangsamen
-			return heading * vIn.magnitude * f_ladderSlowDown;
+			return Utility.ToHeading(vIn) * vIn.magnitude * f_ladderSlowDown;
 		}
+	}
+	
+	
+	
+	/// <summary>
+	/// Ob der Spieler in Sichtweite und in Blickrichtung ist, sowie keine 
+	/// geometrie zwischen Spieler und Gegner liegen.
+	/// </summary>
+	public override bool IsPlayerVisible{ get{
+			return ( 
+				   //nicht zu weit weg
+				   DistanceToPlayer < f_visibleRange
+				   //LoS besteht
+				&& LineOfSight(Player)
+				   //auf einer Leiter ist die Blickrichtung egal
+				   //ansonsten muss sie stimmen
+					//oder er wurde gerade noch gesehen
+				&& (IsOnLadder || IsPlayerInfront || IsRememberingPlayer )
+			);
+		}	
 	}
 	
 	

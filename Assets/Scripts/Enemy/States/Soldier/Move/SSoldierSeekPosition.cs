@@ -6,7 +6,7 @@ public class SSoldierSeekPosition : State<Enemy<Soldier>> {
 	
 	
 	public override void Execute(Enemy<Soldier> owner){
-		Vector3 pos = ((Soldier)owner).LastKnownPosition();
+		Vector3 pos = ((Soldier)owner).LastPos;
 		
 		//LoS und Höhe in Ordnung
 		if(owner.LineOfSight(owner.Player) && ((Soldier)owner).IsHeightOk(pos)){
@@ -44,7 +44,7 @@ public class SSoldierSeekPosition : State<Enemy<Soldier>> {
 		//dem Gegner
 		if( ((Soldier)owner).DirectlyAboveOrUnder(pos) ){
 			//Bewege in die Richtung weiter, nicht zum Ziel
-			pos = owner.collider.bounds.center + ((Soldier)owner).LastHeading() * ((Soldier)owner).MaxSpeed;
+			pos = owner.Pos + ((Soldier)owner).LastHeading * ((Soldier)owner).MaxSpeed;
 		}
 		
 		//Kann sich in gewünschte Richtung bewegen

@@ -18,7 +18,7 @@ public class SMineInvisible : State<Enemy<Mine>> {
 		if(owner.LineOfSight(owner.Player))
 		{
 			//Distanz zum Spieler ermitteln
-			float distance = owner.DistanceToPlayer();
+			float distance = owner.DistanceToPlayer;
 			//Spieler in Reichweite
 			if(distance <= Mine.f_yellowRange)
 				owner.AttackFSM.ChangeGlobalState(null);

@@ -17,13 +17,13 @@ public class SLLeaveD : State<Enemy<Soldier>> {
 	
 	public override void Execute(Enemy<Soldier> owner){
 		// Rechts ist eine Platform sowie der Spieler
-		if( owner.IsRight(((Soldier)owner).LastKnownPosition()) && ((Soldier)owner).IsPlatformRight ){
+		if( owner.IsRight(((Soldier)owner).LastPos) && ((Soldier)owner).IsPlatformRight ){
 			owner.MoveFSM.ChangeState(SLLeaveR.Instance);
 			return;
 		}
 		
 		//Links ist eine Platform sowie der Spieler
-		if( !owner.IsRight(((Soldier)owner).LastKnownPosition()) &&  ((Soldier)owner).IsPlatformLeft ){
+		if( !owner.IsRight(((Soldier)owner).LastPos) &&  ((Soldier)owner).IsPlatformLeft ){
 			owner.MoveFSM.ChangeState(SLLeaveL.Instance);
 			return;
 		}

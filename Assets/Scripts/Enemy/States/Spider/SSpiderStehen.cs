@@ -38,7 +38,7 @@ public class SSpiderStehen : State<Enemy<Spider>> {
 		}
 		
 		//Distanz zum Spieler ermitteln
-		float distance = owner.DistanceToPlayer();
+		float distance = owner.DistanceToPlayer;
 		//nahkampfreichweite
 		
 		if(distance <= Spider.f_outOfRange)

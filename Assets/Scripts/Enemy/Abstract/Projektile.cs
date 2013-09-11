@@ -55,6 +55,9 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	protected override void Start() {
 		base.Start();
 		
+		//Projektile hinter die Gegner Positionieren
+		transform.position = transform.position + new Vector3(0.0f, 0.0f, 0.01f);
+		
 		//Zielposition anstreben
 		Steering.DoSeek(TargetPos);
 		

@@ -16,7 +16,7 @@ public class SRPGSSeekPosition : State<Enemy<RPGSoldier>> {
 		}
 		
 		//Distanz zur letzt bekannten Spielerposition ermitteln
-		Vector3 pos = ((RPGSoldier)owner).LastKnownPosition();
+		Vector3 pos = ((RPGSoldier)owner).LastPos;
 		float distance = owner.DistanceTo(pos);
 		
 		//position erreicht

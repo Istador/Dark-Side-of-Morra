@@ -85,4 +85,39 @@ public static class Utility {
 	
 	
 	
+	/// <summary>
+	/// Bestimmt für einen Vektor in welche Richtung er primär zeigt.
+	/// </summary>
+	/// <returns>
+	/// Vector3.(left|right|up|down|zero)
+	/// </returns>
+	public static Vector3 ToHeading(Vector3 v){
+		if(v == Vector3.zero) return v;
+		
+		//genauerer Winkel mit +/- um die ganzen 360° abzudecken
+		float a = Mathf.Atan2 (v.x, v.y) * Mathf.Rad2Deg + 90.0f;
+		// Normal: -90° links, 0° oben, 90° rechts, 180° unten
+		// +90°  : 0° links, 90° oben, 180° rechts, 270° unten
+		
+		//Links:	315° ...  45°
+		if( (a >= -45.0f && a < 45.0f) || a >= 315.0f || a < -315.0f)
+			return Vector3.left;
+		//Oben:		 45° ... 135°
+		else if( (a >=45.0f && a < 135.0f) || (a >= -135.0f && a < -45.0f) )
+			return Vector3.up;
+		//Rechts:	135° ... 225°
+		else if( (a >= 135.0f && a < 225.0f) || (a >= -225.0f && a < -135.0f) )
+			return Vector3.right;
+		//Unten:	225° ... 315°
+		else if( (a >= 225.0f && a < 315.0f) || (a >= -315.0f && a < -225.0f) )
+			return Vector3.down;
+		//Fehlerfall der nie auftreten sollte
+		else{
+			Debug.LogError("Fehler: Winkelberechnung");
+			return Vector3.zero;
+		}
+	}
+	
+	
+	
 }

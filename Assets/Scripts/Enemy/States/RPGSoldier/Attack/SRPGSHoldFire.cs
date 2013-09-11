@@ -7,7 +7,7 @@ public class SRPGSHoldFire : State<Enemy<RPGSoldier>> {
 	
 	public override void Execute(Enemy<RPGSoldier> owner){
 		//auf Spieler kann geschossen werden
-		if(((RPGSoldier)owner).IsPlayerInFireRange()){
+		if( ((RPGSoldier)owner).IsPlayerInFireRange ){
 			//zum Feuern Zustand wechseln
 			owner.AttackFSM.ChangeState(SRPGSFire.Instance);
 		}

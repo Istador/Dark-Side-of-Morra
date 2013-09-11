@@ -5,11 +5,15 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	
 	
+	/// <summary>
+	/// Raketen nicht in der Mitte des Gegners spawnen lassen,
+	/// sondern an eine sinnvolle Position verschieben.
+	/// </summary>
+	/// <value>
+	/// Position in Weltkoordinaten an der die Rakete spawnen soll
+	/// </value>
 	public Vector3 bulletSpawn { get{
-			return collider.bounds.center 
-				+ Heading * collider.bounds.size.x/4.0f
-				+ Vector3.up * collider.bounds.size.y/8.0f
-			;
+			return Pos + Heading * Width/4.0f + Vector3.up * Height/8.0f;
 		}
 	}
 	
@@ -41,19 +45,9 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	/// </summary>
 	public static readonly double d_reloadTime = 3.0; // 3 sekunden nachladen
 	
-	/// <summary>
-	/// Gedächtnis:
-	/// Die Zeit die der Gegner sich noch an den Spieler erinnert.
-	/// </summary>
-	public static readonly double d_memoryTime = 5.0; // 5 sekunden
-	
-	/// <summary>
-	/// Sichtweite des Gegners. Bis zu dieser Distanz kann der Gegner sehen.
-	/// </summary>
-	public static readonly float f_visibleRange = 8.0f;
 	
 	
-	public RPGSoldier() : base(150) {
+	public RPGSoldier() : base(150) { //150 HP
 		//Zustandsautomaten initialisieren
 		MoveFSM.GlobalState = SRPGSPatrol.Instance;
 		AttackFSM.CurrentState = SRPGSHoldFire.Instance;
@@ -80,100 +74,46 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 		//Geschwindigkeit setzen
 		MaxSpeed = 5.0f;
 		MaxForce = 5.0f;
-		
-		_lastKnownPosition = PlayerPos;
-		_lastTimeVisited = Time.time;
 	}
 	
 	
 	
 	protected override void Update(){
+		//Sprite setzen
 		Sprite = DetermineSprite();
 		
 		base.Update();
-		//Debug.Log(MoveFSM.GetCurrentState());
-	}
-	
-	
-	
-	/// <summary>
-	/// Ob der Spieler vor dem Gegner ist (in seiner Blickrichtung).
-	/// </summary>
-	public bool IsPlayerInfront(){
-		//Debug.DrawLine(Vector3.zero, player.collider.bounds.center - collider.bounds.center, Color.yellow);
-		//Debug.Log(Vector3.Dot((player.collider.bounds.center - collider.bounds.center), Heading()) );
-		return Vector3.Dot((PlayerPos - Pos), Heading) > 0.0f;
-	}
-	
-	
-	
-	/// <summary>
-	/// Ob der Spieler in Sichtweite und in Blickrichtung ist, sowie keine geometrie
-	/// zwischen Spieler und Gegner liegen.
-	/// </summary>
-	public bool IsPlayerVisible(){
-		float distance = DistanceToPlayer();
-		return ( 
-			   distance < f_visibleRange 
-			&& LineOfSight(Player)
-			&& IsPlayerInfront()
-		);
-			
 	}
 	
 	
 	
 	/// <summary>
 	/// Ob der Spieler in Schussreichweite ist.
+	/// Diese Methode gibt an ob jetzt geschossen werden kann
 	/// </summary>
-	public bool IsPlayerInFireRange(){
-		float distance = DistanceToPlayer();
-		return ( 
-			   distance <= f_outOfRange
-			&& distance >= f_closeRange
-			&& LineOfSight(Player)
-			&& IsPlayerInfront()
-		);
-	}
-	
-	
-	private Vector3 _lastKnownPosition;
-	private double _lastTimeVisited;
-	
-	public void RememberNow(){
-		_lastKnownPosition = PlayerPos;
-		_lastTimeVisited = Time.time;
-	}
-	
-	public void DeterminePlayerPosition(){
-		if(IsPlayerVisible()){
-			RememberNow();
-			//Debug.DrawLine(collider.bounds.center, _lastKnownPosition, Color.green);
-		} else {
-			//Debug.DrawLine(collider.bounds.center, _lastKnownPosition, Color.red);
+	public bool IsPlayerInFireRange{ get{
+			float distance = DistanceToPlayer;
+			return ( 
+				   //nicht außer Reichweite
+				   distance <= f_outOfRange
+				   //nicht zu nah für Raketen
+				&& distance >= f_closeRange
+				   //LoS besteht
+				&& LineOfSight(Player)
+				   //in Blickrichtung
+				&& IsPlayerInfront
+			);
 		}
-		
 	}
-	
-	public Vector3 LastKnownPosition(){
-		return _lastKnownPosition;
-	}
-	
-	public bool IsRememberingPlayer(){
-		return _lastTimeVisited + d_memoryTime >= Time.time;
-	}
-	
 	
 	
 	
 	/// <summary>
-	/// Schaden erhalten, der die HP verringert, und zum Tode führen kann.
+	/// Schaden erhalten. überschrieben um den Zustandsautomaten zu 
+	/// informieren, sowie die Position zu merken
 	/// </summary>
-	/// <param name='damage'>
-	/// Schaden der dem Gegner zugefügt wird
-	/// </param>
 	public override void ApplyDamage(Vector3 damage){
-		//Zustandsautomaten informieren
+		//Zustandsautomaten informieren, damit von Patrolieren zum Angreifen
 		MessageDispatcher.I.Dispatch(this, "damage");
 		
 		//Position merken
@@ -185,47 +125,28 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	
 	
 	
-	public override Vector3 Heading { get{
-		if(MoveFSM.IsInState(SPatrolLeft<RPGSoldier>.Instance))
-			return Vector3.left;
-		else if(MoveFSM.IsInState(SPatrolRight<RPGSoldier>.Instance))
-			return Vector3.right;
-		else if(IsRight(_lastKnownPosition))
-			return Vector3.right;
-		else
-			return Vector3.left;
-	}}
-	
-	
-	
-	public Vector3 Moving(){
-		Vector3 f = Steering.Calculate();
-		if(f == Vector3.zero)
-			return Vector3.zero;
-		else if(IsRight(collider.bounds.center + rigidbody.velocity))
-			return Vector3.right;
-		else
-			return Vector3.left;
-	}
-	
-	
-	
-	public int DetermineSprite(){
+	/// <summary>
+	/// Stellt fest welcher Sprite dargestellt werden soll
+	/// </summary>
+	private int DetermineSprite(){
 		Vector3 h = Heading;
-		Vector3 m = Moving();
+		Vector3 m = Moving;
 		//keine Bewegung
 		if(m == Vector3.zero){
 			if(h == Vector3.left) return 2;
 			else return 3;
-		} else if(m == h){
+		}
+		//Bewegung == Blickrichtung
+		else if(m == h){
 			if(h == Vector3.left) return 0;
 			else return 1;
-		} else {
+		}
+		//Bewegung != Blickrichtung
+		else {
 			if(h == Vector3.left) return 5;
 			else return 4;
 		}
 	}
-	
 	
 	
 	

@@ -18,7 +18,7 @@ public class SSpiderSeek : State<Enemy<Spider>> {
 		else owner.Sprite = 2;
 		
 		//Distanz zum Spieler ermitteln
-		float distance = owner.DistanceToPlayer();
+		float distance = owner.DistanceToPlayer;
 		//nahkampfreichweite
 		if(distance <= Spider.f_seekRange){
 			owner.MoveFSM.ChangeState(SSpiderStehen.Instance); //anhalten

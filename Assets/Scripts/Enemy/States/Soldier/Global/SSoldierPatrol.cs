@@ -9,7 +9,7 @@ public class SSoldierPatrol : State<Enemy<Soldier>> {
 		//wenn der Gegner sich nicht auf der Leiter befindet
 		if(! ((Soldier)owner).IsOnLadder){
 			//zufällig nach links/rechts patrouillieren
-			if(Enemy<Soldier>.rnd.Next(0,2) == 0)
+			if(GeneralObject.rnd.Next(0,2) == 0)
 				owner.MoveFSM.ChangeState(SPatrolLeft<Soldier>.Instance);
 			else
 				owner.MoveFSM.ChangeState(SPatrolRight<Soldier>.Instance);
@@ -20,7 +20,7 @@ public class SSoldierPatrol : State<Enemy<Soldier>> {
 	
 	public override void Execute(Enemy<Soldier> owner){
 		//wenn der Spieler gesehen wird
-		if( ((Soldier)owner).IsPlayerVisible() ){
+		if( ((Soldier)owner).IsPlayerVisible ){
 			//angreifen
 			owner.MoveFSM.ChangeGlobalState(SSoldierEngaged.Instance);
 		}

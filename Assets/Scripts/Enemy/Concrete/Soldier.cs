@@ -5,6 +5,20 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	
 	
+	/// <summary>
+	/// Bullets nicht in der Mitte des Gegners spawnen lassen,
+	/// sondern an eine sinnvolle Position verschieben.
+	/// </summary>
+	/// <value>
+	/// Position in Weltkoordinaten an der die Rakete spawnen soll
+	/// </value>
+	public Vector3 bulletSpawn { get{
+			return Pos + Heading * Width/3.0f + Vector3.up * Height/5.0f;
+		}
+	}
+	
+	
+	
 	public static AudioClip ac_shoot;
 	
 	
@@ -29,17 +43,6 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	/// Die Zeit zwischen zwei Raketen die zum Nachladen veranschlagt wird.
 	/// </summary>
 	public readonly float f_reloadTime = 0.7f + (float)rnd.NextDouble() * 0.4f; // ~0,8 sekunden nachladen
-	
-	/// <summary>
-	/// Gedächtnis:
-	/// Die Zeit die der Gegner sich noch an den Spieler erinnert.
-	/// </summary>
-	public static readonly double d_memoryTime = 7.0; // 7 sekunden
-	
-	/// <summary>
-	/// Sichtweite des Gegners. Bis zu dieser Distanz kann der Gegner sehen.
-	/// </summary>
-	public static readonly float f_visibleRange = 10.0f;
 	
 	
 	
@@ -66,118 +69,46 @@ public class Soldier : MLeftRightClimb<Soldier> {
 		MaxSpeed = 7.0f;
 		MaxForce = 7.0f;
 		
-		_lastKnownPosition = PlayerPos;
-		_lastTimeVisited = Time.time;
+		//Audio-Referenz laden wenn noch nicht geschehen
 		if(ac_shoot == null) ac_shoot = (AudioClip) Resources.Load("Sounds/shoot2");
 	}
 	
 	
-	//bool once = true;
+	
 	protected override void Update(){
+		//Sprite setzen
 		Sprite = DetermineSprite();
 		
 		base.Update();
-		
-		//Debug.Log(MoveFSM.CurrentState);
-	}
-	
-	
-	
-	/// <summary>
-	/// Ob der Spieler vor dem Gegner ist (in seiner Blickrichtung).
-	/// </summary>
-	public bool IsPlayerInfront(){
-		//Debug.DrawLine(Vector3.zero, player.collider.bounds.center - collider.bounds.center, Color.yellow);
-		//Debug.Log(Vector3.Dot((player.collider.bounds.center - collider.bounds.center), Heading()) );
-		return Vector3.Dot((PlayerPos - Pos), Heading) > 0.0f;
-	}
-	
-	
-	
-	/// <summary>
-	/// Ob der Spieler in Sichtweite und in Blickrichtung ist, sowie keine geometrie
-	/// zwischen Spieler und Gegner liegen.
-	/// </summary>
-	public bool IsPlayerVisible(){
-		float distance = DistanceToPlayer();
-		return ( 
-			   distance < f_visibleRange 
-			&& LineOfSight(Player)
-			&& (IsOnLadder || IsPlayerInfront() )
-		);
-			
 	}
 	
 	
 	
 	/// <summary>
 	/// Ob der Spieler in Schussreichweite ist.
+	/// Diese Methode gibt an ob jetzt geschossen werden kann
 	/// </summary>
-	public bool IsPlayerInFireRange(){
-		float distance = DistanceToPlayer();
-		return ( 
-			   distance <= f_outOfRange		//in Reichweite
-			&& LineOfSight(Player)			//Sicht frei
-			&& IsPlayerInfront()			//vor dem Gegner
-			&& IsHeightOk(PlayerPos) //Höhenunterschied nicht zu groß
-		);
-	}
-	
-	
-	/// <summary>
-	/// Ob die Höhe der Position innerhalb der des Gegners ist (ob grob auf selber Ebene)
-	/// </summary>
-	public bool IsHeightOk(Vector3 pos){
-		return Mathf.Abs(collider.bounds.center.y - pos.y) < (collider.bounds.size.y / 2.0f);
-	}
-	
-	
-	/// <summary>
-	/// Die Position ist direkt über oder unter dem Gegner
-	/// </summary>
-	public bool DirectlyAboveOrUnder(Vector3 pos){
-		return Mathf.Abs(collider.bounds.center.x - pos.x) < (collider.bounds.size.x / 2.0f);
-	}
-	
-	
-	private Vector3 _lastKnownPosition;
-	private double _lastTimeVisited;
-	private Vector3 _lastHeading;
-	
-	public void RememberNow(){
-		_lastKnownPosition = PlayerPos;
-		_lastTimeVisited = Time.time;
-		if( ! DirectlyAboveOrUnder(_lastKnownPosition))
-			_lastHeading = Heading;
-	}
-	
-	public void DeterminePlayerPosition(){
-		if(IsPlayerVisible()){
-			RememberNow();
-			//Debug.DrawLine(collider.bounds.center, _lastKnownPosition, Color.green);
-		} else {
-			//Debug.DrawLine(collider.bounds.center, _lastKnownPosition, Color.red);
+	public bool IsPlayerInFireRange{ get{
+			float distance = DistanceToPlayer;
+			return (
+				   //nicht außer Reichweite
+				   distance <= f_outOfRange
+				   //LoS besteht
+				&& LineOfSight(Player)
+				   //in Blickrichtung
+				&& IsPlayerInfront
+				   //Höhenunterschied nicht zu groß
+				&& IsHeightOk(PlayerPos)
+			);
 		}
-		
 	}
-	
-	public Vector3 LastKnownPosition(){
-		return _lastKnownPosition;
-	}
-	
-	public bool IsRememberingPlayer(){
-		return _lastTimeVisited + d_memoryTime >= Time.time;
-	}
-	
 	
 	
 	
 	/// <summary>
-	/// Schaden erhalten, der die HP verringert, und zum Tode führen kann.
+	/// Schaden erhalten. überschrieben um den Zustandsautomaten zu 
+	/// informieren, sowie die Position zu merken
 	/// </summary>
-	/// <param name='damage'>
-	/// Schaden der dem Gegner zugefügt wird
-	/// </param>
 	public override void ApplyDamage(Vector3 damage){
 		//Zustandsautomaten informieren
 		MessageDispatcher.I.Dispatch(this, "damage");
@@ -191,70 +122,23 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	
 	
-	public Vector3 LastHeading(){
-		return _lastHeading;
-	}
-	
-	
-	
-	public override Vector3 Heading{ get{
-		if(MoveFSM.IsInState(SPatrolLeft<Soldier>.Instance))
-			return Vector3.left;
-		else if(MoveFSM.IsInState(SPatrolRight<Soldier>.Instance))
-			return Vector3.right;
-		else if(IsRight(_lastKnownPosition))
-			return Vector3.right;
-		else
-			return Vector3.left;
-	}
-	}
-	
-	
-	
-	public Vector3 Moving(){
-		Vector3 f = Steering.Calculate();
-		if(f == Vector3.zero)
-			return Vector3.zero;
-		
-		if(IsOnLadder){
-			float a = Mathf.Atan2 (f.x, f.y) * Mathf.Rad2Deg + 90.0f;
-			
-			if( (a >= -45.0f && a < 45.0f) || a >= 315.0f || a < -315.0f)
-				return Vector3.left;
-			if( (a >=45.0f && a < 135.0f) || (a >= -135.0f && a < -45.0f) )
-				return Vector3.up;
-			if( (a >= 135.0f && a < 225.0f) || (a >= -225.0f && a < -135.0f) )
-				return Vector3.right;
-			if( (a >= 225.0f && a < 315.0f) || (a >= -315.0f && a < -225.0f) )
-				return Vector3.down;
-			return Vector3.zero;
-		}
-		
-		if(IsRight(collider.bounds.center + rigidbody.velocity))
-			return Vector3.right;
-		else
-			return Vector3.left;
-	}
-	
-	
-	
+	/// <summary>
+	/// Stellt fest welcher Sprite dargestellt werden soll
+	/// </summary>
 	public int DetermineSprite(){
 		Vector3 h = Heading;
-		Vector3 m = Moving();
-		
+		Vector3 m = Moving;
 		//auf Leiter
 		if(IsOnLadder){
 			if(m == Vector3.up) return 7;	//nach oben
 			if(m == Vector3.down) return 8; //nach unten
 			return 6;						//stehen/links/rechts
 		}
-		
 		//keine Bewegung
 		if(m == Vector3.zero){
 			if(h == Vector3.left) return 2;	//nach links gucken
 			else return 3;					//nach rechts gucken
 		}
-		
 		//Bewegung == Blickrichtung
 		if(m == h){ 
 			if(h == Vector3.left) return 0;	//nach links
@@ -266,7 +150,6 @@ public class Soldier : MLeftRightClimb<Soldier> {
 			else return 5;					//nach links gehen, rechts gucken
 		}
 	}
-	
 	
 	
 	

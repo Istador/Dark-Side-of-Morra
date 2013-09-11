@@ -21,7 +21,7 @@ public class SSoldierEngaged : State<Enemy<Soldier>> {
 		((Soldier)owner).DeterminePlayerPosition();
 		
 		//wenn er den Spieler zu lange nicht mehr gesehen hat
-		if( ! ((Soldier)owner).IsRememberingPlayer() ){
+		if( ! ((Soldier)owner).IsRememberingPlayer ){
 			//Patrolieren
 			owner.MoveFSM.ChangeGlobalState(SSoldierPatrol.Instance);
 		}
