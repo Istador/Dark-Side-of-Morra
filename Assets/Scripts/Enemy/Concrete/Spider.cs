@@ -23,11 +23,6 @@ public class Spider : MovableEnemy<Spider> {
 	
 	
 	/// <summary>
-	/// Referenz auf das Boss-Level selbst, um auf den Key-Prefab zuzugreifen
-	/// </summary>
-	public BossLevel level {get; private set;}
-	
-	/// <summary>
 	/// Referenz auf den Lebensbalken des Bosses, um ihn zu Beginn des Kampfes 
 	/// ein- und mit dem Tod der Spinne auszublenden.
 	/// </summary>
@@ -94,7 +89,7 @@ public class Spider : MovableEnemy<Spider> {
 	
 	
 	
-	public Spider() : base(2000){
+	public Spider() : base(10){
 		//Zustandsautomaten initialisieren
 		MoveFSM.CurrentState = SSpiderKokon.Instance;
 		
@@ -121,7 +116,6 @@ public class Spider : MovableEnemy<Spider> {
 		MaxForce = 8.0f;
 		
 		//Referenzen laden
-		level = GameObject.Find("Level").GetComponent<BossLevel>();
 		platten = GameObject.Find("Bodenplatten").GetComponent<Bodenplatten>();
 		healthbar = (BossHealthBar) GameObject.FindObjectOfType(typeof(BossHealthBar));
 		
@@ -140,7 +134,7 @@ public class Spider : MovableEnemy<Spider> {
 		healthbar.Hide();
 		
 		//Schlüssel erstellen
-		GameObject key = Instantiate(level.keyPrefab, Pos + Vector3.left);
+		GameObject key = Instantiate("BossKey", Pos + Vector3.left);
 		
 		//Schlüssel kurz nach oben bewegen lassen
 		key.rigidbody.AddForce(Vector3.up * 6.0f, ForceMode.Impulse);

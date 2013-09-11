@@ -21,13 +21,6 @@ public class HealthGlobe : GeneralObject {
 	
 	
 	/// <summary>
-	/// Die Referenz auf das Geräusch, das beim aufheben gemacht wird.
-	/// </summary>
-	private static AudioClip ac_pickupsound;
-	
-	
-	
-	/// <summary>
 	/// HP-Wert um den der Spieler bei kleinen Health-Globes geheilt wird
 	/// </summary>
 	public static readonly int i_smallHP = 10;
@@ -51,9 +44,6 @@ public class HealthGlobe : GeneralObject {
 		
 		//SpriteController einschalten
 		Animated = true;
-		
-		//Referenz auf das Aufhebe-Geräusch laden, falls noch nicht geschehen
-		if(ac_pickupsound == null) ac_pickupsound = (AudioClip) Resources.Load("Sounds/healthpickup");
 		
 		//bei großen Health-Globes den anderen Sprite-Zustand verwenden
 		if(big) Sprite = 1;
@@ -84,7 +74,7 @@ public class HealthGlobe : GeneralObject {
 				DoHeal(other, i_smallHP);
 			
 			//PickUp-Geräusch abspielen
-			PlaySound(ac_pickupsound);
+			PlaySound("healthpickup");
 			
 			//Diesen Health-Globe zerstören
 			Destroy(gameObject);

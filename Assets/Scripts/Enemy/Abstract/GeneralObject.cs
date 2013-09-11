@@ -109,7 +109,7 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// <c>true</c> wenn animier; ansonsten, <c>false</c>.
 	/// </value>
 	public bool Animated {
-		get{return _SpriteCntrl == null || SpriteCntrl.enabled; }
+		get{return _SpriteCntrl != null && SpriteCntrl.enabled; }
 		set{ if(_SpriteCntrl != null || value) SpriteCntrl.enabled = value; }
 	}
 	
@@ -156,8 +156,41 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// <param name='sound'>
 	/// Sound der abgespielt werden soll.
 	/// </param>
+	[System.Obsolete("use the sound name")]
 	public void PlaySound(AudioClip sound){
 		AudioSource.PlayClipAtPoint(sound, Pos);
+	}
+	
+	
+	/// <summary>
+	/// Spielt einen Sound an einer gewünschten Position
+	/// </summary>
+	/// <param name='soundName'>
+	/// Name des Sounds im Ordner Resources/Sounds/
+	/// </param>
+	[System.Obsolete("use the sound name")]
+	public void PlaySound(AudioClip sound, Vector3 pos){
+		AudioSource.PlayClipAtPoint(sound, pos);
+	}
+	
+	/// <summary>
+	/// Spielt einen Sound an einer gewünschten Position
+	/// </summary>
+	/// <param name='soundName'>
+	/// Name des Sounds im Ordner Resources/Sounds/
+	/// </param>
+	public void PlaySound(string soundName, Vector3 pos){
+		AudioSource.PlayClipAtPoint(Resource.Sound[soundName], pos);
+	}
+	
+	/// <summary>
+	/// Spielt einen Sound an der aktuellen Position des Objektes ab
+	/// </summary>
+	/// <param name='soundName'>
+	/// Name des Sounds im Ordner Resources/Sounds/
+	/// </param>
+	public void PlaySound(string soundName){
+		PlaySound(soundName, Pos);
 	}
 	
 	
@@ -260,6 +293,11 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Position des Objektes in der Spielwelt basierend auf der Collidermittelpunkt.
 	/// </summary>
 	public Vector3 Pos { get{return collider.bounds.center;} }
+	
+	/// <summary>
+	/// Position eines anderen Objektes
+	/// </summary>
+	public Vector3 Posi(GameObject other){ return other.collider.bounds.center; }
 	
 	/// <summary>
 	/// Breite des Objektes in der Spielwelt basierend auf dem Collider
@@ -655,48 +693,46 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Instanziiert ein neues GameObject an einer gewünschten Position
 	/// </summary>
 	/// <param name='obj'>
-	/// Der Name des Prefabs das erstellt werden soll
+	/// Das Objekt das erstellt werden soll
 	/// </param>
 	/// <param name='pos'>
 	/// Position an der das neue Objekt sein soll.
 	/// </param>
 	public GameObject Instantiate(Object obj, Vector3 pos){
-		return (GameObject) Object.Instantiate(obj, pos, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f) );
+		return (GameObject) Object.Instantiate(obj, pos, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+	}
+	
+	/// <summary>
+	/// Instanziiert ein neues Prefab an einer gewünschten Position
+	/// </summary>
+	/// <param name='prefabName'>
+	/// Der Name des Prefabs das erstellt werden soll
+	/// </param>
+	/// <param name='pos'>
+	/// Position an der das neue Objekt sein soll.
+	/// </param>
+	public GameObject Instantiate(string prefabName, Vector3 pos){
+		return Instantiate(Resource.Prefab[prefabName], pos);
 	}
 	
 	/// <summary>
 	/// Instanziiert ein neues GameObject
 	/// </summary>
 	/// <param name='obj'>
-	/// Der Name des Prefabs das erstellt werden soll
+	/// Das Objekt das erstellt werden soll
 	/// </param>
 	public new GameObject Instantiate(Object obj){
 		return Instantiate(obj, Pos);
 	}
 	
 	/// <summary>
-	/// Instanziiert ein neues GameObject von einem Prefab-Namen an einer gewünschten Position.
+	/// Instanziiert ein neues Prefab
 	/// </summary>
-	/// <param name='obj'>
+	/// <param name='prefabName'>
 	/// Der Name des Prefabs das erstellt werden soll
 	/// </param>
-	/// <param name='pos'>
-	/// Position an der das neue Objekt sein soll.
-	/// </param>
-	public GameObject Instantiate(string name, Vector3 pos){
-		return Instantiate(Resources.Load(name), pos);
+	public GameObject Instantiate(string prefabName){
+		return Instantiate(Resource.Prefab[prefabName]);
 	}
-	
-	/// <summary>
-	/// Instanziiert ein neues GameObject von einem Prefab-Namen.
-	/// </summary>
-	/// <param name='obj'>
-	/// Der Name des Prefabs das erstellt werden soll
-	/// </param>
-	public GameObject Instantiate(string name){
-		return Instantiate(name, Pos);
-	}
-	
-	
 	
 }

@@ -43,16 +43,17 @@ public class SMineDead : State<Enemy<Mine>> {
 		
 		
 		//Explosionsanzeige
-		GameObject explosion = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("prefab Explosion"), explosionsursprung, owner.transform.rotation);		
+		GameObject explosion = owner.Instantiate("prefab Explosion", explosionsursprung);
+		
 		//scale explosion
 		//explosion.particleEmitter.minSize = 0.5f;
 		//explosion.particleEmitter.maxSize = 2.0f;
 		//explosion.GetComponent<ParticleRenderer>().lengthScale = 2.0f;
 		
 		//Explosionsgeräusch
-		AudioSource.PlayClipAtPoint(Mine.ac_explosion, owner.collider.bounds.center);
+		owner.PlaySound("explode");
 		
-		UnityEngine.Object.Destroy(explosion,1.0f); //nach 1 sekunden explosion entfernen
+		Object.Destroy(explosion,1.0f); //nach 1 sekunden explosion entfernen
 	}
 	
 	

@@ -40,18 +40,6 @@ public class Mine : ImmovableEnemy<Mine> {
 	
 	
 	/// <summary>
-	/// Referenz auf das Explosionsgeräusch
-	/// </summary>
-	public static AudioClip ac_explosion;
-	
-	/// <summary>
-	/// Referenz auf das Tickgeräusch, das Synchron zum rot blinken abgespielt wird
-	/// </summary>
-	public static AudioClip ac_tick;
-	
-	
-	
-	/// <summary>
 	/// Boolscher-Schalter, um nicht mehrmals innerhalb des gleichen Animations-
 	/// Frames den Sound abzuspielen.
 	/// </summary>
@@ -77,10 +65,6 @@ public class Mine : ImmovableEnemy<Mine> {
 		
 		//SpriteController einschalten
 		Animated = true;
-		
-		//Sound-Referenzen laden
-		if(ac_explosion == null) ac_explosion = (AudioClip) Resources.Load("Sounds/explode");
-		if(ac_tick == null) ac_tick = (AudioClip) Resources.Load("Sounds/minetick");
 	}
 	
 	

@@ -7,13 +7,13 @@ public class SSoldierFire : State<Enemy<Soldier>> {
 	
 	public override void Enter(Enemy<Soldier> owner){
 		//Bullet vom Prefab erstellen
-		GameObject bullet = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("pBullet"), ((Soldier)owner).bulletSpawn, owner.transform.rotation);
+		GameObject bullet = owner.Instantiate("pBullet", ((Soldier)owner).bulletSpawn);
 		
 		//Richtung der Patrone setzen
 		bullet.GetComponent<PBullet>().heading = ((Soldier)owner).Heading;
 		
 		//Sound abspielen
-		AudioSource.PlayClipAtPoint(Soldier.ac_shoot, owner.Pos);
+		owner.PlaySound("shoot2");
 		
 		//Kollisionen zwischen diesem Gegner und dieser Rakete ignorieren
 		Physics.IgnoreCollision(owner.collider, bullet.collider);

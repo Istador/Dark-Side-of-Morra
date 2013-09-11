@@ -8,7 +8,7 @@ using System.Collections;
 /// 
 /// Dieses Script wird auf den Trigger des Kindes vom eigtl. Block gezogen
 /// 
-public class fallendeBloecke : MonoBehaviour, MessageReceiver {
+public class fallendeBloecke : GeneralObject {
 	
 	
 	
@@ -33,11 +33,6 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 	/// </summary>
 	private AutoScale scale;
 	
-	/// <summary>
-	/// Der AudiClip der abgespielt werden soll, wenn der Spieler den Block betritt.
-	/// </summary>
-	private static AudioClip ac_disapear; 
-	
 	
 	
 	//Texturen
@@ -58,10 +53,7 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 	
 	
 	
-	void Start(){
-		//Sound laden
-		if(ac_disapear == null) ac_disapear = (AudioClip) Resources.Load("Sounds/cratefalls");
-		
+	void Start(){		
 		//Texturen laden
 		if(red == null) red = new Material[]{owner.renderer.materials[0]};
 		if(normal == null) normal = new Material[]{normalBox};
@@ -90,14 +82,14 @@ public class fallendeBloecke : MonoBehaviour, MessageReceiver {
 			scale.Rescale(); //Textur neu skalieren
 			
 			//Sound abspielen
-			AudioSource.PlayClipAtPoint(ac_disapear, owner.collider.bounds.center);
+			PlaySound("cratefalls", Posi (owner));
 		}
 	}
 	
 	
 	
 	// Methode um eingehende Nachrichten zu verarbeiten
-	public bool HandleMessage(Telegram msg){
+	public override bool HandleMessage(Telegram msg){
 		//Nachrichteneingang, je nach Nachricht etwas anderes tun
 		switch(msg.message){
 			case "verschwinden":

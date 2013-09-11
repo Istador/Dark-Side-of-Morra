@@ -74,9 +74,9 @@ public class Bodenplatte : MonoBehaviour, MessageReceiver {
 				trigger.collider.enabled = true;
 				
 				//Health Globe laden
-				UnityEngine.Object res = Resources.Load("bigHP");
+				Object res = Resource.Prefab["bigHP"];
 				//Health Globe erstellen
-				GameObject obj = (GameObject)UnityEngine.Object.Instantiate(res, transform.position+Vector3.up, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+				GameObject obj = (GameObject)Object.Instantiate(res, transform.position+Vector3.up, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
 				//Health Globe kurz nach oben bewegen lassen
 				obj.rigidbody.AddForce(Vector3.up * 4.0f, ForceMode.Impulse);
 			

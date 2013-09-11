@@ -19,10 +19,6 @@ public class Soldier : MLeftRightClimb<Soldier> {
 	
 	
 	
-	public static AudioClip ac_shoot;
-	
-	
-	
 	/// <summary>
 	/// Optimale Entfernung in der stehen geblieben wird. Untere Grenze
 	/// </summary>
@@ -68,9 +64,6 @@ public class Soldier : MLeftRightClimb<Soldier> {
 		//Geschwindigkeit setzen
 		MaxSpeed = 7.0f;
 		MaxForce = 7.0f;
-		
-		//Audio-Referenz laden wenn noch nicht geschehen
-		if(ac_shoot == null) ac_shoot = (AudioClip) Resources.Load("Sounds/shoot2");
 	}
 	
 	

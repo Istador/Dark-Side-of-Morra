@@ -51,13 +51,6 @@ public abstract class Enemy<T> : Entity {
 	}
 	
 	
-	/// <summary>
-	/// Referenz auf das Geräusch, dass abgespielt werden soll, wenn ein 
-	/// Health-Globe beim sterben des Gegners fallengelassen wird.
-	/// </summary>
-	private static AudioClip ac_healthdrop;
-	
-	
 	
 	// Health Globes
 	// 0,3 * ( 0,3 * 50 + 0,7 * 10 ) = 6,6 HP on average
@@ -123,9 +116,6 @@ public abstract class Enemy<T> : Entity {
 	protected override void Start() {
 		base.Start();
 		
-		//Referenz auf den Sound für den Health-Globe-Drop laden
-		if(ac_healthdrop == null) ac_healthdrop = (AudioClip) Resources.Load("Sounds/healthfall");
-		
 		//Zustandsautomaten starten (Enter)
 		MoveFSM.Start();
 		AttackFSM.Start();
@@ -177,22 +167,22 @@ public abstract class Enemy<T> : Entity {
 		
 		//soll ein Health Globe droppen?
 		if(rnd.NextDouble() <= f_HealthGlobeProbability ){
-			UnityEngine.Object res;
+			string res;
 			
 			//soll es ein großer oder kleiner Health Globe sein?
 			if(rnd.NextDouble() <= f_HealthGlobeBigProbability)
 				//groß
-				res = Resources.Load("bigHP");
+				res = "bigHP";
 			else 
 				//klein
-				res = Resources.Load("smallHP");
+				res = "smallHP";
 			
 			//Health Globe erstellen
 			GameObject obj = Instantiate(res);
 			HealthGlobe hg = obj.GetComponent<HealthGlobe>();
 			
 			//Geräusch machen
-			hg.PlaySound(ac_healthdrop);
+			hg.PlaySound("healthfall");
 			
 			//Health Globe kurz nach oben bewegen lassen
 			hg.rigidbody.AddForce(Vector3.up * 4.0f, ForceMode.Impulse);

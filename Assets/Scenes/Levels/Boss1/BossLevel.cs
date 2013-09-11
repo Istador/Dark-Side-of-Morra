@@ -5,7 +5,7 @@ using System.Collections;
 /// Zentrales Skript für das gesamte Boss-Level, um die jeweiligen
 /// Trigger für den Story-Ablauf ein- und auszuschalten.
 /// 
-public class BossLevel : MonoBehaviour, MessageReceiver {
+public class BossLevel : GeneralObject {
 	
 	
 	
@@ -30,22 +30,10 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 	private GameObject cellTrigger;
 	
 	/// <summary>
-	/// Prefab des Schlüssels, den der Boss fallen lässt.
-	/// </summary>
-	public GameObject keyPrefab;
-	
-	/// <summary>
 	/// Nicht der Boss, sondern die Referenz auf den Trigger, der wenn er
 	/// betätigt wird das Ausschlüpfen der Spinne startet.
 	/// </summary>
 	public GameObject boss;
-	
-	
-	
-	/// <summary>
-	/// Geräusch einer öffnenden/schließenden Tür
-	/// </summary>
-	public AudioClip ac_door;
 	
 	
 	
@@ -62,7 +50,7 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 	
 	
 	// Methode um eingehende Nachrichten zu verarbeiten
-	public bool HandleMessage(Telegram msg){
+	public override bool HandleMessage(Telegram msg){
 		//Nachrichteneingang, je nach Nachricht etwas anderes tun
 		switch(msg.message){
 			
@@ -72,7 +60,7 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 				door1.collider.enabled = false;
 				door1.renderer.enabled = false;
 				//Tür-Geräusch
-				AudioSource.PlayClipAtPoint(ac_door, door1.collider.bounds.center);
+				PlaySound("door", Posi(door1));
 				return true;
 			
 			//Spieler hat den Raum betreten
@@ -81,7 +69,7 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 				door1.collider.enabled = true;
 				door1.renderer.enabled = true;
 				//Tür-Geräusch
-				AudioSource.PlayClipAtPoint(ac_door, door1.collider.bounds.center);
+				PlaySound("door", Posi(door1));
 				return true;
 			
 			//Das 2. Gespräch, mit dem pinken Einhorn, ist vorrüber
@@ -102,12 +90,12 @@ public class BossLevel : MonoBehaviour, MessageReceiver {
 				door1.renderer.enabled = false;
 				door1.collider.enabled = false;
 				//Tür-Geräusch
-				AudioSource.PlayClipAtPoint(ac_door, door1.collider.bounds.center);
+				PlaySound("door", Posi(door1));
 				//Tür 2 öffnen
 				door2.renderer.enabled = false;
 				door2.collider.enabled = false;
 				//Tür-Geräusch
-				AudioSource.PlayClipAtPoint(ac_door, door2.collider.bounds.center);
+				PlaySound("door", Posi(door2));
 				return true;
 			
 			//Das 3. Gespräch, mit dem pinken Einhorn, ist vorrüber

@@ -11,19 +11,6 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	
 	
 	/// <summary>
-	/// Referenz auf das Explosionsgeräusch, für wenn dieser Gegner stirbt.
-	/// </summary>
-	public static AudioClip ac_explosion;
-	
-	/// <summary>
-	/// Referenz auf das Explosions-Prefab, für wenn dieser Gegner stirbt.
-	/// </summary>
-	public static Object res_explosion;
-	
-	
-	
-	
-	/// <summary>
 	/// Entfernung bei welcher der Spieler zu Dicht ist zum Starten von Raketen
 	/// </summary>
 	public static readonly float f_closeRange = 2.0f;
@@ -67,18 +54,6 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	
 	
 	
-	protected override void Start(){
-		base.Start();
-		
-		//Referenz auf das Explosions-Sound-Objekt laden
-		if(ac_explosion == null) ac_explosion = (AudioClip) Resources.Load("Sounds/explode");
-		
-		//Referenz auf das Explosions-Prefab laden
-		if(res_explosion == null) res_explosion = Resources.Load("prefab Explosion");
-	}
-	
-	
-	
 	protected override void Update(){
 		base.Update();
 		
@@ -97,13 +72,13 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	public override void Death(){
 				
 		//Explosionsanzeige
-		GameObject explosion = Instantiate(res_explosion);
+		GameObject explosion = Instantiate("prefab Explosion");
 		
 		//nach 0.5 sekunden explosion entfernen
 		UnityEngine.Object.Destroy(explosion, 0.5f); 
 		
 		//Explosionsgeräusch
-		PlaySound(ac_explosion);
+		PlaySound("explode");
 		
 		base.Death();
 	}

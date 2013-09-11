@@ -21,7 +21,7 @@ public class SMineRed : State<Enemy<Mine>> {
 		//Ticken
 		if(owner.SpriteCntrl.index == 1){
 			if(! ((Mine)owner).ticked){
-				AudioSource.PlayClipAtPoint(Mine.ac_tick, owner.collider.bounds.center);
+				owner.PlaySound("minetick");
 				((Mine)owner).ticked = true;
 			}
 		} else

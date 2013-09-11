@@ -27,20 +27,6 @@ public class PRocket : Projektile<PRocket> {
 	
 	
 	
-	/// <summary>
-	/// Referenz auf das Explosionsgeräusch, das beim Tode abgespielt wird
-	/// </summary>
-	private static AudioClip ac_explosion;
-	
-	
-	
-	/// <summary>
-	/// Referenz auf das explosions Prefab
-	/// </summary>
-	private static Object res_explosion;
-	
-	
-	
 	protected override void Start(){
 		//Zielposition setzen
 		TargetPos = Pos + Heading.normalized * MaxSpeed;
@@ -57,13 +43,7 @@ public class PRocket : Projektile<PRocket> {
 		
 		//Geschwindigkeit setzen
 		MaxSpeed = 2.4f;
-		MaxForce = 2.4f;
-		
-		//Explosions Prefab laden
-		if(res_explosion == null) res_explosion = Resources.Load("prefab kleineExplosion");
-		
-		//Explosionsgeräusch laden
-		if(ac_explosion == null) ac_explosion = (AudioClip) Resources.Load("Sounds/explode");
+		MaxForce = 2.4f;		
 	}
 	
 	
@@ -94,13 +74,13 @@ public class PRocket : Projektile<PRocket> {
 	public override void Death(){
 				
 		//Explosionsanzeige
-		GameObject explosion = Instantiate(res_explosion);
+		GameObject explosion = Instantiate("prefab kleineExplosion");
 		
 		//nach 0.5 Sekunden Explosion wieder auflösen
 		Destroy(explosion, 0.5f);
 		
 		//Explosionsgeräusch
-		PlaySound(ac_explosion);
+		PlaySound("explode");
 		
 		//ansonsten normale sterben
 		base.Death();
