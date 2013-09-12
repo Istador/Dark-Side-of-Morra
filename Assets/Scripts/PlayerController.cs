@@ -50,8 +50,6 @@ public class PlayerController : MonoBehaviour
 	private bool shootingAllowed = true;
 	public float shootingDelay = 0.5f;
 	
-	
-	
 	void  Start ()
 	{
 		characterController = GetComponent<CharacterController>();
