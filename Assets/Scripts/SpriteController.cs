@@ -3,11 +3,13 @@ using System.Collections;
 
 public class SpriteController : MonoBehaviour
 {
+
+
+
 	private static System.Random rnd = new System.Random();
 	
 	public int index {get; private set;}
 	//public int index {public get{return _index;}}
-	
 	
 	//random positive integer -> random animation position for different entities
 	public readonly int rndCol = System.Math.Abs(rnd.Next());
@@ -16,13 +18,18 @@ public class SpriteController : MonoBehaviour
 	
 	public void  animate (int columnSize, int rowSize, int colFrameStart, int rowFrameStart, int totalFrames, int framesPerSecond)
 	{		
+
+
+
 		// time control fps
 		index = (int) (Time.time * framesPerSecond);
+
 		// modulate
 		index %= totalFrames;
 
 		// scale
 		Vector2 size = new Vector2( (1.0f / columnSize) , (1.0f / rowSize) );
+
 		// offset
 		float u = (index + (rndCol % columnSize )) % columnSize;
 		
@@ -32,7 +39,14 @@ public class SpriteController : MonoBehaviour
 		
 		// texture scale
 		renderer.material.mainTextureScale = size;
+
 		// texture offset
 		renderer.material.mainTextureOffset = offset;
+
+
+
 	}
+
+
+
 }

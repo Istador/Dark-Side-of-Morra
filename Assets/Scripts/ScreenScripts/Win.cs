@@ -1,20 +1,18 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
-//TODO: Credits
-
-public class Credits : SceneMenu
+public class Win : SceneMenu
 {
 	/// <summary>
 	/// Array aller Buttons die angezeigt werden sollen
 	/// </summary>
 	private object[,] _scenes = new object[,]
 	{
-		{1, "Level auswählen", null},
+		{3, "Nochmal", null},
 		{2, "Credits", null},
-		{0, "Spiel beenden", null}
+		{0, "Zum Hauptmenü"}
 	};
-
+	
 	/// <summary>
 	/// Methode der Oberklasse um auf die Szenen zuzugreifen
 	/// </summary>
