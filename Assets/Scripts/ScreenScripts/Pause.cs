@@ -78,6 +78,7 @@ public class Pause : Menu {
 			keys.Add(KeyCode.Pause);
 			keys.Add(KeyCode.Menu);
 			keys.Add(KeyCode.Break);
+			keys.Add(KeyCode.JoystickButton7);
 		}
 	}
 	

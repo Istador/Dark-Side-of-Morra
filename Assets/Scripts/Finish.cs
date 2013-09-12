@@ -6,6 +6,10 @@ public class Finish : MonoBehaviour
 
 
 
+	public int levelToLoadNext = 0;
+
+
+
 	void OnTriggerEnter ( Collider hit )
 	{
 
@@ -30,7 +34,7 @@ public class Finish : MonoBehaviour
 			MessageDispatcher.I.EmptyQueue();
 			
 			//zur Level-Auswahl
-			Application.LoadLevel(1);
+			Application.LoadLevel(levelToLoadNext);
 			
 			Debug.Log("Level zu Ende");
 

@@ -98,6 +98,7 @@ public class Dialog : MonoBehaviour {
 				   ( autoSkip &&( (Time.time - startTime) > displayTime ) )
 				|| Input.GetKeyDown(KeyCode.Return)
 				|| Input.GetKeyDown(KeyCode.KeypadEnter)
+				|| Input.GetKeyDown(KeyCode.JoystickButton2)
 			){
 				//Nächster Text
 				NextText();
@@ -137,6 +138,8 @@ public class Dialog : MonoBehaviour {
 			//Schießen des Spielers unterbinden
 			pc.CanShoot = false;
 			
+			Screen.showCursor = true;
+
 			//Falls eine pre-Dialog-Aktion vorhanden ist
 			if(preDialog != null)
 				preDialog(gameObject); //führe sie aus
@@ -214,6 +217,8 @@ public class Dialog : MonoBehaviour {
 		pc.CanMove = true;
 		//Spieler kann wieder schießen
 		pc.CanShoot = true;
+		
+		Screen.showCursor = false;
 		
 		//Falls eine post-Dialog-Aktion vorhanden ist
 		if(postDialog != null)

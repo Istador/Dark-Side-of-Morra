@@ -108,7 +108,7 @@ public class BossLevel : GeneralObject {
 			
 				//Credits laden
 				MessageDispatcher.I.EmptyQueue();
-				Application.LoadLevel(2);	
+				Application.LoadLevel(7);	
 			
 				return true;
 			

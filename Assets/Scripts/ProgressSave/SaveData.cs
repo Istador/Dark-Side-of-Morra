@@ -17,7 +17,7 @@ public class SaveData : ISerializable
 
 	// === Values ===
 	// Edit these during gameplay
-	public static int levelReached = 3;
+	public static int levelReached = 2;
 	// === /Values ===
 	
 	// The default constructor. Included for when we call it during Save() and Load()

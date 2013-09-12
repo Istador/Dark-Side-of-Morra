@@ -21,7 +21,7 @@ public class MainMenu: SceneMenu {
 				
 				//beendet das Spielen innerhalb des Unity-Editors
 				//TODO: Auskommentieren für Release-Build !
-				UnityEditor.EditorApplication.isPlaying = false;
+				//UnityEditor.EditorApplication.isPlaying = false;
 			}
 		)}
 	};

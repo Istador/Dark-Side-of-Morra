@@ -94,6 +94,8 @@ public class PlayerController : MonoBehaviour
 	
 
 
+		Screen.showCursor = false;
+
 		characterController = GetComponent<CharacterController>();
 	
 		currentHealth = MAX_HEALTH;
