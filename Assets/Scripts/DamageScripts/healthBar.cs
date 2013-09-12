@@ -39,7 +39,7 @@ public class healthBar : MonoBehaviour {
 	
 	void OnGUI (){
 		
-		int hp = pc.currentHealth;
+		int hp = pc.Health;
 		
 		int factor = (int) ( ((float)hp) / ((float)PlayerController.MAX_HEALTH) * 10.0f );
 		

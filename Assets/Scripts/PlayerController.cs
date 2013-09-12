@@ -41,7 +41,19 @@ public class PlayerController : MonoBehaviour
 
 	// health
 	public const int MAX_HEALTH = 100;
-	public int currentHealth = 100;
+	private int currentHealth = 100;
+
+	// property health
+	public int Health
+	{
+		get {return currentHealth;}
+		private set {
+			//Wert verändern
+			currentHealth = value;
+			//Health in bestimmten Wertebereich halten
+			Utility.MinMax(ref currentHealth, 0, MAX_HEALTH);
+		}
+	}
 
 	// shoot
 	public GameObject bullet;
@@ -308,7 +320,7 @@ public class PlayerController : MonoBehaviour
 			Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
 		
 			// HP verringern
-			currentHealth -= dmg;
+			Health -= dmg;
 				
 			// Geräusch
 			float volume = 0.2f + 0.8f * ((float)dmg)/30.0f; //ab 30 dmg volle lautstärke, dadrunter abhängig vom schaden
@@ -349,7 +361,7 @@ public class PlayerController : MonoBehaviour
 		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+hp+" hp received");
 		
 		// HP erhöhen
-		currentHealth += hp;
+		Health += hp;
 	}
 	
 
