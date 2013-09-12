@@ -57,7 +57,7 @@ public class Dialog : MonoBehaviour {
 	/// <summary>
 	/// Referenz auf den Spieler
 	/// </summary>
-	private PlayerController pc;
+	protected PlayerController pc;
 	
 	
 	
@@ -102,6 +102,15 @@ public class Dialog : MonoBehaviour {
 				//Nächster Text
 				NextText();
 			}
+		}
+		// während des Dialogs die Steh-Animation abspielen
+		if(pc.lookRight)
+		{
+			pc.anim((int)PlayerController.AnimationTypes.stayRight);
+		}
+		else
+		{
+			pc.anim((int)PlayerController.AnimationTypes.stayLeft);
 		}
 	}
 	

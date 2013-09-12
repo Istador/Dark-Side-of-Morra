@@ -58,10 +58,13 @@ public class PlayerController : MonoBehaviour
 
 	void  Update ()
 	{
-		InputCheck();
-		if(CanMove) Move();
+		if(CanMove)
+		{
+			InputCheck();
+			Move();
+			Animate();
+		}
 		if(CanShoot) Shoot();
-		Animate();
 		CheckForDeath();
 	}
 
