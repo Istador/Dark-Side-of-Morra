@@ -13,7 +13,7 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 	/// Position in Weltkoordinaten an der die Rakete spawnen soll
 	/// </value>
 	public Vector3 bulletSpawn { get{
-			return Pos + Heading * Width/4.0f + Vector3.up * Height/8.0f;
+			return Pos + Heading * Width/10.0f + Vector3.up * Height/10.0f;
 		}
 	}
 	

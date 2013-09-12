@@ -29,7 +29,7 @@ public class PRocket : Projektile<PRocket> {
 	
 	protected override void Start(){
 		//Zielposition setzen
-		TargetPos = Pos + Heading.normalized * MaxSpeed;
+		TargetPos = PlayerPos;
 		
 		base.Start();
 		

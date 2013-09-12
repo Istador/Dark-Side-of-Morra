@@ -86,7 +86,7 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	/// Rotiere das Projektil in Bewegungsrichtung
 	/// </summary>
 	protected void Rotate(){
-		Vector3 rotate = rigidbody.velocity.Equals(Vector3.zero) ? TargetPos : rigidbody.velocity ;
+		Vector3 rotate = rigidbody.velocity.Equals(Vector3.zero) ? TargetPos - Pos : rigidbody.velocity ;
 		
 		//Rotiere zum Ziel entlang der Z-Achse
 		transform.rotation = Quaternion.LookRotation(rotate, zvector);

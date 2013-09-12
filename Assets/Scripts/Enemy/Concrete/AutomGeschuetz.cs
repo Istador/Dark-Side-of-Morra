@@ -34,8 +34,8 @@ public class AutomGeschuetz : ImmovableEnemy<AutomGeschuetz> {
 	/// </summary>
 	public Vector3 bulletSpawn { get{
 			return Pos 
-				+ Heading * Width/4.0f
-				+ Vector3.up * Height/8.0f
+				+ Heading * Width/10.0f
+				+ Vector3.up * Height/10.0f
 			;
 		}
 	}
