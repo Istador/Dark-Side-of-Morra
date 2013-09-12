@@ -285,3 +285,103 @@ Gesamt: ~ 137h 27m
 17:27 - 17:41	Bugfixing Soldat (betritt die Leiter wieder neu wenn er abrutscht)
 22:27 - 22:48	Boss-Level an WhiteBoard gestalten, StoryBoard
 22:59 - 23:42	Spinnen-Zustände
+23:51 - 00:34	kleine Korrekturen u.a. am HealthBar Script von Tanja
+--- 1h 59m + 4h 41m + 14m + 14m + 21m + 43m + 43m = 8h 55m
+Gesamt: ~ 146h 22m
+---
+05.09.2013
+12:07 - 13:11	Meeting Hinfahrt
+13:11 - 15:24	Meeting mit Bent, Tanja, Dennis (Verspätet)
+15:24 - 16:33	Meeting Rückfahrt
+--- 1h 4m + 2h 13m + 1h 9m = 4h 26m
+Gesamt: ~ 150h 48m
+---
+06.09.2013
+09:16 - 10:14	Soldaten zum Prefab machen und in Levels einbauen
+10:19 - 10:56	Player-Bullet überarbeiten, collidiert merkwürdigerweise nur mit einigen Gegnern
+		lag daran, dass sie keinen rigidbody hatten...
+10:56 - 11:37	kleine Anpassungen ans Level, fallende Blöcke Texturskalierung, Player-Bullets richtig positionieren bei Richtungsänderung
+11:55 - 13:36	Spinnen-Boss-Level erstellen
+16:15 - 16:28	Bodenplatten für Bosskampf programmieren
+17:23 - 19:18	weiter an Bodenplatten
+19:34 - 21:02	Storyrelevante Trigger und Aktionen in Boss-Level eingebaut
+21:17 - 21:48	Merge Conflict behoben, Tanja hatte eine alte Version von Level 2 bearbeitet und committet obwohl ich Level2 bereits auf einen neueren Stand überarbeitet hatte.
+--- 58m + 37m + 41m + 1h 41m + 13m + 1h 55m + 1h 28m + 31m = 8h 4m
+Gesamt: ~ 158h 52m
+---
+06.09.2013
+12:38 - 13:24	Neue Textur für Stachel von Dennis einbauen
+		(Links-/Rechtsbewegung vertauscht, und ein Frame nicht transparent)
+13:24 - 16:12	Skype-Meeting
+		dabei verschiedene Texturen einbauen, Spinnen-Kokon programmieren
+16:18 - 17:06	Skype-Meeting weiter
+17:06 - 17:20	an der Spinne selbst arbeiten
+17:39 - 17:55	Bullet-Textur ändern
+17:55 - 18:10	Sound-Geräusche für die Türen ins Boss-Level einbauen
+18:12 - 20:24	Spinne weiter programmieren, es fehlt nur noch das Angreifen der Spinne
+20:38 - 23:18	Spinne zuende programmieren
+--- 46m + 2h 48m + 48m + 14m + 16m + 15m + 2h 12m + 2h 40m = 9h 59m
+Gesamt: ~ 168h 51m
+---
+08.09.2013
+00:56 - 03:28	Den Kampf mit der Spinne um einen Boss-Lebensbalken erweitern
+03:28 - 04:01	Beim Bodenplatten-Event der Spinne den ganzen Boden rot einfärben und nicht nur die in der Mitte.
+11:34 - 11:46	Lebensbalken vom Boss von Grün ins Rot übergehen lassen?
+		unsicher ob gut, programmieren und schauen wie es sich anfühlt.
+		nicht so schön, optional
+11:46 - 12:46	RPG-Soldat an Textur anpassen, sowie die Positionen aller Gegner in Level 1 und 2
+14:10 - 16:17	Dialog fürs Boss-Level programmieren
+16:24 - 18:27	Diverse Sprites einbauen
+18:53 - 19:44	Soldier sprite ist noch nicht so gewünscht, anpassen damit ich schon mal damit arbeiten kann
+20:37 - 22:44	weiter am Sprite arbeiten
+22:44 - 00:49	Levels insbesondere Leitern an Soldaten anpassen
+--- 2h 32m + 33m + 12m + 1h + 2h 7m + 2h 3m + 51m + 2h 7m + 2h 5m = 13h 30m
+Gesamt: ~ 182h 21m
+---
+09.09.2013
+00:56 - 04:13	Level-Select, Save und Load verbessert
+04:13 -	06:44	Spiel pausieren
+08:40 - 09:03	Finetuning einiger Gegner
+09:47 -	10:53	Code-Review, meinen gesamten Code nochmal anschauen und kommentieren
+11:00 - 12:12	Bestandsaufnahme was noch alles zu machen ist mit Bent in Skype
+12:12 -	12:45	weiter Code-Review und Kommentare
+12:49 - 14:18	weiter
+--- 3h 17m + 2h 31m + 23m + 1h 6m + 1h 12m + 33m + 1h 29m = 10h 31m
+Gesamt: ~ 192h 52m
+---
+10.09.2013
+02:32 -	03:34	Spieler im Boss-Level bewegt sich zu Beginn von Links nach Rechts in den Raum hinein
+03:42 - 03:56	Dialog als Vererbung statt mehrere unterschiedliche Skripts
+04:01 - 04:56	Soldaten Leiter-Erkennung überarbeiten, damit die Leitern kleiner werden können.
+04:56 - 07:41	Leitern in Level 1 und 2 anpassen, sowie Level 2 überarbeiten
+09:55 - 12:13	Code-Review und Kommentare
+12:43 - 16:30	weiter, sowie Code Refactoring von Enemy und Entity
+16:33 - 17:07	weiter
+17:26 - 20:46	Code-Review, Code Refactoring und Kommentare (Enemy/Abstract/* und Enemmy/Abstract/System/*)
+21:57 - 00:41	weiter
+--- 1h 2m + 14m + 55m + 2h 45m + 2h 18m + 3h 47m + 34m + 3h 20m + 2h 44m = 17h 39m
+Gesamt: ~ 210h 31m
+---
+11.09.2013
+00:46 - 01:45	weiter MLeftRight und MLeftRightClimb Kommentieren, Reviewn und Refactoren
+02:06 -	03:34	weiter mit anderen Dateien
+11:20 - 11:54	Dokumentation für Präsentation (Review der Teamarbeit)
+12:38 - 12:52	weiter an der Dokumentation
+13:11 - 15:25	Kommentierung / Refactoring RPG-Soldat und Soldat
+15:30 -	17:36	RessourcenManager um auf Ressourcen wie Prefabs, Sounds und Materialien einfach zuzugreifen.
+17:48 -	19:36	Kommentierung / Refactoring der Zustände
+19:48 - 23:47	weiter alle Zustände fertig. Einige Bugs betreffend Leitern und Soldaten behoben.
+23:47 - 00:13	Dokumentation für Präsentation
+--- 59m + 1h 28m + 34m + 14m + 2h 14m + 2h 6m + 1h 48m + 3h 59m + 26m = 13h 48m
+Gesamt: ~ 224h 19m
+---
+12.09.2013
+00:35 - 01:04	Diverse Sprites erstellen / kopieren / anpassen (RPG-Soldat)
+02:17 - 04:35	weiter (Mine)
+04:42 -	06:06	weiter (Soldat, Stachel)
+08:10 - 08:47	weiter (Einhorn Animation)
+08:52 - 09:42	UML-Klassendiagramme für Dokumentation auf Whiteboard zeichnen
+		GeneralObject, Entity, MessageDispatcher, Telegram, MessageReceiver
+10:34 - 12:23	weiter (alle restlichen Enemy-Klassen zeichnen)
+12:23 - 13:16	Vereinfachtes Diagram als Übersicht zeichnen
+15:17 - 16:14	Gegner-Analyse und OO-Gegner-Analyse auf den aktuellen Stand bringen.
