@@ -565,11 +565,8 @@ public class PlayerController : MonoBehaviour
 	// Blinken und kurz Bewegung aussetzen
 	IEnumerator DamageEffect()
 	{
-
-
-
-		godMode = true;
-
+		
+		
 		renderer.enabled = false;
 
 		movementAllowed = false;
@@ -595,9 +592,6 @@ public class PlayerController : MonoBehaviour
 		yield return new WaitForSeconds(damageEffectPause);
 
 		renderer.enabled = true;
-
-		godMode = false;
-
 
 
 	}
