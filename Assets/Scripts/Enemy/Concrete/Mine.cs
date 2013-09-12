@@ -66,7 +66,7 @@ public class Mine : ImmovableEnemy<Mine> {
 		
 		//Sprite-Eigenschaften
 		txtCols = 10;
-		txtRows = 3;
+		txtRows = 4;
 		txtFPS = 20;
 		
 		//SpriteController einschalten
