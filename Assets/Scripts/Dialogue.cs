@@ -8,12 +8,12 @@ public class Dialogue : MonoBehaviour {
 	
 		private bool talking;
 		private bool textIsScrolling;
-		//private CharacterController characterController; //unused
+		
 		private int currentLine;
 
 	
 	void Start () {
-		//characterController = GetComponent<CharacterController>();
+		
 	}
 	void 	Update () {
    		Speek();
