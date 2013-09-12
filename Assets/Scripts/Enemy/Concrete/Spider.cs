@@ -33,6 +33,12 @@ public class Spider : MovableEnemy<Spider> {
 	/// </summary>
 	public Bodenplatten platten  {get; private set;}
 	
+	/// <summary>
+	/// Referenz auf den Player Collider mit dem die Spinne bei Berührung
+	/// Schaden verursacht.
+	/// Benötigt, um ihn manuell ein und auszuschalten.
+	/// </summary>
+	public Collider playerCollider {get; private set;}
 	
 	
 	/// <summary>
@@ -118,6 +124,7 @@ public class Spider : MovableEnemy<Spider> {
 		//Referenzen laden
 		platten = GameObject.Find("Bodenplatten").GetComponent<Bodenplatten>();
 		healthbar = (BossHealthBar) GameObject.FindObjectOfType(typeof(BossHealthBar));
+		playerCollider = ((PlayerCollider)GameObject.FindObjectOfType(typeof(PlayerCollider))).collider;
 		
 		//nach Rechts gucken
 		Sprite = 1;

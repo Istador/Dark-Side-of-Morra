@@ -43,6 +43,9 @@ public class SSpiderAuftauchen : State<Enemy<Spider>> {
 	public override void Exit(Enemy<Spider> owner){
 		//wieder angreifbar werden
 		((Spider)owner).Invincible = false;
+		
+		//playerCollider verursacht nun wieder Schaden bei Berührung
+		((Spider)owner).playerCollider.enabled = true;
 	}
 	
 	

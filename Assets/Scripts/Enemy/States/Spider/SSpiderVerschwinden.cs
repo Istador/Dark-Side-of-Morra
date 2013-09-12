@@ -14,6 +14,9 @@ public class SSpiderVerschwinden : State<Enemy<Spider>> {
 		//Unbesiegbar werden
 		((Spider)owner).Invincible = true;
 		
+		//playerCollider verursacht keinen Schaden mehr bei Berührung
+		((Spider)owner).playerCollider.enabled = true;
+		
 		//Platten-Event starten
 		MessageDispatcher.I.Dispatch(owner, ((Spider)owner).platten, "begin", 0.5f);
 		

@@ -42,7 +42,7 @@ public class Bodenplatten : MonoBehaviour, MessageReceiver {
 	/// <summary>
 	/// Zeit die der Spieler hat um auf die richtige Bodenplatte zu kommen.
 	/// </summary>
-	public static readonly float f_duration = 5.0f;
+	public static readonly float f_duration = 4.0f;
 	
 	
 	

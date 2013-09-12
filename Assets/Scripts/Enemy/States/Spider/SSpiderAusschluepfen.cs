@@ -41,6 +41,9 @@ public class SSpiderAusschluepfen : State<Enemy<Spider>> {
 	public override void Exit(Enemy<Spider> owner){
 		//Spinne jetzt nicht mehr unbesiegbar.
 		((Spider)owner).Invincible = false;
+		
+		//playerCollider verursacht nun Schaden bei Berührung
+		((Spider)owner).playerCollider.enabled = true;
 	}
 	
 	
