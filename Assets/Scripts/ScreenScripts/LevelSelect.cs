@@ -9,9 +9,9 @@ public class LevelSelect : SceneMenu {
 	/// Array aller Szenen die geladen werden können
 	/// </summary>
 	private object[,] _scenes = new object[,] {
-		{2, "Level 1"},
-		{3, "Level 2"},
-		{4, "Boss"},
+		{3, "Level 1"},
+		{5, "Level 2"},
+		{7, "Boss"},
 		{0, "Zum Hauptmenü"}
 	};
 	

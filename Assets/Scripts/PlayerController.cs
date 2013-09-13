@@ -91,9 +91,14 @@ public class PlayerController : MonoBehaviour
 
 	void  Start ()
 	{
-	
+		if(SaveData.levelReached < Application.loadedLevel){
+			SaveData.levelReached = Application.loadedLevel;
+			SaveLoad.Save();
+		}
+			
+		Debug.Log(Application.loadedLevel + " " + SaveData.levelReached);
 
-
+		//KMauszeiger ausblenden
 		Screen.showCursor = false;
 
 		characterController = GetComponent<CharacterController>();

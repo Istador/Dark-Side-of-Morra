@@ -82,6 +82,11 @@ public class Dialog : MonoBehaviour {
 	
 	
 	
+	public bool IsPaused{get{
+			return Time.timeScale == 0.0f;
+		}}
+	
+	
 	protected virtual void Start(){
 		//Player referenz holen
 		pc = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
@@ -138,6 +143,7 @@ public class Dialog : MonoBehaviour {
 			//Schießen des Spielers unterbinden
 			pc.CanShoot = false;
 			
+			//Mauszeiger wieder einblenden
 			Screen.showCursor = true;
 
 			//Falls eine pre-Dialog-Aktion vorhanden ist
@@ -151,7 +157,7 @@ public class Dialog : MonoBehaviour {
 	//GUI-Zeichnen
 	protected virtual void OnGUI(){
 		//wenn der Dialog gestartet und noch nicht beendet wurde
-		if(started && !finished){
+		if(started && !IsPaused && !finished){
 			
 			//DialogBoxBreite abhängig von der Bildschirmbreite berechnen
 			int width = (int) ((double)Screen.width * 5.0 / 6.0 ); //5/6 Bildschirmbreite
@@ -218,6 +224,7 @@ public class Dialog : MonoBehaviour {
 		//Spieler kann wieder schießen
 		pc.CanShoot = true;
 		
+		//Mauszeiger ausblenden
 		Screen.showCursor = false;
 		
 		//Falls eine post-Dialog-Aktion vorhanden ist

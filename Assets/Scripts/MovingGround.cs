@@ -91,7 +91,7 @@ public class MovingGround : MonoBehaviour
 
 		}
 
-		Debug.Log(PlayerIsOnGround);
+		//Debug.Log(PlayerIsOnGround);
 
 
 

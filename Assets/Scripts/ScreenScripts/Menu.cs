@@ -72,6 +72,9 @@ public abstract class Menu : MonoBehaviour {
 	
 	
 	protected virtual void Start(){
+		//cursor anzeigen
+		Screen.showCursor = true;
+		
 		//Verhältnis aus Breite und Höhe des Hintergrundbildes berechnen
 		factor1 = (float)hintergrund.width / (float)hintergrund.height;
 	}

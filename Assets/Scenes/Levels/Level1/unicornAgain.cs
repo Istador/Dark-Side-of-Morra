@@ -8,20 +8,20 @@ public class unicornAgain : Dialog
 	private bool goBack;
 	private float distance = 0.5f;
 
-	void Start()
+	protected override void Start()
 	{
 		base.Start();
 		cc = pc.GetComponent<CharacterController>();
 	}
 
-	void OnTriggerEnter(Collider hit)
+	protected override void OnTriggerEnter(Collider hit)
 	{
 		base.OnTriggerEnter(hit);
 		startPosition = pc.transform.position;
 		goBack = true;
 	}
 
-	void Update()
+	protected override void Update()
 	{
 		base.Update();
 		if (goBack)

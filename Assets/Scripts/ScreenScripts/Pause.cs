@@ -118,8 +118,13 @@ public class Pause : Menu {
 		
 		//Zeit anhalten
 		Time.timeScale = 0.0f;
+		
+		//cursor merken
+		cursor = Screen.showCursor;
+		Screen.showCursor = true;
 	}
 	
+	private bool cursor = true;
 	
 	
 	/// <summary>
@@ -133,6 +138,9 @@ public class Pause : Menu {
 		
 		//Zeit weiterlaufen lassen
 		Time.timeScale = 1.0f;
+		
+		//cursor zurücksetzen
+		Screen.showCursor = cursor;
 	}
 	
 	
