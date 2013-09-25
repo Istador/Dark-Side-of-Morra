@@ -56,7 +56,12 @@ public class SaveLoad
 	
 	// Call this to write data
 	public static void Save () { // Overloaded
-		if(!Application.isWebPlayer)
+		//verwendet WebPlayer
+		if(Application.isWebPlayer)
+			//verwende Unity interne Speicherfunktion
+			PlayerPrefs.SetInt("levelReached", SaveData.levelReached);
+		else
+			//Speicher in Datei
 			Save (currentFilePath);
 	}
 	
@@ -77,7 +82,11 @@ public class SaveLoad
 	
 	// Call this to load from a file into "data"
 	public static void Load ()  {  // Overloaded
-		if(!Application.isWebPlayer)
+		//verwendet WebPlayer
+		if(Application.isWebPlayer)
+			//verwende Unity interne Ladefunktion
+			SaveData.levelReached = PlayerPrefs.GetInt("levelReached", SaveData.levelReached);
+		else
 			Load(currentFilePath);
 	}
 	

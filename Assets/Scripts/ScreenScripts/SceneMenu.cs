@@ -17,6 +17,8 @@ public abstract class SceneMenu : Menu {
 		
 		//Laden des gespeicherten Spielzustandes
 		SaveLoad.Load();
+		
+		CreateButtons();
 	}
 	
 	
@@ -41,7 +43,7 @@ public abstract class SceneMenu : Menu {
 	/// <summary>
 	/// Array aller anzuzeigenden Buttons
 	/// </summary>
-	private object[,] _buttons;
+	protected object[,] _buttons;
 	
 	
 	
@@ -60,7 +62,7 @@ public abstract class SceneMenu : Menu {
 	/// Erstellen der Button-Struktur für die Menu-Oberklasse, aus der Scenes-Struktur
 	/// von den konkreten Unterklassen.
 	/// </summary>
-	private void CreateButtons(){
+	protected void CreateButtons(){
 		//Bedingung um den Button anzuzeigen ist, dass das Level bereits erreicht wurde
 		Func<int,bool> pre = (id) => SaveData.levelReached >= id ;
 		

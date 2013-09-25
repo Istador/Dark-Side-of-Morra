@@ -35,4 +35,11 @@ public class MainMenu: SceneMenu {
 	
 	
 	
+	protected override void Start (){
+		base.Start();
+		
+		//Quit nicht im Editor oder WebPlayer zeigen
+		_buttons[2,2] = (Func<int,bool>)((id) => !Application.isWebPlayer && !Application.isEditor) ;
+	}
+	
 }
