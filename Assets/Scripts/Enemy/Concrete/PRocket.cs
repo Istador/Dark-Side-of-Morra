@@ -42,13 +42,13 @@ public class PRocket : Projektile<PRocket> {
 		Animated = true;
 		
 		//Geschwindigkeit setzen
-		MaxSpeed = 2.4f;
-		MaxForce = 2.4f;		
+		MaxSpeed = 2.8f;
+		MaxForce = 2.8f;		
 	}
 	
 	
 	
-	protected override void Update() {
+	protected override void FixedUpdate() {
 		//Wenn der Spieler in Sicht ist
 		if(LineOfSight(Player)){
 			//Strebe die Position des Spielers an
@@ -59,8 +59,8 @@ public class PRocket : Projektile<PRocket> {
 		else
 			Debug.DrawLine(Pos, TargetPos, Color.red);
 		
-		//u.a. Rotieren zum Ziel, Bewegung umsetzen
-		base.Update();
+		//Rotieren zum Ziel, Bewegung umsetzen
+		base.FixedUpdate();
 		
 		//Ziel erreicht, möglich wenn z.B. der Spieler nicht mehr sichtbar ist
 		if(DistanceTo(TargetPos) < 0.1){

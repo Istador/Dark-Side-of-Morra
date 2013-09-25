@@ -58,8 +58,8 @@ public class PBullet : Projektile<PBullet> {
 		Animated = true;
 		
 		//Geschwindigkeit setzen
-		MaxSpeed = 7.0f;
-		MaxForce = 7.0f;
+		MaxSpeed = 8.4f;
+		MaxForce = 8.4f;
 		
 		//Startzeitpunkt merken
 		d_startTime = Time.time;
@@ -67,12 +67,12 @@ public class PBullet : Projektile<PBullet> {
 	
 	
 	
-	protected override void Update() {
+	protected override void FixedUpdate() {
 		//Zielposition aktualisieren
 		TargetPos = Pos + Heading.normalized * MaxSpeed;
 		
-		//u.a. Rotieren zum Ziel, Bewegung umsetzen
-		base.Update();
+		//Rotieren zum Ziel, Bewegung umsetzen
+		base.FixedUpdate();
 		
 		//Sterben nach einer bestimmten Zeit
 		if(d_startTime + d_timeToLife <= Time.time)

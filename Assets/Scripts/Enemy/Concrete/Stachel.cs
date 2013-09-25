@@ -28,8 +28,8 @@ public class Stachel : MLeftRight<Stachel> {
 		Animated = true;
 		
 		//Geschwindigkeit setzen
-		MaxSpeed = 6.0f;
-		MaxForce = 6.0f;
+		MaxSpeed = 7.2f;
+		MaxForce = 7.2f;
 	}
 	
 	

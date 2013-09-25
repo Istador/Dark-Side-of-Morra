@@ -118,11 +118,9 @@ public abstract class MovableEnemy<T> : Enemy<T> {
 	
 	
 	/// <summary>
-	/// Zustandsautomaten, Animation, Steering Behaviors berechnen und anwenden
+	/// Steering Behaviors berechnen und anwenden
 	/// </summary>
-	protected override void Update () {
-		//Zustandsautomaten, Animation
-		base.Update();
+	protected virtual void FixedUpdate () {
 		
 		//resultierende Kraft der verschiedenen Steering Behaviors berechnen
 		Vector3 f = FilterForce(Steering.Calculate());

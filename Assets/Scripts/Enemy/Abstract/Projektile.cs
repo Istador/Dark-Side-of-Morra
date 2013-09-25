@@ -70,14 +70,14 @@ public abstract class Projektile<T> : MovableEnemy<T> {
 	/// <summary>
 	/// Ziel für Steering Behaviors setzen, Rotiere zum Ziel
 	/// </summary>
-	protected override void Update() {
+	protected override void FixedUpdate() {
 		//Seek-Ziel auf Position setzen
 		Steering.TargetPos = TargetPos;
 		
 		//Rotiere das Projektil in Richtung Ziel
 		Rotate();
 		
-		base.Update();
+		base.FixedUpdate();
 	}
 	
 	

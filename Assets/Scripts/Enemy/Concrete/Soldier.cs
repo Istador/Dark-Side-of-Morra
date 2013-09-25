@@ -62,8 +62,8 @@ public class Soldier : MLeftRightClimb<Soldier> {
 		Animated = true;
 		
 		//Geschwindigkeit setzen
-		MaxSpeed = 7.0f;
-		MaxForce = 7.0f;
+		MaxSpeed = 8.4f;
+		MaxForce = 8.4f;
 	}
 	
 	

@@ -118,8 +118,8 @@ public class Spider : MovableEnemy<Spider> {
 		Animated = true;
 		
 		//Geschwindigkeit setzen
-		MaxSpeed = 3.5f;
-		MaxForce = 8.0f;
+		MaxSpeed = 4.2f;
+		MaxForce = 9.6f;
 		
 		//Referenzen laden
 		platten = GameObject.Find("Bodenplatten").GetComponent<Bodenplatten>();

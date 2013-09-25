@@ -72,8 +72,8 @@ public class RPGSoldier : MLeftRight<RPGSoldier> {
 		Animated = true;
 		
 		//Geschwindigkeit setzen
-		MaxSpeed = 5.0f;
-		MaxForce = 5.0f;
+		MaxSpeed = 6.0f;
+		MaxForce = 6.0f;
 	}
 	
 	

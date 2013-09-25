@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
 			SaveLoad.Save();
 		}
 			
-		Debug.Log(Application.loadedLevel + " " + SaveData.levelReached);
+		//Debug.Log(Application.loadedLevel + " " + SaveData.levelReached);
 
 		//KMauszeiger ausblenden
 		Screen.showCursor = false;
