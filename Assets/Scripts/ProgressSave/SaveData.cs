@@ -56,7 +56,8 @@ public class SaveLoad
 	
 	// Call this to write data
 	public static void Save () { // Overloaded
-		Save (currentFilePath);
+		if(!Application.isWebPlayer)
+			Save (currentFilePath);
 	}
 	
 	
@@ -76,7 +77,8 @@ public class SaveLoad
 	
 	// Call this to load from a file into "data"
 	public static void Load ()  {  // Overloaded
-		Load(currentFilePath); 
+		if(!Application.isWebPlayer)
+			Load(currentFilePath);
 	}
 	
 	
