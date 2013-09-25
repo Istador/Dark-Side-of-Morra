@@ -104,9 +104,7 @@ public class PlayerController : MonoBehaviour
 		characterController = GetComponent<CharacterController>();
 	
 		currentHealth = MAX_HEALTH;
-		
-
-
+	
 	}
 
 	void  Update ()
@@ -380,8 +378,6 @@ public class PlayerController : MonoBehaviour
 	void  Animate ()
 	{
 
-
-
 		// wenn der spieler steht
 		if (velocity.x == 0)
 		{
@@ -409,7 +405,6 @@ public class PlayerController : MonoBehaviour
 		else
 		if (velocity.x < 0)
 		{
-
 			// dann animier ihn nach links laufend
 			anim((int)AnimationTypes.moveLeft);
 
@@ -417,7 +412,6 @@ public class PlayerController : MonoBehaviour
 
 		else
 		{
-
 			// oder eben nach rechts laufend
 			anim((int)AnimationTypes.moveRight);
 
@@ -446,20 +440,6 @@ public class PlayerController : MonoBehaviour
 
 		}
 		
-		// altes Code-Schnipsel als wir noch keine Grafiken hatten, hat die Dummy-Grafik gespiegelt um so links/rechts zu simulieren
-
-		/*if(!lookRight)
-		{
-
-			//Textur vertikal spiegeln
-			Vector2 tmp = renderer.material.mainTextureScale;
-
-			tmp = new Vector2(-tmp.x, tmp.y);
-
-			renderer.material.mainTextureScale = tmp;
-
-		}*/
-
 
 
 	}
@@ -520,8 +500,6 @@ public class PlayerController : MonoBehaviour
 
 		// enum an spritePlay.animate übergeben an gegebener Stelle
 		spritePlay.animate(columnSize, rowSize, colFrameStart, animType, totalFrames, framesPerSecond);
-
-
 
 	}
 

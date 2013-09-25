@@ -9,7 +9,6 @@ public class SpriteController : MonoBehaviour
 	private static System.Random rnd = new System.Random();
 	
 	public int index {get; private set;}
-	//public int index {public get{return _index;}}
 	
 	//random positive integer -> random animation position for different entities
 	public readonly int rndCol = System.Math.Abs(rnd.Next());
