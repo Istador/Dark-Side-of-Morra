@@ -13,7 +13,7 @@ Because the Unity game engine was used, Dark Side of Morra can be played directl
 |                  |                          |
 | ---------------- | ------------------------ |
 | __Languages__    | C#                       |
-| __Technologies__ | Skype, Trello, Photoshop |
+| __Tools__        | Skype, Trello, Photoshop |
 | __IDE__          | Unity, MonoDevelop       |
 | __Participants__ | 4                        |
 
@@ -32,6 +32,6 @@ Verwendet wurde die Unity Spiel-Engine, weshalb Dark Side of Morra auf [dieser W
 |                  |                          |
 | ---------------- | ------------------------ |
 | __Sprachen__     | C#                       |
-| __Technologien__ | Skype, Trello, Photoshop |
+| __Tools__        | Skype, Trello, Photoshop |
 | __IDE__          | Unity, MonoDevelop       |
 | __Beteiligte__   | 4                        |
